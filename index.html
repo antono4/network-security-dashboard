@@ -324,7 +324,7 @@
 
         /* Threat Map */
         .threat-map {
-            height: 300px;
+            height: 320px;
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(139, 92, 246, 0.05));
             border-radius: 12px;
             position: relative;
@@ -358,27 +358,135 @@
             50% { transform: scale(1.5); opacity: 0; }
         }
 
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            z-index: 5;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .legend-dot.red { background: var(--accent-red); }
+        .legend-dot.yellow { background: var(--accent-yellow); }
+        .legend-dot.cyan { background: var(--accent-cyan); }
+
+        /* Map Stats */
+        .map-stats {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            display: flex;
+            gap: 20px;
+            z-index: 5;
+        }
+
+        .map-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .map-stat .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+
+        .map-stat .stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Dynamic Map Dots */
         .map-dot {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .map-dot::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            animation: dotRing 2s infinite;
+            opacity: 0.6;
         }
 
         .map-dot::after {
-            content: '';
+            content: attr(data-country);
             position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 2px solid currentColor;
-            animation: dotPulse 1.5s infinite;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
 
-        .map-dot.red { background: var(--accent-red); color: var(--accent-red); }
-        .map-dot.yellow { background: var(--accent-yellow); color: var(--accent-yellow); }
-        .map-dot.cyan { background: var(--accent-cyan); color: var(--accent-cyan); }
+        .map-dot:hover::after {
+            opacity: 1;
+        }
+
+        .map-dot.red { 
+            background: var(--accent-red); 
+            color: var(--accent-red);
+            box-shadow: 0 0 20px var(--accent-red);
+        }
+        .map-dot.yellow { 
+            background: var(--accent-yellow); 
+            color: var(--accent-yellow);
+            box-shadow: 0 0 15px var(--accent-yellow);
+        }
+        .map-dot.cyan { 
+            background: var(--accent-cyan); 
+            color: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        @keyframes dotRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
 
         @keyframes dotPulse {
             0%, 100% { transform: scale(1); opacity: 1; }
@@ -386,8 +494,102 @@
         }
 
         .map-dot:hover {
-            transform: scale(1.5);
-            z-index: 10;
+            transform: scale(1.8);
+            z-index: 20;
+        }
+
+        /* Attack Line Animation */
+        .attack-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            transform-origin: left center;
+            animation: attackLine 2s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes attackLine {
+            0% { opacity: 0; transform: scaleX(0); }
+            50% { opacity: 0.8; transform: scaleX(1); }
+            100% { opacity: 0; transform: scaleX(0); }
+        }
+
+        /* New Threat Animation */
+        .threat-new {
+            animation: threatAppear 0.5s ease forwards;
+        }
+
+        @keyframes threatAppear {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Threat popup on click */
+        .threat-popup {
+            position: absolute;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 12px 15px;
+            min-width: 180px;
+            z-index: 100;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: popupFade 0.3s ease;
+        }
+
+        .threat-popup::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid var(--accent-cyan);
+        }
+
+        .threat-popup-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .threat-popup-detail {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .threat-popup-action {
+            margin-top: 10px;
+        }
+
+        .threat-popup-action button {
+            width: 100%;
+            padding: 8px;
+            background: var(--accent-red);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .threat-popup-action button:hover {
+            background: #dc2626;
+            transform: scale(1.02);
+        }
+
+        @keyframes popupFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Attack List */
@@ -869,17 +1071,26 @@
                         </div>
                         <span class="card-badge">LIVE</span>
                     </div>
-                    <div class="threat-map">
+                    <div class="threat-map" id="threatMap">
                         <div class="map-grid"></div>
                         <div class="map-pulse p1"></div>
                         <div class="map-pulse p2"></div>
                         <div class="map-pulse p3"></div>
-                        <div class="map-dot red" style="top: 25%; left: 35%;" title="DDoS - Rusia"></div>
-                        <div class="map-dot red" style="top: 40%; left: 55%;" title="Brute Force - China"></div>
-                        <div class="map-dot yellow" style="top: 55%; left: 25%;" title="Malware - Brasil"></div>
-                        <div class="map-dot cyan" style="top: 35%; left: 75%;" title="Scan - USA"></div>
-                        <div class="map-dot red" style="top: 60%; left: 60%;" title="SQL Injection - India"></div>
-                        <div class="map-dot yellow" style="top: 45%; left: 45%;" title="Phishing - Jerman"></div>
+                        <div class="map-legend">
+                            <div class="legend-item"><span class="legend-dot red"></span> High</div>
+                            <div class="legend-item"><span class="legend-dot yellow"></span> Medium</div>
+                            <div class="legend-item"><span class="legend-dot cyan"></span> Low</div>
+                        </div>
+                        <div class="map-stats" id="mapStats">
+                            <div class="map-stat">
+                                <span class="stat-number" id="activeThreats">6</span>
+                                <span class="stat-label">Aktif</span>
+                            </div>
+                            <div class="map-stat">
+                                <span class="stat-number" id="totalBlocked">23</span>
+                                <span class="stat-label">Diblokir</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1698,8 +1909,214 @@
             });
         });
 
+        // ==================== REAL-TIME THREAT MAP ====================
+        // Threat data pool
+        const threatPool = [
+            { country: 'Rusia', types: ['DDoS', 'Brute Force', 'Malware'], position: { top: '20%', left: '60%' } },
+            { country: 'China', types: ['SQL Injection', 'Port Scan', 'Phishing'], position: { top: '35%', left: '75%' } },
+            { country: 'Brasil', types: ['Malware', 'Ransomware', 'Botnet'], position: { top: '55%', left: '30%' } },
+            { country: 'USA', types: ['Scan', 'Probe', 'Recon'], position: { top: '30%', left: '20%' } },
+            { country: 'India', types: ['SQL Injection', 'XSS', 'DDoS'], position: { top: '50%', left: '65%' } },
+            { country: 'Jerman', types: ['Phishing', 'Spam', 'Bot'], position: { top: '25%', left: '45%' } },
+            { country: 'Vietnam', types: ['Brute Force', 'Malware', 'APT'], position: { top: '45%', left: '70%' } },
+            { country: 'Indonesia', types: ['DDoS', 'Scan', 'Exploit'], position: { top: '60%', left: '75%' } },
+            { country: 'Nigeria', types: ['Phishing', 'Scam', 'Spam'], position: { top: '50%', left: '40%' } },
+            { country: 'Iran', types: ['APT', 'Malware', 'DDoS'], position: { top: '35%', left: '55%' } },
+            { country: 'Korea Utara', types: ['APT', 'Ransomware', 'Espionage'], position: { top: '25%', left: '80%' } },
+            { country: 'Ukraine', types: ['DDoS', 'Wiper', 'Malware'], position: { top: '30%', left: '50%' } }
+        ];
+
+        let activeThreats = [];
+        let blockedCount = 23;
+
+        // Initialize threats
+        function initThreats() {
+            const map = document.getElementById('threatMap');
+            if (!map) return;
+
+            // Add initial threats
+            for (let i = 0; i < 6; i++) {
+                addThreatDot(map, threatPool[i]);
+            }
+            updateMapStats();
+        }
+
+        // Add threat dot to map
+        function addThreatDot(map, threatData, isNew = false) {
+            const dot = document.createElement('div');
+            dot.className = `map-dot ${getRandomSeverity()}${isNew ? ' threat-new' : ''}`;
+            dot.style.top = threatData.position.top;
+            dot.style.left = threatData.position.left;
+            dot.setAttribute('data-country', threatData.country);
+            
+            const type = threatData.types[Math.floor(Math.random() * threatData.types.length)];
+            dot.setAttribute('data-type', type);
+            
+            // Store threat info
+            const threatId = Date.now() + Math.random();
+            dot.setAttribute('data-id', threatId);
+            
+            const threat = {
+                id: threatId,
+                country: threatData.country,
+                type: type,
+                ip: generateRandomIP(),
+                time: new Date().toLocaleTimeString('id-ID'),
+                severity: getRandomSeverity()
+            };
+            
+            dot.addEventListener('click', () => showThreatPopup(dot, threat));
+            map.appendChild(dot);
+            
+            if (isNew) {
+                addTimelineEntry(`Ancaman baru dari ${threatData.country} (${type})`, 'danger');
+                showToast(`⚠️ Ancaman terdeteksi: ${type} dari ${threatData.country}`, 'warning');
+            }
+            
+            return dot;
+        }
+
+        // Get random severity
+        function getRandomSeverity() {
+            const rand = Math.random();
+            if (rand > 0.6) return 'red';
+            if (rand > 0.3) return 'yellow';
+            return 'cyan';
+        }
+
+        // Generate random IP
+        function generateRandomIP() {
+            return `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+        }
+
+        // Show threat popup
+        function showThreatPopup(dot, threat) {
+            // Remove existing popup
+            const existingPopup = document.querySelector('.threat-popup');
+            if (existingPopup) existingPopup.remove();
+            
+            const popup = document.createElement('div');
+            popup.className = 'threat-popup';
+            popup.innerHTML = `
+                <div class="threat-popup-title">
+                    <span style="color: var(--accent-red);">⚠️</span>
+                    ${threat.type}
+                </div>
+                <div class="threat-popup-detail">📍 Negara: ${threat.country}</div>
+                <div class="threat-popup-detail">🌐 IP: ${threat.ip}</div>
+                <div class="threat-popup-detail">⏰ Waktu: ${threat.time}</div>
+                <div class="threat-popup-detail">⚡ Severity: <span style="color: var(--accent-${threat.severity === 'red' ? 'red' : threat.severity === 'yellow' ? 'yellow' : 'cyan'}">${threat.severity.toUpperCase()}</span></div>
+                <div class="threat-popup-action">
+                    <button onclick="blockThreatFromPopup('${threat.ip}', '${threat.country}', this)">🔒 Block IP</button>
+                </div>
+            `;
+            
+            // Position popup
+            const rect = dot.getBoundingClientRect();
+            const mapRect = document.getElementById('threatMap').getBoundingClientRect();
+            
+            popup.style.top = (rect.top - mapRect.top - 150) + 'px';
+            popup.style.left = (rect.left - mapRect.left - 50) + 'px';
+            
+            document.getElementById('threatMap').appendChild(popup);
+            
+            // Close on click outside
+            setTimeout(() => {
+                document.addEventListener('click', function closePopup(e) {
+                    if (!popup.contains(e.target) && e.target !== dot) {
+                        popup.remove();
+                        document.removeEventListener('click', closePopup);
+                    }
+                });
+            }, 100);
+        }
+
+        // Block threat from popup
+        function blockThreatFromPopup(ip, country, btn) {
+            addToBlockedList(ip, 'manual', '24h');
+            addTimelineEntry(`IP ${ip} (${country}) diblokir dari popup`, 'warning');
+            showToast(`IP ${ip} berhasil diblokir!`, 'success');
+            
+            // Update blocked count
+            blockedCount++;
+            updateMapStats();
+            
+            // Remove popup
+            document.querySelector('.threat-popup')?.remove();
+        }
+
+        // Update map stats
+        function updateMapStats() {
+            const activeEl = document.getElementById('activeThreats');
+            const blockedEl = document.getElementById('totalBlocked');
+            
+            if (activeEl) activeEl.textContent = document.querySelectorAll('.map-dot').length;
+            if (blockedEl) blockedEl.textContent = blockedCount;
+        }
+
+        // Generate new threats periodically
+        function generateNewThreat() {
+            const map = document.getElementById('threatMap');
+            if (!map) return;
+            
+            // Get random threat from pool
+            const availableThreats = threatPool.filter(t => {
+                return !Array.from(map.querySelectorAll('.map-dot')).some(dot => 
+                    dot.getAttribute('data-country') === t.country
+                );
+            });
+            
+            if (availableThreats.length === 0) {
+                // If all threats are active, randomly replace one
+                const existingDot = map.querySelectorAll('.map-dot')[Math.floor(Math.random() * 6)];
+                if (existingDot) {
+                    existingDot.remove();
+                    const newThreat = threatPool[Math.floor(Math.random() * threatPool.length)];
+                    addThreatDot(map, newThreat, true);
+                }
+            } else {
+                const newThreat = availableThreats[Math.floor(Math.random() * availableThreats.length)];
+                addThreatDot(map, newThreat, true);
+            }
+            
+            updateMapStats();
+        }
+
+        // Simulate attack patterns (move threats)
+        function animateThreats() {
+            const dots = document.querySelectorAll('.map-dot');
+            dots.forEach(dot => {
+                // Slight position variation
+                const currentTop = parseFloat(dot.style.top);
+                const currentLeft = parseFloat(dot.style.left);
+                
+                const newTop = currentTop + (Math.random() - 0.5) * 2;
+                const newLeft = currentLeft + (Math.random() - 0.5) * 2;
+                
+                // Keep within bounds
+                if (newTop > 15 && newTop < 75 && newLeft > 10 && newLeft < 85) {
+                    dot.style.transition = 'all 2s ease';
+                    dot.style.top = newTop + '%';
+                    dot.style.left = newLeft + '%';
+                }
+            });
+        }
+
+        // Initialize and start real-time updates
+        initThreats();
+
+        // Generate new threats every 8-15 seconds
+        setInterval(() => {
+            if (Math.random() > 0.3) {
+                generateNewThreat();
+            }
+        }, 10000);
+
+        // Animate existing threats every 5 seconds
+        setInterval(animateThreats, 5000);
+
         // ==================== INITIAL TIMELINE ====================
-        addTimelineEntry('Dashboard initialized', 'info');
+        addTimelineEntry('Dashboard initialized - Threat map active', 'info');
     </script>
 
     <!-- Modal Styles -->
