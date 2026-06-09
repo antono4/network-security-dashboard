@@ -708,6 +708,196 @@
         .attack-severity.medium { background: rgba(245, 158, 11, 0.2); color: var(--accent-yellow); }
         .attack-severity.low { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
 
+        /* AI Security Agent */
+        .ai-agent-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(0, 212, 255, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .ai-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--accent-green);
+        }
+
+        .ai-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: aiPulse 1.5s infinite;
+        }
+
+        @keyframes aiPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .ai-agent-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-stats-row {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .ai-stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .ai-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+
+        .ai-stat-label {
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .ai-log-container {
+            max-height: 120px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .ai-log-entry {
+            display: flex;
+            gap: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ai-log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .ai-log-time {
+            color: var(--accent-purple);
+            min-width: 60px;
+        }
+
+        .ai-log-msg {
+            color: var(--text-secondary);
+        }
+
+        .ai-log-entry.success .ai-log-msg { color: var(--accent-green); }
+        .ai-log-entry.warning .ai-log-msg { color: var(--accent-yellow); }
+        .ai-log-entry.danger .ai-log-msg { color: var(--accent-red); }
+        .ai-log-entry.info .ai-log-msg { color: var(--accent-cyan); }
+
+        .ai-progress-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .ai-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .ai-progress-bar-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .ai-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .ai-toggle-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .ai-toggle-label input {
+            display: none;
+        }
+
+        .ai-toggle-switch {
+            width: 40px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .ai-toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .ai-toggle-label input:checked + .ai-toggle-switch {
+            background: var(--accent-purple);
+        }
+
+        .ai-toggle-label input:checked + .ai-toggle-switch::before {
+            left: 22px;
+            background: white;
+        }
+
+        @keyframes aiThinking {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .ai-action-flash {
+            animation: aiFlash 0.5s ease;
+        }
+
+        @keyframes aiFlash {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 20px var(--accent-purple); }
+        }
+
         .attack-info {
             flex: 1;
         }
@@ -1322,6 +1512,61 @@
                             <div class="progress-bar">
                                 <div class="progress-bar-fill yellow" style="width: 68%;"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Security Agent -->
+                <div class="card ai-agent-card fade-in">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.45-.12-2.27 2.66-2.27 6.72 0 9.38 2.27 2.66 6.15 2.78 8.87.44 2.73-2.35 3.13-6.17 1.62-8.88zM21 3v18h2v-18h-2zm-10 6.12c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+                            🤖 AI Security Agent
+                        </div>
+                        <div class="ai-status-indicator" id="aiStatus">
+                            <span class="ai-dot"></span>
+                            <span id="aiStatusText">Aktif</span>
+                        </div>
+                    </div>
+                    <div class="ai-agent-content">
+                        <div class="ai-stats-row">
+                            <div class="ai-stat-item">
+                                <span class="ai-stat-value" id="aiThreatsBlocked">0</span>
+                                <span class="ai-stat-label">Diblokir AI</span>
+                            </div>
+                            <div class="ai-stat-item">
+                                <span class="ai-stat-value" id="aiAccuracy">98%</span>
+                                <span class="ai-stat-label">Akurasi</span>
+                            </div>
+                            <div class="ai-stat-item">
+                                <span class="ai-stat-value" id="aiResponses">0</span>
+                                <span class="ai-stat-label">Respons</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-log-container" id="aiLogContainer">
+                            <div class="ai-log-entry">
+                                <span class="ai-log-time">--:--:--</span>
+                                <span class="ai-log-msg">AI Agent initializing...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-progress-section">
+                            <div class="ai-progress-label">
+                                <span>AI Analysis Progress</span>
+                                <span id="aiProgressPercent">0%</span>
+                            </div>
+                            <div class="ai-progress-bar-container">
+                                <div class="ai-progress-bar-fill" id="aiProgressBar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-toggle-section">
+                            <label class="ai-toggle-label">
+                                <input type="checkbox" id="aiAutoRespond" checked>
+                                <span class="ai-toggle-switch"></span>
+                                Auto-Respond Threats
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -2299,8 +2544,192 @@
         // Animate existing threats every 5 seconds
         setInterval(animateThreats, 5000);
 
+        // ==================== AI SECURITY AGENT (Every 6 Seconds) ====================
+        let aiThreatsBlocked = 0;
+        let aiResponses = 0;
+        let aiAutoRespond = true;
+        let aiProgress = 0;
+
+        // AI Security actions pool
+        const aiActions = [
+            { action: 'Analyzing network traffic patterns...', type: 'info' },
+            { action: 'Scanning for anomalous behavior...', type: 'info' },
+            { action: 'Monitoring firewall logs...', type: 'info' },
+            { action: 'Checking IDS/IPS alerts...', type: 'info' },
+            { action: 'Validating SSL certificates...', type: 'info' },
+            { action: 'Scanning for open ports...', type: 'info' },
+            { action: 'Checking DNS blacklists...', type: 'info' },
+            { action: 'Analyzing packet headers...', type: 'info' },
+            { action: 'Monitoring bandwidth usage...', type: 'info' },
+            { action: 'Checking for brute force attempts...', type: 'warning' },
+            { action: 'Analyzing geolocation data...', type: 'info' },
+            { action: 'Checking threat intelligence feeds...', type: 'info' }
+        ];
+
+        const aiThreatResponses = [
+            { action: 'Blocked suspicious IP via firewall', type: 'success', block: true },
+            { action: 'Mitigated DDoS attack - rate limited', type: 'success', block: true },
+            { action: 'Quarantined infected endpoint', type: 'warning', block: false },
+            { action: 'Blocked SQL injection attempt', type: 'success', block: true },
+            { action: 'Detected and blocked malware download', type: 'success', block: true },
+            { action: 'Mitigated brute force SSH attack', type: 'success', block: true },
+            { action: 'Blocked phishing domain access', type: 'success', block: true },
+            { action: 'Isolated compromised system', type: 'warning', block: false },
+            { action: 'Blocked suspicious DNS query', type: 'success', block: true },
+            { action: 'Mitigated XSS attack attempt', type: 'success', block: true },
+            { action: 'Detected port scan - countered', type: 'warning', block: true },
+            { action: 'Blocked malicious IP range', type: 'success', block: true }
+        ];
+
+        // Get current time string
+        function getTimeString() {
+            const now = new Date();
+            return now.toLocaleTimeString('id-ID', { hour12: false });
+        }
+
+        // Add log entry to AI log container
+        function addAILogEntry(message, type = 'info') {
+            const container = document.getElementById('aiLogContainer');
+            if (!container) return;
+
+            const entry = document.createElement('div');
+            entry.className = `ai-log-entry ${type}`;
+            entry.innerHTML = `
+                <span class="ai-log-time">${getTimeString()}</span>
+                <span class="ai-log-msg">${message}</span>
+            `;
+
+            container.insertBefore(entry, container.firstChild);
+
+            // Keep only last 10 entries
+            while (container.children.length > 10) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        // Update AI stats display
+        function updateAIStats() {
+            const blockedEl = document.getElementById('aiThreatsBlocked');
+            const responsesEl = document.getElementById('aiResponses');
+            
+            if (blockedEl) blockedEl.textContent = aiThreatsBlocked;
+            if (responsesEl) responsesEl.textContent = aiResponses;
+        }
+
+        // Update AI progress bar
+        function updateAIProgress(progress) {
+            aiProgress = progress;
+            const progressBar = document.getElementById('aiProgressBar');
+            const progressPercent = document.getElementById('aiProgressPercent');
+            
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressPercent) progressPercent.textContent = Math.round(progress) + '%';
+        }
+
+        // AI Security Agent main loop (runs every 6 seconds)
+        function runAISecurityAgent() {
+            const autoRespond = document.getElementById('aiAutoRespond');
+            aiAutoRespond = autoRespond ? autoRespond.checked : true;
+            
+            // Update progress animation
+            let currentProgress = 0;
+            const progressInterval = setInterval(() => {
+                currentProgress += 10;
+                updateAIProgress(currentProgress);
+                if (currentProgress >= 100) clearInterval(progressInterval);
+            }, 600);
+
+            // Get AI status indicator
+            const statusDot = document.querySelector('.ai-dot');
+            const statusText = document.getElementById('aiStatusText');
+
+            // Phase 1: Monitoring actions (always run)
+            const monitorAction = aiActions[Math.floor(Math.random() * aiActions.length)];
+            addAILogEntry(monitorAction.action, monitorAction.type);
+
+            // Phase 2: Random threat detection (30% chance)
+            if (Math.random() > 0.7) {
+                const threatResponse = aiThreatResponses[Math.floor(Math.random() * aiThreatResponses.length)];
+                addAILogEntry(threatResponse.action, threatResponse.type);
+                
+                aiResponses++;
+                
+                // Auto-respond if enabled
+                if (aiAutoRespond && threatResponse.block) {
+                    const randomIP = `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+                    addToBlockedList(randomIP, 'ai-auto', '24h');
+                    blockedCount++;
+                    aiThreatsBlocked++;
+                    
+                    // Flash effect on AI card
+                    const aiCard = document.querySelector('.ai-agent-card');
+                    if (aiCard) {
+                        aiCard.classList.add('ai-action-flash');
+                        setTimeout(() => aiCard.classList.remove('ai-action-flash'), 500);
+                    }
+                    
+                    // Update blocked count on map
+                    updateMapStats();
+                }
+                
+                // Show toast notification
+                showToast(`🤖 AI: ${threatResponse.action}`, threatResponse.type);
+                
+                // Add to timeline
+                addTimelineEntry(`AI: ${threatResponse.action}`, threatResponse.type === 'success' ? 'info' : 'warning');
+            }
+
+            // Phase 3: Random analysis (20% chance)
+            if (Math.random() > 0.8) {
+                const analyses = [
+                    'Pattern analysis complete - no anomalies',
+                    'Threat signature updated',
+                    'Machine learning model updated',
+                    'Network baseline recalculated',
+                    'Security posture: STRONG',
+                    'Firewall rules optimized',
+                    'Intrusion detection calibrated'
+                ];
+                const analysis = analyses[Math.floor(Math.random() * analyses.length)];
+                addAILogEntry(analysis, 'info');
+            }
+
+            // Update stats
+            updateAIStats();
+
+            // Pulse status indicator
+            if (statusDot) {
+                statusDot.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    statusDot.style.transform = 'scale(1)';
+                }, 200);
+            }
+
+            // Add timeline entry
+            addTimelineEntry(`AI Agent scan complete - monitoring active`, 'info');
+        }
+
+        // Initialize AI Agent
+        function initAIAgent() {
+            addAILogEntry('🤖 AI Security Agent started', 'success');
+            addAILogEntry('Loading threat intelligence...', 'info');
+            addAILogEntry('Initializing ML models...', 'info');
+            addAILogEntry('Connecting to security feeds...', 'info');
+            
+            updateAIProgress(100);
+            
+            // Run AI agent every 6 seconds
+            setInterval(runAISecurityAgent, 6000);
+            
+            // Run immediately
+            setTimeout(runAISecurityAgent, 1000);
+        }
+
+        // Start AI Agent
+        initAIAgent();
+
         // ==================== INITIAL TIMELINE ====================
-        addTimelineEntry('Dashboard initialized - Threat map active', 'info');
+        addTimelineEntry('Dashboard initialized - AI Security Agent active', 'info');
     </script>
 
     <!-- Modal Styles -->
