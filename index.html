@@ -16,7 +16,7 @@
         <header class="header">
             <div class="logo">
                 <div class="logo-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    <i class="fas fa-shield-alt"></i>
                 </div>
                 <div class="logo-text">
                     <h1>CYBERSHIELD</h1>
@@ -25,13 +25,13 @@
             </div>
             <div class="header-right">
                 <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="background: none; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 6px 10px; cursor: pointer; color: var(--text-secondary); margin-right: 10px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+                    <i class="fas fa-adjust"></i>
                 </button>
                 <div class="status-badge">
                     Sistem Aktif & Terproteksi
                 </div>
                 <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                    <i class="fas fa-bars"></i>
                 </button>
                 <div class="header-date">
                     <span id="currentDate">Loading...</span>
@@ -48,7 +48,7 @@
         <div class="card fade-in" style="margin-top: 16px;">
             <div class="card-header">
                 <div class="card-title">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <i class="fas fa-globe"></i>
                     Deteksi & Topologi Jaringan
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -59,7 +59,7 @@
                     </select>
                     <button class="btn-primary" aria-label="Start network scan" style="padding: 6px 14px; font-size: 12px;" aria-label="Start Scan">
                         <span style="display: flex; align-items: center; gap: 6px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                            
                             Start Scan
                         </span>
                     </button>
@@ -86,7 +86,7 @@
                     <span style="color: var(--accent-primary); font-size: 12px; font-weight: 600;">8.8.8.8</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px; color: var(--accent-success);">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    
                     <span style="font-size: 12px; font-weight: 600;">Protected</span>
                 </div>
             </div>
@@ -97,24 +97,24 @@
     <!-- Network Topology Visualization (Simplified) -->
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 16px; padding: var(--radius-xs); background: rgba(0,0,0,0.1); border-radius: 6px; gap: 0;">
                 <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); border-radius: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-danger)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    
                     <span style="font-size: 11px; color: var(--accent-danger);">Internet</span>
                 </div>
                 <div style="width: 40px; height: 2px; background: linear-gradient(90deg, var(--accent-danger), var(--accent-primary));"></div>
                 <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.3); border-radius: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-primary)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    
                     <span style="font-size: 11px; color: var(--accent-primary);">Firewall</span>
                     <span style="font-size: 10px; color: var(--text-muted);">.2</span>
                 </div>
                 <div style="width: 40px; height: 2px; background: var(--accent-primary);"></div>
                 <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.3); border-radius: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-purple)"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6z"/></svg>
+                    
                     <span style="font-size: 11px; color: var(--accent-purple);">Switch</span>
                     <span style="font-size: 10px; color: var(--text-muted);">.3</span>
                 </div>
                 <div style="width: 40px; height: 2px; background: var(--accent-purple);"></div>
                 <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); border-radius: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent-success)"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4z"/></svg>
+                    
                     <span style="font-size: 11px; color: var(--accent-success);">LAN</span>
                 </div>
             </div>
@@ -123,7 +123,7 @@
             <div class="device-list" id="deviceListContainer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(0,212,255,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-primary);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -144,7 +144,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(239,68,68,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-danger);"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -165,7 +165,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(139,92,246,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-purple);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -186,7 +186,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(16,185,129,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-success);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -207,7 +207,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(59,130,246,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: #3b82f6;"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -228,7 +228,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(168,85,247,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: #a855f7;"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -249,7 +249,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(245,158,11,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-warning);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -270,7 +270,7 @@
                 </div>
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(245,158,11,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-warning);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                        
                     </div>
                     <div class="device-info">
                         <div class="device-name">
@@ -312,48 +312,48 @@
         <div class="stats-grid">
             <div class="stat-card fade-in stagger-1">
                 <div class="stat-icon cyan">
-                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <i class="fas fa-eye"></i>
                 </div>
                 <div class="stat-value" id="threatCount">847</div>
                 <div class="stat-label">Ancaman Terdeteksi</div>
                 <div class="stat-change up">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg>
+                    
                     +12% dari kemarin
                 </div>
             </div>
 
             <div class="stat-card danger fade-in stagger-2">
                 <div class="stat-icon red">
-                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="stat-value" id="attackCount">23</div>
                 <div class="stat-label">Serangan Aktif</div>
                 <div class="stat-change down">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                    
                     -8% dari kemarin
                 </div>
             </div>
 
             <div class="stat-card success fade-in stagger-3">
                 <div class="stat-icon green">
-                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <i class="fas fa-check"></i>
                 </div>
                 <div class="stat-value" id="blockedCount">12.4K</div>
                 <div class="stat-label">Terblokir</div>
                 <div class="stat-change up">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg>
+                    
                     +156 hari ini
                 </div>
             </div>
 
             <div class="stat-card warning fade-in stagger-4">
                 <div class="stat-icon yellow">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-value" id="uptimePercent">99.7%</div>
                 <div class="stat-label">Uptime Sistem</div>
                 <div class="stat-change up">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg>
+                    
                     Stabil
                 </div>
             </div>
@@ -366,59 +366,14 @@
                 <div class="card fade-in" style="margin-bottom: 16px;">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <i class="fas fa-map-marker-alt"></i>
                             Peta Ancaman Global
                         </div>
                         <span class="card-badge">LIVE</span>
                     </div>
                     <div class="threat-map" id="threatMap">
                         <!-- World Map SVG -->
-                        <svg class="world-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
-                            <!-- Background -->
-                            <rect x="0" y="0" width="1000" height="500" fill="rgba(0,212,255,0.02)"/>
-                            
-                            <!-- North America -->
-                            <path class="continent" d="M150,80 L280,70 L320,90 L340,120 L350,150 L340,180 L310,200 L280,210 L250,230 L220,220 L180,200 L160,180 L140,150 L130,120 L150,80 Z" />
-                            <path class="continent" d="M180,140 L220,130 L240,150 L230,170 L200,175 L180,160 L180,140 Z" />
-                            
-                            <!-- Central America -->
-                            <path class="continent" d="M220,220 L240,230 L250,250 L240,270 L220,260 L210,240 L220,220 Z" />
-                            
-                            <!-- South America -->
-                            <path class="continent" d="M250,270 L290,280 L320,300 L330,340 L320,380 L300,420 L270,450 L240,440 L230,400 L240,350 L250,300 L250,270 Z" />
-                            
-                            <!-- Europe -->
-                            <path class="continent" d="M450,80 L520,70 L550,90 L560,120 L550,150 L530,170 L500,175 L470,160 L450,140 L440,110 L450,80 Z" />
-                            <path class="continent" d="M480,100 L510,95 L520,115 L510,130 L490,125 L480,110 L480,100 Z" />
-                            
-                            <!-- Africa -->
-                            <path class="continent" d="M480,180 L550,170 L590,190 L600,230 L590,280 L560,320 L520,340 L480,330 L460,290 L470,240 L480,200 L480,180 Z" />
-                            
-                            <!-- Asia -->
-                            <path class="continent" d="M560,70 L700,60 L780,80 L850,100 L900,130 L920,170 L910,210 L880,240 L840,260 L780,270 L720,260 L660,240 L620,200 L590,160 L560,120 L560,70 Z" />
-                            
-                            <!-- Southeast Asia -->
-                            <path class="continent" d="M780,260 L820,250 L850,270 L860,300 L840,320 L800,310 L780,290 L780,260 Z" />
-                            
-                            <!-- Australia -->
-                            <path class="continent" d="M800,340 L880,330 L920,350 L930,390 L910,420 L860,430 L820,410 L800,380 L800,340 Z" />
-                            
-                            <!-- New Zealand -->
-                            <path class="continent" d="M940,400 L950,390 L960,410 L955,430 L945,425 L940,400 Z" />
-                            
-                            <!-- Greenland -->
-                            <path class="continent" d="M320,30 L380,25 L400,50 L390,80 L360,90 L330,85 L320,60 L320,30 Z" />
-                            
-                            <!-- Japan -->
-                            <path class="continent" d="M880,160 L900,155 L910,175 L905,195 L890,190 L880,175 L880,160 Z" />
-                            
-                            <!-- UK -->
-                            <path class="continent" d="M440,100 L455,95 L460,115 L450,125 L440,120 L440,100 Z" />
-                            
-                            <!-- Indonesia -->
-                            <path class="continent" d="M780,290 L800,285 L810,300 L805,320 L790,315 L780,300 L780,290 Z" />
-                            <path class="continent" d="M760,295 L775,290 L780,305 L770,315 L760,310 L760,295 Z" />
-                        </svg>
+                        
                         
                         <!-- Threat Dots Container -->
                         <div class="threat-dots-container" id="threatDotsContainer"></div>
@@ -448,7 +403,7 @@
                 <div class="card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                            <i class="fas fa-shield-alt"></i>
                             Serangan Terbaru
                         </div>
                         <span class="card-badge">24 JAM</span>
@@ -504,49 +459,49 @@
                 <div class="card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94h2.01c.03.36.07.72.11 1.08.08.8.11 1.59.11 2.38 0 2.02-.51 3.84-1.39 5.37-.17.29-.37.56-.58.82-.42.52-1.03.92-1.74 1.14-.35.11-.72.17-1.1.17-.38 0-.75-.06-1.1-.17-.71-.22-1.32-.62-1.74-1.14-.21-.26-.41-.53-.58-.82-.88-1.53-1.39-3.35-1.39-5.37 0-.79.03-1.58.11-2.38.04-.36.08-.72.11-1.08h2.01c-.04.31-.06.63-.06.94 0 .31.02.63.06.94-.18.74-.18 1.54-.18 2.42 0 1.68.36 3.24 1.02 4.62.09.19.19.38.3.56-.69.43-1.52.67-2.4.67-.56 0-1.12-.08-1.66-.24-.35.16-.73.26-1.14.26-.8 0-1.54-.28-2.14-.78-.1-.09-.19-.18-.28-.28-.22-.25-.4-.53-.53-.85-.09-.23-.14-.47-.14-.72 0-.8.28-1.54.78-2.14.18-.22.4-.4.63-.55.12-.07.25-.13.39-.18.37-.14.77-.21 1.2-.21.25 0 .49.03.72.08.09.02.18.04.27.07.36.11.7.27 1.02.47.1.07.2.13.29.21.09.08.17.16.25.25.23.25.41.53.55.85.09.21.14.43.14.66 0 .55-.21 1.06-.59 1.44-.13.13-.28.24-.43.33-.15.09-.32.16-.49.22-.17.06-.35.1-.54.12-.19.02-.38.03-.58.03-.2 0-.4-.01-.59-.03-.19-.02-.37-.06-.54-.12-.17-.06-.34-.13-.49-.22-.15-.09-.3-.2-.43-.33-.38-.38-.59-.89-.59-1.44 0-.23.05-.45.14-.66.14-.32.32-.6.55-.85.08-.09.16-.17.25-.25.09-.08.19-.14.29-.21.32-.2.66-.36 1.02-.47.09-.03.18-.05.27-.07.23-.05.47-.08.72-.08.43 0 .83.07 1.2.21.14.05.27.11.39.18.23.15.45.33.63.55.5.6.78 1.34.78 2.14 0 .25-.05.49-.14.72-.13.32-.31.6-.53.85-.09.1-.18.19-.28.28-.6.5-1.34.78-2.14.78-.42 0-.79-.1-1.14-.26-.54.16-1.1.24-1.66.24-.88 0-1.71-.24-2.4-.67.11-.18.21-.37.3-.56.66-1.38 1.02-2.94 1.02-4.62 0-.88 0-1.68-.18-2.42-.04-.31-.06-.63-.06-.94s.02-.63.06-.94h2.01c.04.36.08.72.11 1.08.08.8.11 1.59.11 2.38 0 2.02-.51 3.84-1.39 5.37-.17.29-.37.56-.58.82-.42.52-1.03.92-1.74 1.14-.35.11-.72.17-1.1.17-.38 0-.75-.06-1.1-.17-.71-.22-1.32-.62-1.74-1.14-.21-.26-.41-.53-.58-.82-.88-1.53-1.39-3.35-1.39-5.37 0-.79.03-1.58.11-2.38.04-.36.08-.72.11-1.08h2.01z"/></svg>
+                            
                             Status Sistem
                         </div>
                     </div>
                     <div class="system-status">
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H4V5h16v14z"/></svg>
+                                
                                 Firewall
                             </div>
                             <div class="status-value good">Aktif</div>
                         </div>
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                                <i class="fas fa-cloud"></i>
                                 IDS/IPS
                             </div>
                             <div class="status-value good">Proteksi Penuh</div>
                         </div>
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                                <i class="fas fa-fire"></i>
                                 Anti-DDoS
                             </div>
                             <div class="status-value good">Standby</div>
                         </div>
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <i class="fas fa-lock"></i>
                                 VPN Gateway
                             </div>
                             <div class="status-value good">2/2 Online</div>
                         </div>
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+                                <i class="fas fa-server"></i>
                                 Load Balancer
                             </div>
                             <div class="status-value good">Optimal</div>
                         </div>
                         <div class="status-item">
                             <div class="status-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                
                                 Bandwidth
                             </div>
                             <div class="progress-bar">
@@ -560,7 +515,7 @@
                 <div class="card ai-agent-card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.45-.12-2.27 2.66-2.27 6.72 0 9.38 2.27 2.66 6.15 2.78 8.87.44 2.73-2.35 3.13-6.17 1.62-8.88zM21 3v18h2v-18h-2zm-10 6.12c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+                            
                             🤖 AI Security Agent
                         </div>
                         <div class="ai-status-indicator" id="aiStatus">
@@ -615,7 +570,7 @@
                 <div class="card ai-resolved-card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            <i class="fas fa-check"></i>
                             📋 AI Resolved Report
                         </div>
                         <span class="card-badge ai-badge" id="aiResolvedCount">0</span>
@@ -646,7 +601,7 @@
                         
                         <div class="ai-resolved-list" id="aiResolvedList">
                             <div class="ai-resolved-empty">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5z"/></svg>
+                                
                                 <span>Menunggu aktivitas AI...</span>
                             </div>
                         </div>
@@ -657,25 +612,25 @@
                 <div class="card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M17 4h3v16h-3zM5 14h3v6H5zm6-6h3v12h-3z"/></svg>
+                            
                             Aksi Cepat
                         </div>
                     </div>
                     <div class="quick-actions">
                         <div class="action-btn" onclick="blockIP()">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <i class="fas fa-check-circle"></i>
                             <span>Block IP</span>
                         </div>
                         <div class="action-btn" aria-label="Start Scan">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            <i class="fas fa-globe"></i>
                             <span>Network Scan</span>
                         </div>
                         <div class="action-btn" onclick="scanVirus()">
-                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                            <i class="fas fa-shield-alt"></i>
                             <span>Scan Virus</span>
                         </div>
                         <div class="action-btn" onclick="runBackup()">
-                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11H7V7.18L12 5z"/></svg>
+                            
                             <span>Backup</span>
                         </div>
                     </div>
@@ -685,7 +640,7 @@
                 <div class="card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                            <i class="fas fa-lock"></i>
                             IP Terblokir
                         </div>
                         <span class="card-badge" id="blockedCountBadge">0</span>
@@ -714,7 +669,7 @@
                 <div class="card fade-in">
                     <div class="card-header">
                         <div class="card-title">
-                            <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                            
                             Aktivitas Terbaru
                         </div>
                     </div>
@@ -746,7 +701,7 @@
         <div class="card fade-in" style="margin-top: 16px;">
             <div class="card-header">
                 <div class="card-title">
-                    <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                    <i class="fas fa-chart-line"></i>
                     Trafik Jaringan (24 Jam)
                 </div>
                 <span class="card-badge">GB/s</span>
@@ -876,7 +831,7 @@
                     </select>
                 </div>
                 <button class="btn btn-danger" onclick="confirmBlockIP()">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                    
                     Konfirmasi Blokir
                 </button>
             `;
@@ -1961,7 +1916,7 @@
             if (aiResolvedHistory.length === 0) {
                 listContainer.innerHTML = `
                     <div class="ai-resolved-empty">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A2.5 2.5 0 0 0 5 15.5 2.5 2.5 0 0 0 7.5 18a2.5 2.5 0 0 0 2.5-2.5A2.5 2.5 0 0 0 7.5 13m9 0a2.5 2.5 0 0 0-2.5 2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0-2.5-2.5z"/></svg>
+                        
                         <span>Menunggu aktivitas AI...</span>
                     </div>
                 `;
