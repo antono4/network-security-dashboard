@@ -4,279 +4,1662 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberShield - Network Security Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root{--bg-primary:#0a0e1a;--bg-secondary:#111827;--bg-tertiary:#1a2235;--text-primary:#f1f5f9;--text-secondary:#94a3b8;--accent-cyan:#00d4ff;--accent-purple:#8b5cf6;--accent-green:#10b981;--accent-yellow:#f59e0b;--accent-red:#ef4444;--border-color:rgba(255,255,255,.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
-        .header{background:rgba(17,24,39,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);padding:15px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-        .logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:700}
-        .logo i{color:var(--accent-cyan);font-size:24px}
-        .logo span{background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .header-stats{display:flex;gap:30px}
-        .header-stat{text-align:center}
-        .header-stat-value{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace}
-        .header-stat-label{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px}
-        .live-indicator{display:flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:20px}
-        .live-dot{width:8px;height:8px;background:var(--accent-red);border-radius:50%;animation:pulse 1.5s infinite}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}
-        .container{max-width:1600px;margin:0 auto;padding:30px;display:grid;grid-template-columns:280px 1fr 300px;gap:24px}
-        .sidebar,.right-panel{display:flex;flex-direction:column;gap:16px}
-        .main-content{display:flex;flex-direction:column;gap:24px}
-        .card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:16px;padding:20px;transition:all .3s}
-        .card:hover{border-color:rgba(0,212,255,.3);box-shadow:0 0 30px rgba(0,212,255,.05)}
-        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-        .card-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
-        .card-title i{color:var(--accent-cyan)}
-        .card-badge{font-size:10px;padding:4px 10px;border-radius:12px;font-weight:600}
-        .stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-        .stat-card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:20px;position:relative;overflow:hidden}
-        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-        .stat-card.cyan::before{background:var(--accent-cyan)}.stat-card.red::before{background:var(--accent-red)}.stat-card.purple::before{background:var(--accent-purple)}.stat-card.green::before{background:var(--accent-green)}
-        .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
-        .stat-card.cyan .stat-icon{background:rgba(0,212,255,.1);color:var(--accent-cyan)}.stat-card.red .stat-icon{background:rgba(239,68,68,.1);color:var(--accent-red)}.stat-card.purple .stat-icon{background:rgba(139,92,246,.1);color:var(--accent-purple)}.stat-card.green .stat-icon{background:rgba(16,185,129,.1);color:var(--accent-green)}
-        .stat-value{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
-        .stat-label{font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px}
-        .threat-map{height:400px;background:var(--bg-tertiary);border-radius:12px;position:relative;overflow:hidden}
-        .world-map{width:100%;height:100%}
-        .threat-dot{position:absolute;width:10px;height:10px;border-radius:50%;animation:threatPulse 2s infinite;cursor:pointer;z-index:10}
-        .threat-dot.high{background:var(--accent-red);box-shadow:0 0 20px var(--accent-red)}.threat-dot.medium{background:var(--accent-yellow);box-shadow:0 0 15px var(--accent-yellow)}.threat-dot.low{background:var(--accent-green);box-shadow:0 0 10px var(--accent-green)}
-        @keyframes threatPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.7}}
-        .map-stats{position:absolute;bottom:20px;left:20px;display:flex;gap:20px}
-        .map-stat{text-align:center;background:rgba(0,0,0,.7);padding:12px 20px;border-radius:10px;backdrop-filter:blur(10px)}
-        .map-stat-value{font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace}
-        .map-stat-label{font-size:10px;color:var(--text-secondary);text-transform:uppercase}
-        .map-legend{position:absolute;top:20px;right:20px;background:rgba(0,0,0,.7);padding:12px 16px;border-radius:10px;backdrop-filter:blur(10px)}
-        .legend-item{display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:6px}
-        .legend-dot{width:8px;height:8px;border-radius:50%}
-        .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-        .action-btn{background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .3s}
-        .action-btn:hover{background:rgba(0,212,255,.1);border-color:var(--accent-cyan);transform:translateY(-2px)}
-        .action-btn i{font-size:24px;color:var(--accent-cyan)}
-        .action-btn span{font-size:12px;font-weight:500}
-        .device-list{display:flex;flex-direction:column;gap:12px}
-        .device-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-tertiary);border-radius:10px;border-left:3px solid var(--accent-green)}
-        .device-item.warning{border-left-color:var(--accent-yellow)}.device-item.danger{border-left-color:var(--accent-red)}
-        .device-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;color:var(--accent-cyan)}
-        .device-info{flex:1}.device-name{font-weight:600;font-size:13px;margin-bottom:2px}.device-ip{font-size:11px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace}
-        .device-status{font-size:10px;padding:4px 10px;border-radius:12px;font-weight:600}
-        .device-status.safe{background:rgba(16,185,129,.1);color:var(--accent-green)}.device-status.warning{background:rgba(245,158,11,.1);color:var(--accent-yellow)}.device-status.danger{background:rgba(239,68,68,.1);color:var(--accent-red)}
-        .timeline{display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto}
-        .timeline-item{display:flex;gap:12px;padding:10px;background:var(--bg-tertiary);border-radius:8px;font-size:12px}
-        .timeline-time{color:var(--accent-purple);font-family:'JetBrains Mono',monospace;min-width:55px}
-        .timeline-content{color:var(--text-secondary)}
-        .timeline-item.success .timeline-content{color:var(--accent-green)}.timeline-item.warning .timeline-content{color:var(--accent-yellow)}.timeline-item.danger .timeline-content{color:var(--accent-red)}.timeline-item.info .timeline-content{color:var(--accent-cyan)}
-        .ai-agent-card{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(0,212,255,.05));border:1px solid rgba(139,92,246,.3)}
-        .ai-status-indicator{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--accent-green)}
-        .ai-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-green);animation:aiPulse 1.5s infinite}
-        @keyframes aiPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}
-        .ai-stats-row{display:flex;justify-content:space-between;background:rgba(0,0,0,.3);padding:12px;border-radius:10px;margin:12px 0}
-        .ai-stat-item{display:flex;flex-direction:column;align-items:center;text-align:center}
-        .ai-stat-value{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent-cyan)}
-        .ai-stat-label{font-size:9px;color:var(--text-secondary);text-transform:uppercase;margin-top:4px}
-        .ai-log-container{max-height:120px;overflow-y:auto;background:rgba(0,0,0,.4);border-radius:8px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:11px}
-        .ai-log-entry{display:flex;gap:8px;padding:4px 0}
-        .ai-log-time{color:var(--accent-purple);min-width:60px}.ai-log-msg{color:var(--text-secondary)}
-        .ai-log-entry.success .ai-log-msg{color:var(--accent-green)}.ai-log-entry.warning .ai-log-msg{color:var(--accent-yellow)}
-        .ai-progress-section{background:rgba(0,0,0,.3);padding:10px;border-radius:8px;margin-top:12px}
-        .ai-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:8px}
-        .ai-progress-bar-container{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
-        .ai-progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-purple),var(--accent-cyan));border-radius:3px;transition:width .3s}
-        .ai-toggle-section{display:flex;align-items:center;justify-content:center;margin-top:12px}
-        .ai-toggle-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12px;color:var(--text-secondary)}
-        .ai-toggle-label input{display:none}
-        .ai-toggle-switch{width:40px;height:20px;background:rgba(255,255,255,.1);border-radius:10px;position:relative;transition:all .3s}
-        .ai-toggle-switch::before{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--text-secondary);border-radius:50%;transition:all .3s}
-        .ai-toggle-label input:checked+.ai-toggle-switch{background:var(--accent-purple)}
-        .ai-toggle-label input:checked+.ai-toggle-switch::before{left:22px;background:#fff}
-        .ai-resolved-card{background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(0,212,255,.05));border:1px solid rgba(16,185,129,.3)}
-        .ai-resolved-content{display:flex;flex-direction:column;gap:12px}
-        .ai-resolved-summary{display:flex;justify-content:space-between;background:rgba(0,0,0,.3);padding:12px;border-radius:10px}
-        .ai-resolved-stat{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1}
-        .ai-resolved-icon{font-size:20px;margin-bottom:4px}
-        .ai-resolved-value{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent-green)}
-        .ai-resolved-label{font-size:9px;color:var(--text-secondary);text-transform:uppercase;margin-top:4px}
-        .ai-resolved-list-header{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-secondary);padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1)}
-        .ai-resolved-refresh{background:rgba(0,212,255,.2);border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px;transition:all .3s}
-        .ai-resolved-refresh:hover{background:var(--accent-cyan);color:var(--bg-primary)}
-        .ai-resolved-list{max-height:200px;overflow-y:auto}
-        .ai-resolved-empty{display:flex;flex-direction:column;align-items:center;padding:20px;color:var(--text-secondary);font-size:12px;gap:8px}
-        .ai-resolved-item{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent-green);animation:resolvedSlide .3s}
-        @keyframes resolvedSlide{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-        .ai-resolved-item.warning{border-left-color:var(--accent-yellow)}
-        .ai-resolved-icon-small{font-size:16px;min-width:24px}.ai-resolved-details{flex:1}
-        .ai-resolved-action{font-size:12px;font-weight:600;margin-bottom:3px}
-        .ai-resolved-meta{font-size:10px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace}
-        .ai-resolved-time{font-size:10px;color:var(--accent-purple);font-family:'JetBrains Mono',monospace}
-        .ai-badge{background:var(--accent-green);color:var(--bg-primary)}
-        .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.8);backdrop-filter:blur(5px)}
-        .modal-content{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:16px;padding:24px;max-width:500px;margin:100px auto;animation:modalSlide .3s}
-        @keyframes modalSlide{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-        .modal-title{font-size:18px;font-weight:600}
-        .modal-close{background:none;border:none;color:var(--text-secondary);font-size:20px;cursor:pointer}
-        .form-group{margin-bottom:16px}
-        .form-label{display:block;font-size:12px;color:var(--text-secondary);margin-bottom:8px}
-        .form-input,.form-select{width:100%;padding:12px;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px}
-        .form-input:focus,.form-select:focus{outline:none;border-color:var(--accent-cyan)}
-        .btn{padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;transition:all .3s;border:none}
-        .btn-primary{background:var(--accent-cyan);color:var(--bg-primary)}.btn-primary:hover{background:#00b8e6}
-        .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
-        .toast-container{position:fixed;bottom:30px;right:30px;z-index:2000;display:flex;flex-direction:column;gap:10px}
-        .toast{padding:14px 20px;border-radius:10px;background:var(--bg-secondary);border:1px solid var(--border-color);display:flex;align-items:center;gap:12px;animation:toastSlide .3s;min-width:300px}
-        @keyframes toastSlide{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
-        .toast.success{border-left:4px solid var(--accent-green)}.toast.warning{border-left:4px solid var(--accent-yellow)}.toast.danger{border-left:4px solid var(--accent-red)}.toast.info{border-left:4px solid var(--accent-cyan)}
-        .blocked-table{width:100%;border-collapse:collapse;margin-top:16px}
-        .blocked-table th,.blocked-table td{padding:10px;text-align:left;border-bottom:1px solid var(--border-color);font-size:12px}
-        .blocked-table th{color:var(--text-secondary);font-weight:600;text-transform:uppercase}
-        .unblock-btn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--accent-red);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;transition:all .3s}
-        .unblock-btn:hover{background:var(--accent-red);color:#fff}
-        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg-tertiary)}::-webkit-scrollbar-thumb{background:var(--accent-cyan);border-radius:3px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #0d1424;
+            --bg-card: rgba(13, 20, 36, 0.8);
+            --accent-cyan: #00d4ff;
+            --accent-cyan-dim: rgba(0, 212, 255, 0.3);
+            --accent-green: #00ff88;
+            --accent-yellow: #ffcc00;
+            --accent-red: #ff3366;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a0;
+            --border-color: rgba(0, 212, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background Grid */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(180deg, rgba(10, 14, 23, 0.95) 0%, rgba(10, 14, 23, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .live-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--accent-cyan);
+        }
+
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .user-profile svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent-cyan);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0.5;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .card-icon.cyan { background: rgba(0, 212, 255, 0.15); }
+        .card-icon.cyan svg { fill: var(--accent-cyan); }
+        .card-icon.red { background: rgba(255, 51, 102, 0.15); }
+        .card-icon.red svg { fill: var(--accent-red); }
+        .card-icon.green { background: rgba(0, 255, 136, 0.15); }
+        .card-icon.green svg { fill: var(--accent-green); }
+        .card-icon.purple { background: rgba(168, 85, 247, 0.15); }
+        .card-icon.purple svg { fill: var(--accent-purple); }
+
+        /* Stats Cards */
+        .stats-row {
+            grid-column: span 12;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .stat-icon.threat {
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(255, 51, 102, 0.05));
+        }
+        .stat-icon.threat svg { fill: var(--accent-red); }
+
+        .stat-icon.attack {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.2), rgba(255, 204, 0, 0.05));
+        }
+        .stat-icon.attack svg { fill: var(--accent-yellow); }
+
+        .stat-icon.blocked {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.05));
+        }
+        .stat-icon.blocked svg { fill: var(--accent-green); }
+
+        .stat-icon.uptime {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+        }
+        .stat-icon.uptime svg { fill: var(--accent-cyan); }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-value.red { color: var(--accent-red); }
+        .stat-value.yellow { color: var(--accent-yellow); }
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.cyan { color: var(--accent-cyan); }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-trend.up { color: var(--accent-green); }
+        .stat-trend.down { color: var(--accent-red); }
+
+        .stat-trend svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* Map Section */
+        .map-section {
+            grid-column: span 8;
+        }
+
+        .world-map {
+            height: 300px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .map-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .threat-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .threat-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.3;
+            animation: threat-pulse 2s infinite;
+        }
+
+        .threat-dot.high { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
+        .threat-dot.medium { background: var(--accent-yellow); box-shadow: 0 0 15px var(--accent-yellow); }
+        .threat-dot.low { background: var(--accent-cyan); box-shadow: 0 0 15px var(--accent-cyan); }
+
+        @keyframes threat-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        .map-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.high { background: var(--accent-red); }
+        .legend-dot.medium { background: var(--accent-yellow); }
+        .legend-dot.low { background: var(--accent-cyan); }
+
+        /* System Status */
+        .system-status {
+            grid-column: span 4;
+        }
+
+        .status-list {
+            margin-top: 10px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        .status-led.online { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .status-led.warning { background: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow); }
+        .status-led.offline { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); animation: none; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.online {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .status-badge.warning {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .status-badge.maintenance {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+        }
+
+        /* Traffic Chart */
+        .traffic-section {
+            grid-column: span 8;
+        }
+
+        .traffic-chart {
+            height: 250px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            padding: 20px 0;
+        }
+
+        .traffic-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--accent-cyan), rgba(0, 212, 255, 0.3));
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 20px;
+        }
+
+        .traffic-bar:hover {
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-cyan));
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .traffic-bar::before {
+            content: attr(data-value);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--accent-cyan);
+            opacity: 0;
+            transition: all 0.3s ease;
+            padding-bottom: 5px;
+        }
+
+        .traffic-bar:hover::before {
+            opacity: 1;
+        }
+
+        .traffic-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .traffic-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .traffic-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .traffic-stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .traffic-stat-icon.inbound {
+            background: rgba(0, 212, 255, 0.15);
+        }
+
+        .traffic-stat-icon.outbound {
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .traffic-stat-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .traffic-stat-icon.inbound svg { fill: var(--accent-cyan); }
+        .traffic-stat-icon.outbound svg { fill: var(--accent-purple); }
+
+        .traffic-stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .traffic-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .traffic-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            grid-column: span 4;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .action-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .action-icon.block {
+            background: rgba(255, 51, 102, 0.15);
+        }
+        .action-icon.block svg { fill: var(--accent-red); }
+
+        .action-icon.scan {
+            background: rgba(0, 255, 136, 0.15);
+        }
+        .action-icon.scan svg { fill: var(--accent-green); }
+
+        .action-icon.backup {
+            background: rgba(0, 212, 255, 0.15);
+        }
+        .action-icon.backup svg { fill: var(--accent-cyan); }
+
+        .action-icon.settings {
+            background: rgba(168, 85, 247, 0.15);
+        }
+        .action-icon.settings svg { fill: var(--accent-purple); }
+
+        .action-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Recent Attacks */
+        .attacks-section {
+            grid-column: span 6;
+        }
+
+        .attack-list {
+            max-height: 320px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .attack-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .attack-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 2px;
+        }
+
+        .attack-list::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+
+        .attack-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .attack-item:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .attack-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .attack-severity {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .attack-severity.high {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--accent-red);
+        }
+
+        .attack-severity.medium {
+            background: rgba(255, 204, 0, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        .attack-severity.low {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+        }
+
+        .attack-type {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .attack-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .attack-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Activity Timeline */
+        .activity-section {
+            grid-column: span 6;
+        }
+
+        .activity-timeline {
+            margin-top: 10px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .timeline-dot.info { background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+        .timeline-dot.success { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .timeline-dot.warning { background: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow); }
+        .timeline-dot.danger { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .timeline-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Device Inventory */
+        .devices-section {
+            grid-column: span 12;
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .device-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .device-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .device-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .device-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .device-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--accent-cyan);
+        }
+
+        .device-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .device-status.online { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .device-status.warning { background: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
+        .device-status.offline { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
+
+        .device-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .device-ip {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .map-section, .system-status {
+                grid-column: span 12;
+            }
+
+            .traffic-section, .quick-actions {
+                grid-column: span 12;
+            }
+
+            .attacks-section, .activity-section {
+                grid-column: span 12;
+            }
+
+            .device-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 15px;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .device-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="bg-grid"></div>
+
+    <!-- Header -->
     <header class="header">
-        <div class="logo"><i class="fas fa-shield-halved"></i><span>CyberShield</span></div>
-        <div class="header-stats">
-            <div class="header-stat"><div class="header-stat-value" id="headerThreats">0</div><div class="header-stat-label">Ancaman Aktif</div></div>
-            <div class="header-stat"><div class="header-stat-value" id="headerBlocked">0</div><div class="header-stat-label">Total Diblokir</div></div>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            </div>
+            <span class="logo-text">CyberShield</span>
         </div>
-        <div class="live-indicator"><div class="live-dot"></div><span style="font-size:12px;font-weight:600">LIVE</span></div>
+
+        <div class="header-center">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">Ancaman</a>
+            <a href="#" class="nav-item">Jaringan</a>
+            <a href="#" class="nav-item">Perangkat</a>
+            <a href="#" class="nav-item">Laporan</a>
+            <a href="#" class="nav-item">Pengaturan</a>
+        </div>
+
+        <div class="header-right">
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span class="live-text">LIVE</span>
+            </div>
+            <div class="clock" id="clock">00:00:00</div>
+            <div class="user-profile">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+        </div>
     </header>
-    <div class="container">
-        <div class="sidebar">
-            <div class="card ai-agent-card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-robot"></i> AI Security Agent</div>
-                    <div class="ai-status-indicator"><span class="ai-dot"></span><span>Aktif</span></div>
-                </div>
-                <div class="ai-stats-row">
-                    <div class="ai-stat-item"><span class="ai-stat-value" id="aiThreatsBlocked">0</span><span class="ai-stat-label">Diblokir AI</span></div>
-                    <div class="ai-stat-item"><span class="ai-stat-value">98%</span><span class="ai-stat-label">Akurasi</span></div>
-                    <div class="ai-stat-item"><span class="ai-stat-value" id="aiResponses">0</span><span class="ai-stat-label">Respons</span></div>
-                </div>
-                <div class="ai-log-container" id="aiLogContainer"><div class="ai-log-entry"><span class="ai-log-time">--:--:--</span><span class="ai-log-msg">AI initializing...</span></div></div>
-                <div class="ai-progress-section"><div class="ai-progress-label"><span>Progress</span><span id="aiProgressPercent">0%</span></div><div class="ai-progress-bar-container"><div class="ai-progress-bar-fill" id="aiProgressBar"></div></div></div>
-                <div class="ai-toggle-section"><label class="ai-toggle-label"><input type="checkbox" id="aiAutoRespond" checked><span class="ai-toggle-switch"></span>Auto-Respond</label></div>
-            </div>
-            <div class="card ai-resolved-card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-clipboard-check"></i> AI Resolved</div><span class="card-badge ai-badge" id="aiResolvedCount">0</span></div>
-                <div class="ai-resolved-content">
-                    <div class="ai-resolved-summary">
-                        <div class="ai-resolved-stat"><span class="ai-resolved-icon">🛡️</span><span class="ai-resolved-value" id="aiBlockedCount">0</span><span class="ai-resolved-label">Diblokir</span></div>
-                        <div class="ai-resolved-stat"><span class="ai-resolved-icon">⚠️</span><span class="ai-resolved-value" id="aiMitigatedCount">0</span><span class="ai-resolved-label">Dimitigasi</span></div>
-                        <div class="ai-resolved-stat"><span class="ai-resolved-icon">🔒</span><span class="ai-resolved-value" id="aiQuarantinedCount">0</span><span class="ai-resolved-label">Quarantined</span></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-grid">
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon threat">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                     </div>
-                    <div class="ai-resolved-list-header"><span>History</span><button class="ai-resolved-refresh" onclick="refreshAIReport()">🔄</button></div>
-                    <div class="ai-resolved-list" id="aiResolvedList"><div class="ai-resolved-empty"><span>🤖</span><span>Waiting AI...</span></div></div>
+                    <div class="stat-value red" id="threatCount">847</div>
+                    <div class="stat-label">Ancaman Terdeteksi</div>
+                    <div class="stat-trend up">
+                        <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                        +12% dari kemarin
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon attack">
+                        <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <div class="stat-value yellow" id="attackCount">23</div>
+                    <div class="stat-label">Serangan Aktif</div>
+                    <div class="stat-trend down">
+                        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        -8% dari kemarin
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blocked">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    </div>
+                    <div class="stat-value green" id="blockedCount">12,847</div>
+                    <div class="stat-label">Terblokir</div>
+                    <div class="stat-trend up">
+                        <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                        +24% dari kemarin
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon uptime">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    </div>
+                    <div class="stat-value cyan">99.7%</div>
+                    <div class="stat-label">Uptime Sistem</div>
+                    <div class="stat-trend up">
+                        <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                        Stabil
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="card map-section">
+                <div class="card-header">
+                    <span class="card-title">Peta Ancaman Global</span>
+                    <div class="card-icon cyan">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    </div>
+                </div>
+                <div class="world-map">
+                    <div class="map-grid"></div>
+                    <div class="threat-dot high" style="left: 20%; top: 30%;" title="DDoS Attack - Russia"></div>
+                    <div class="threat-dot high" style="left: 55%; top: 35%;" title="Brute Force - China"></div>
+                    <div class="threat-dot medium" style="left: 25%; top: 50%;" title="Port Scan - Brazil"></div>
+                    <div class="threat-dot high" style="left: 48%; top: 25%;" title="Malware - North Korea"></div>
+                    <div class="threat-dot low" style="left: 75%; top: 45%;" title="Suspicious - Germany"></div>
+                    <div class="threat-dot medium" style="left: 15%; top: 40%;" title="SQL Injection - USA"></div>
+                    <div class="threat-dot low" style="left: 85%; top: 55%;" title="Phishing - Japan"></div>
+                    <div class="threat-dot high" style="left: 60%; top: 55%;" title="Ransomware - India"></div>
+                    <div class="threat-dot medium" style="left: 35%; top: 60%;" title="XSS Attack - Indonesia"></div>
+                    <div class="threat-dot low" style="left: 70%; top: 30%;" title="Probe - France"></div>
+                </div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot high"></div>
+                        <span>High Risk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot medium"></div>
+                        <span>Medium Risk</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot low"></div>
+                        <span>Low Risk</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="card system-status">
+                <div class="card-header">
+                    <span class="card-title">Status Sistem</span>
+                    <div class="card-icon green">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                    </div>
+                </div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <div class="status-info">
+                            <div class="status-led online"></div>
+                            <div>
+                                <div class="status-name">Firewall</div>
+                                <div class="status-meta">192.168.1.1</div>
+                            </div>
+                        </div>
+                        <span class="status-badge online">Online</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-info">
+                            <div class="status-led online"></div>
+                            <div>
+                                <div class="status-name">IDS/IPS</div>
+                                <div class="status-meta">192.168.1.2</div>
+                            </div>
+                        </div>
+                        <span class="status-badge online">Online</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-info">
+                            <div class="status-led warning"></div>
+                            <div>
+                                <div class="status-name">Anti-DDoS</div>
+                                <div class="status-meta">192.168.1.3</div>
+                            </div>
+                        </div>
+                        <span class="status-badge warning">Warning</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-info">
+                            <div class="status-led online"></div>
+                            <div>
+                                <div class="status-name">VPN Gateway</div>
+                                <div class="status-meta">192.168.1.4</div>
+                            </div>
+                        </div>
+                        <span class="status-badge online">Online</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-info">
+                            <div class="status-led online"></div>
+                            <div>
+                                <div class="status-name">Load Balancer</div>
+                                <div class="status-meta">192.168.1.5</div>
+                            </div>
+                        </div>
+                        <span class="status-badge online">Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Traffic Chart -->
+            <div class="card traffic-section">
+                <div class="card-header">
+                    <span class="card-title">Analisis Traffic</span>
+                    <div class="card-icon purple">
+                        <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                    </div>
+                </div>
+                <div class="traffic-chart" id="trafficChart">
+                    <div class="traffic-bar" style="height: 45%;" data-value="45%"></div>
+                    <div class="traffic-bar" style="height: 60%;" data-value="60%"></div>
+                    <div class="traffic-bar" style="height: 35%;" data-value="35%"></div>
+                    <div class="traffic-bar" style="height: 80%;" data-value="80%"></div>
+                    <div class="traffic-bar" style="height: 55%;" data-value="55%"></div>
+                    <div class="traffic-bar" style="height: 70%;" data-value="70%"></div>
+                    <div class="traffic-bar" style="height: 45%;" data-value="45%"></div>
+                    <div class="traffic-bar" style="height: 90%;" data-value="90%"></div>
+                    <div class="traffic-bar" style="height: 65%;" data-value="65%"></div>
+                    <div class="traffic-bar" style="height: 50%;" data-value="50%"></div>
+                    <div class="traffic-bar" style="height: 75%;" data-value="75%"></div>
+                    <div class="traffic-bar" style="height: 85%;" data-value="85%"></div>
+                    <div class="traffic-bar" style="height: 60%;" data-value="60%"></div>
+                    <div class="traffic-bar" style="height: 40%;" data-value="40%"></div>
+                    <div class="traffic-bar" style="height: 55%;" data-value="55%"></div>
+                    <div class="traffic-bar" style="height: 70%;" data-value="70%"></div>
+                    <div class="traffic-bar" style="height: 95%;" data-value="95%"></div>
+                    <div class="traffic-bar" style="height: 80%;" data-value="80%"></div>
+                    <div class="traffic-bar" style="height: 65%;" data-value="65%"></div>
+                    <div class="traffic-bar" style="height: 50%;" data-value="50%"></div>
+                    <div class="traffic-bar" style="height: 45%;" data-value="45%"></div>
+                    <div class="traffic-bar" style="height: 60%;" data-value="60%"></div>
+                    <div class="traffic-bar" style="height: 75%;" data-value="75%"></div>
+                    <div class="traffic-bar" style="height: 55%;" data-value="55%"></div>
+                </div>
+                <div class="traffic-labels">
+                    <span>00:00</span>
+                    <span>03:00</span>
+                    <span>06:00</span>
+                    <span>09:00</span>
+                    <span>12:00</span>
+                    <span>15:00</span>
+                    <span>18:00</span>
+                    <span>21:00</span>
+                    <span>24:00</span>
+                </div>
+                <div class="traffic-stats">
+                    <div class="traffic-stat">
+                        <div class="traffic-stat-icon inbound">
+                            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        </div>
+                        <div class="traffic-stat-info">
+                            <span class="traffic-stat-value">2.4 GB/s</span>
+                            <span class="traffic-stat-label">Inbound</span>
+                        </div>
+                    </div>
+                    <div class="traffic-stat">
+                        <div class="traffic-stat-icon outbound">
+                            <svg viewBox="0 0 24 24"><path d="M5 11h14v2H5z"/></svg>
+                        </div>
+                        <div class="traffic-stat-info">
+                            <span class="traffic-stat-value">1.8 GB/s</span>
+                            <span class="traffic-stat-label">Outbound</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card quick-actions">
+                <div class="card-header">
+                    <span class="card-title">Aksi Cepat</span>
+                    <div class="card-icon cyan">
+                        <svg viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/></svg>
+                    </div>
+                </div>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="showAlert('Memblokir IP...')">
+                        <div class="action-icon block">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
+                        </div>
+                        <span class="action-label">Block IP</span>
+                    </button>
+                    <button class="action-btn" onclick="showAlert('Memulai scan virus...')">
+                        <div class="action-icon scan">
+                            <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        </div>
+                        <span class="action-label">Scan Virus</span>
+                    </button>
+                    <button class="action-btn" onclick="showAlert('Memulai backup sistem...')">
+                        <div class="action-icon backup">
+                            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        </div>
+                        <span class="action-label">Backup</span>
+                    </button>
+                    <button class="action-btn" onclick="showAlert('Membuka pengaturan...')">
+                        <div class="action-icon settings">
+                            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                        </div>
+                        <span class="action-label">Settings</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Attacks -->
+            <div class="card attacks-section">
+                <div class="card-header">
+                    <span class="card-title">Serangan Terbaru</span>
+                    <div class="card-icon red">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    </div>
+                </div>
+                <div class="attack-list" id="attackList">
+                    <div class="attack-item">
+                        <div class="attack-info">
+                            <span class="attack-severity high">HIGH</span>
+                            <div>
+                                <div class="attack-type">DDoS Attack</div>
+                                <div class="attack-meta">Source: 203.45.167.89</div>
+                            </div>
+                        </div>
+                        <span class="attack-time">2 menit lalu</span>
+                    </div>
+                    <div class="attack-item">
+                        <div class="attack-info">
+                            <span class="attack-severity high">HIGH</span>
+                            <div>
+                                <div class="attack-type">SQL Injection</div>
+                                <div class="attack-meta">Source: 182.75.234.12</div>
+                            </div>
+                        </div>
+                        <span class="attack-time">5 menit lalu</span>
+                    </div>
+                    <div class="attack-item">
+                        <div class="attack-info">
+                            <span class="attack-severity medium">MED</span>
+                            <div>
+                                <div class="attack-type">Brute Force</div>
+                                <div class="attack-meta">Source: 91.234.56.78</div>
+                            </div>
+                        </div>
+                        <span class="attack-time">8 menit lalu</span>
+                    </div>
+                    <div class="attack-item">
+                        <div class="attack-info">
+                            <span class="attack-severity medium">MED</span>
+                            <div>
+                                <div class="attack-type">Port Scan</div>
+                                <div class="attack-meta">Source: 115.85.92.34</div>
+                            </div>
+                        </div>
+                        <span class="attack-time">12 menit lalu</span>
+                    </div>
+                    <div class="attack-item">
+                        <div class="attack-info">
+                            <span class="attack-severity low">LOW</span>
+                            <div>
+                                <div class="attack-type">XSS Attack</div>
+                                <div class="attack-meta">Source: 58.185.124.56</div>
+                            </div>
+                        </div>
+                        <span class="attack-time">15 menit lalu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div class="card activity-section">
+                <div class="card-header">
+                    <span class="card-title">Activity Log</span>
+                    <div class="card-icon cyan">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    </div>
+                </div>
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot danger"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Serangan DDoS terblokir dari IP 203.45.167.89</div>
+                            <div class="timeline-time">2 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot warning"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Login gagal terdeteksi - Server Web-01</div>
+                            <div class="timeline-time">8 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot success"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Backup sistem selesai - Database Server</div>
+                            <div class="timeline-time">15 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot info"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Update keamanan berhasil diinstal</div>
+                            <div class="timeline-time">30 menit yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot success"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Firewall rule baru ditambahkan</div>
+                            <div class="timeline-time">1 jam yang lalu</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Inventory -->
+            <div class="card devices-section">
+                <div class="card-header">
+                    <span class="card-title">Inventaris Perangkat</span>
+                    <div class="card-icon purple">
+                        <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                    </div>
+                </div>
+                <div class="device-grid">
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Core Router</div>
+                        <div class="device-ip">192.168.1.1</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Main Firewall</div>
+                        <div class="device-ip">192.168.1.2</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H4V5h16v14z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Web Server</div>
+                        <div class="device-ip">192.168.1.10</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">DB Server</div>
+                        <div class="device-ip">192.168.1.11</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-4h2v2h-2zm1.61-9.96c-2.06-.3-3.88.97-4.43 2.79-.18.58.26 1.17.87 1.17h.2c.41 0 .74-.29.88-.67.32-.89 1.27-1.5 2.3-1.28.95.2 1.65 1.13 1.57 2.1-.1 1.34-1.62 1.63-2.45 2.52 0 .01-.01.01-.01.02-.01.02-.02.03-.03.05-.09.15-.18.32-.25.5-.01.03-.03.05-.04.08-.01.02-.01.04-.02.07-.12.34-.2.75-.2 1.25h2c0-.42.11-.77.28-1.07.02-.03.03-.06.05-.09.08-.14.18-.27.28-.39.01-.01.02-.03.03-.04.1-.12.21-.23.33-.34.96-.91 2.26-1.65 1.99-3.56-.24-1.74-1.61-3.21-3.35-3.47z"/></svg>
+                            </div>
+                            <div class="device-status warning"></div>
+                        </div>
+                        <div class="device-name">Mail Server</div>
+                        <div class="device-ip">192.168.1.12</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Switch-01</div>
+                        <div class="device-ip">192.168.1.20</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Switch-02</div>
+                        <div class="device-ip">192.168.1.21</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">AP-Office</div>
+                        <div class="device-ip">192.168.2.1</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">AP-Warehouse</div>
+                        <div class="device-ip">192.168.2.2</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93z"/></svg>
+                            </div>
+                            <div class="device-status offline"></div>
+                        </div>
+                        <div class="device-name">AP-Guest</div>
+                        <div class="device-ip">192.168.2.3</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">NAS Storage</div>
+                        <div class="device-ip">192.168.1.50</div>
+                    </div>
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                            </div>
+                            <div class="device-status online"></div>
+                        </div>
+                        <div class="device-name">Backup FW</div>
+                        <div class="device-ip">192.168.1.3</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="main-content">
-            <div class="stat-cards">
-                <div class="stat-card cyan"><div class="stat-icon"><i class="fas fa-shield-halved"></i></div><div class="stat-value" id="activeThreats">0</div><div class="stat-label">Ancaman Aktif</div></div>
-                <div class="stat-card red"><div class="stat-icon"><i class="fas fa-skull-crossbones"></i></div><div class="stat-value" id="criticalAlerts">0</div><div class="stat-label">Alert Kritis</div></div>
-                <div class="stat-card purple"><div class="stat-icon"><i class="fas fa-laptop"></i></div><div class="stat-value" id="protectedDevices">0</div><div class="stat-label">Perangkat</div></div>
-                <div class="stat-card green"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value">99.9%</div><div class="stat-label">Uptime</div></div>
-            </div>
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-globe"></i> Global Threat Map</div></div>
-                <div class="threat-map" id="threatMap">
-                    <svg class="world-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice"><rect width="1000" height="500" fill="#1a2235"/><path d="M150,120 L220,80 L280,90 L320,120 L350,180 L340,220 L300,250 L250,280 L200,270 L150,230 L120,180 L130,140 Z" fill="#2a3a5a" stroke="#3a4a6a"/><path d="M250,290 L290,280 L310,320 L300,380 L270,420 L240,400 L230,350 L240,310 Z" fill="#2a3a5a" stroke="#3a4a6a"/><path d="M480,80 L540,70 L570,90 L580,130 L560,160 L520,170 L480,150 L460,120 L470,90 Z" fill="#2a3a5a" stroke="#3a4a6a"/><path d="M480,180 L540,170 L580,200 L600,280 L580,360 L520,380 L470,350 L450,280 L460,220 Z" fill="#2a3a5a" stroke="#3a4a6a"/><path d="M580,60 L680,50 L780,70 L850,100 L880,150 L860,200 L800,220 L720,210 L650,180 L600,140 L580,100 Z" fill="#2a3a5a" stroke="#3a4a6a"/><path d="M780,320 L840,310 L880,340 L880,390 L840,410 L790,400 L770,370 L775,340 Z" fill="#2a3a5a" stroke="#3a4a6a"/></svg>
-                    <div class="map-legend"><div class="legend-item"><div class="legend-dot" style="background:var(--accent-red)"></div><span>High</span></div><div class="legend-item"><div class="legend-dot" style="background:var(--accent-yellow)"></div><span>Medium</span></div><div class="legend-item"><div class="legend-dot" style="background:var(--accent-green)"></div><span>Low</span></div></div>
-                    <div class="map-stats"><div class="map-stat"><div class="map-stat-value" id="mapActiveThreats" style="color:var(--accent-red)">0</div><div class="map-stat-label">Aktif</div></div><div class="map-stat"><div class="map-stat-value" id="mapBlockedThreats" style="color:var(--accent-green)">0</div><div class="map-stat-label">Diblokir</div></div></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-bolt"></i> Quick Actions</div></div>
-                <div class="quick-actions">
-                    <div class="action-btn" onclick="openModal('blockIpModal')"><i class="fas fa-ban"></i><span>Block IP</span></div>
-                    <div class="action-btn" onclick="openModal('virusScanModal')"><i class="fas fa-virus"></i><span>Scan Virus</span></div>
-                    <div class="action-btn" onclick="openModal('backupModal')"><i class="fas fa-cloud"></i><span>Backup</span></div>
-                    <div class="action-btn" onclick="openModal('settingsModal')"><i class="fas fa-cog"></i><span>Settings</span></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-server"></i> Devices</div><span class="card-badge" style="background:var(--accent-green);color:var(--bg-primary)">4 Online</span></div>
-                <div class="device-list">
-                    <div class="device-item"><div class="device-icon"><i class="fas fa-server"></i></div><div class="device-info"><div class="device-name">Main Server</div><div class="device-ip">192.168.1.1</div></div><span class="device-status safe">Aman</span></div>
-                    <div class="device-item"><div class="device-icon"><i class="fas fa-desktop"></i></div><div class="device-info"><div class="device-name">Workstation-01</div><div class="device-ip">192.168.1.10</div></div><span class="device-status safe">Aman</span></div>
-                    <div class="device-item warning"><div class="device-icon"><i class="fas fa-laptop"></i></div><div class="device-info"><div class="device-name">Laptop-Admin</div><div class="device-ip">192.168.1.25</div></div><span class="device-status warning">Warning</span></div>
-                    <div class="device-item danger"><div class="device-icon"><i class="fas fa-mobile-alt"></i></div><div class="device-info"><div class="device-name">Mobile-Dev</div><div class="device-ip">192.168.1.50</div></div><span class="device-status danger">Terancam</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="right-panel">
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-exclamation-triangle"></i> Alerts</div><span class="card-badge" style="background:var(--accent-red)">3 New</span></div>
-                <div class="timeline" id="alertTimeline">
-                    <div class="timeline-item danger"><span class="timeline-time">21:45</span><span class="timeline-content">DDoS detected from 185.220.x</span></div>
-                    <div class="timeline-item warning"><span class="timeline-time">21:32</span><span class="timeline-content">Failed SSH login attempt</span></div>
-                    <div class="timeline-item info"><span class="timeline-time">21:15</span><span class="timeline-content">Firewall rule updated</span></div>
-                    <div class="timeline-item success"><span class="timeline-time">20:58</span><span class="timeline-content">Backup completed</span></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-history"></i> Timeline</div></div>
-                <div class="timeline" id="activityTimeline"></div>
-            </div>
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-ban"></i> Blocked IPs</div><span class="card-badge" id="blockedCountBadge">0</span></div>
-                <table class="blocked-table"><thead><tr><th>IP</th><th>Alasan</th><th>Aksi</th></tr></thead><tbody id="blockedTableBody"></tbody></table>
-            </div>
-        </div>
-    </div>
-    <div class="modal" id="blockIpModal"><div class="modal-content"><div class="modal-header"><div class="modal-title">Block IP</div><button class="modal-close" onclick="closeModal('blockIpModal')">&times;</button></div>
-        <div class="form-group"><label class="form-label">IP Address</label><input type="text" class="form-input" id="blockIpInput" placeholder="192.168.1.1"></div>
-        <div class="form-group"><label class="form-label">Alasan</label><select class="form-select" id="blockReason"><option value="ddos">DDoS</option><option value="bruteforce">Brute Force</option><option value="malware">Malware</option><option value="suspicious">Suspicious</option></select></div>
-        <div class="form-group"><label class="form-label">Durasi</label><select class="form-select" id="blockDuration"><option value="1h">1 Jam</option><option value="24h" selected>24 Jam</option><option value="7d">7 Hari</option><option value="30d">30 Hari</option><option value="permanent">Permanen</option></select></div>
-        <div style="display:flex;gap:10px"><button class="btn btn-primary" style="flex:1" onclick="blockIP()">Block</button><button class="btn btn-secondary" onclick="closeModal('blockIpModal')">Cancel</button></div>
-    </div></div>
-    <div class="modal" id="virusScanModal"><div class="modal-content"><div class="modal-header"><div class="modal-title">Virus Scanner</div><button class="modal-close" onclick="closeModal('virusScanModal')">&times;</button></div>
-        <div style="text-align:center;padding:30px 0"><i class="fas fa-shield-virus" style="font-size:60px;color:var(--accent-cyan);margin-bottom:20px"></i><p style="color:var(--text-secondary);margin-bottom:20px">Start virus scan</p><button class="btn btn-primary" onclick="startVirusScan()"><i class="fas fa-play"></i> Start</button></div>
-        <div id="scanProgress" style="display:none"><div style="background:var(--bg-tertiary);height:8px;border-radius:4px;overflow:hidden"><div id="scanProgressBar" style="background:var(--accent-cyan);height:100%;width:0%;transition:width .3s"></div></div><p style="text-align:center;margin-top:10px;font-size:12px;color:var(--text-secondary)">Scanning... <span id="scanPercent">0</span>%</p></div>
-    </div></div>
-    <div class="modal" id="backupModal"><div class="modal-content"><div class="modal-header"><div class="modal-title">Backup</div><button class="modal-close" onclick="closeModal('backupModal')">&times;</button></div>
-        <div style="text-align:center;padding:30px 0"><i class="fas fa-cloud-upload-alt" style="font-size:60px;color:var(--accent-purple);margin-bottom:20px"></i><p style="color:var(--text-secondary);margin-bottom:20px">Backup system data</p><button class="btn btn-primary" onclick="startBackup()"><i class="fas fa-download"></i> Start</button></div>
-    </div></div>
-    <div class="modal" id="settingsModal"><div class="modal-content"><div class="modal-header"><div class="modal-title">Settings</div><button class="modal-close" onclick="closeModal('settingsModal')">&times;</button></div>
-        <div class="form-group"><label class="form-label">Email Notification</label><select class="form-select"><option>Enabled</option><option>Disabled</option></select></div>
-        <div class="form-group"><label class="form-label">Auto Block</label><select class="form-select"><option>Enabled</option><option>Disabled</option></select></div>
-        <button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="saveSettings()">Save</button>
-    </div></div>
-    <div class="toast-container" id="toastContainer"></div>
+    </main>
+
     <script>
-        let blockedCount=0,activeThreats=[],blockedIPs=[];
-        const threatPool=[{country:'USA',x:180,y:150,severity:'high'},{country:'Russia',x:650,y:100,severity:'high'},{country:'China',x:780,y:140,severity:'high'},{country:'Brazil',x:280,y:320,severity:'medium'},{country:'India',x:700,y:180,severity:'medium'},{country:'Germany',x:510,y:110,severity:'low'},{country:'UK',x:490,y:100,severity:'low'},{country:'Japan',x:850,y:130,severity:'medium'},{country:'Australia',x:840,y:360,severity:'low'},{country:'Nigeria',x:520,y:280,severity:'medium'},{country:'Iran',x:630,y:150,severity:'high'},{country:'North Korea',x:820,y:120,severity:'high'},{country:'Vietnam',x:770,y:200,severity:'medium'},{country:'Indonesia',x:780,y:280,severity:'low'},{country:'France',x:500,y:115,severity:'low'},{country:'Ukraine',x:580,y:110,severity:'high'},{country:'South Korea',x:820,y:150,severity:'medium'},{country:'Turkey',x:570,y:140,severity:'low'},{country:'Egypt',x:560,y:200,severity:'medium'},{country:'Pakistan',x:680,y:170,severity:'medium'}];
-        const attackTypes=['DDoS','Brute Force','SQL Injection','XSS','Malware','Phishing','Port Scan','Ransomware'];
-        function openModal(id){document.getElementById(id).style.display='block'}
-        function closeModal(id){document.getElementById(id).style.display='none'}
-        function showToast(msg,type='info'){const c=document.getElementById('toastContainer'),t=document.createElement('div');t.className='toast '+type;t.innerHTML='<i class="fas fa-'+(type==='success'?'check-circle':type==='warning'?'exclamation-circle':type==='danger'?'times-circle':'info-circle')+'"></i><span>'+msg+'</span>';c.appendChild(t);setTimeout(()=>t.remove(),4000)}
-        function blockIP(){const ip=document.getElementById('blockIpInput').value;if(!ip){showToast('Enter IP!','warning');return}addToBlockedList(ip,document.getElementById('blockReason').value,document.getElementById('blockDuration').value);blockedCount++;updateStats();showToast('IP '+ip+' blocked!','success');closeModal('blockIpModal');document.getElementById('blockIpInput').value=''}
-        function addToBlockedList(ip,reason,duration){blockedIPs.unshift({ip,reason,duration});const tb=document.getElementById('blockedTableBody'),r=document.createElement('tr');r.innerHTML='<td>'+ip+'</td><td>'+reason.toUpperCase()+'</td><td><button class="unblock-btn" onclick="unblockIP(this,\''+ip+'\')">Unblock</button></td>';tb.insertBefore(r,tb.firstChild);document.getElementById('blockedCountBadge').textContent=blockedIPs.length}
-        function unblockIP(btn,ip){btn.closest('tr').remove();blockedIPs=blockedIPs.filter(i=>i.ip!==ip);document.getElementById('blockedCountBadge').textContent=blockedIPs.length;showToast('IP '+ip+' unblocked!','info')}
-        function startVirusScan(){document.getElementById('scanProgress').style.display='block';let p=0;const i=setInterval(()=>{p+=Math.random()*15;if(p>=100){p=100;clearInterval(i);setTimeout(()=>{showToast('Scan complete! No threats.','success');closeModal('virusScanModal');document.getElementById('scanProgress').style.display='none'},500)}document.getElementById('scanProgressBar').style.width=p+'%';document.getElementById('scanPercent').textContent=Math.round(p)},200)}
-        function startBackup(){showToast('Backup started...','info');setTimeout(()=>{showToast('Backup saved!','success');addTimelineEntry('Backup completed','success')},2000);closeModal('backupModal')}
-        function saveSettings(){showToast('Settings saved!','success');closeModal('settingsModal')}
-        function addTimelineEntry(msg,type='info'){const c=document.getElementById('activityTimeline'),i=document.createElement('div');i.className='timeline-item '+type;i.innerHTML='<span class="timeline-time">'+new Date().toLocaleTimeString('id-ID',{hour12:false})+'</span><span class="timeline-content">'+msg+'</span>';c.insertBefore(i,c.firstChild);if(c.children.length>20)c.removeChild(c.lastChild)}
-        function updateStats(){document.getElementById('activeThreats').textContent=activeThreats.length;document.getElementById('mapActiveThreats').textContent=activeThreats.length;document.getElementById('headerThreats').textContent=activeThreats.length;document.getElementById('blockedCountBadge').textContent=blockedIPs.length;document.getElementById('headerBlocked').textContent=blockedCount+blockedIPs.length;document.getElementById('mapBlockedThreats').textContent=blockedCount+blockedIPs.length;document.getElementById('criticalAlerts').textContent=Math.floor(Math.random()*5)+1;document.getElementById('protectedDevices').textContent=Math.floor(Math.random()*20)+10}
-        function generateThreat(){const t={...threatPool[Math.floor(Math.random()*threatPool.length)]};t.id=Date.now();t.targetX=500+(Math.random()-.5)*100;t.targetY=250+(Math.random()-.5)*50;t.attackType=attackTypes[Math.floor(Math.random()*attackTypes.length)];activeThreats.push(t);addThreatToMap(t);updateStats();addTimelineEntry(t.attackType+' from '+t.country,'danger')}
-        function addThreatToMap(threat){const map=document.getElementById('threatMap'),dot=document.createElement('div');dot.className='threat-dot '+threat.severity;dot.style.left=(threat.x/1000*100)+'%';dot.style.top=(threat.y/500*100)+'%';dot.id='threat-'+threat.id;dot.onclick=()=>showToast('⚠️ '+threat.attackType+' - '+threat.country+' ('+threat.severity.toUpperCase()+')','danger');map.appendChild(dot);let p=0;const a=setInterval(()=>{p+=2;if(p>=100){clearInterval(a);dot.remove();activeThreats=activeThreats.filter(t=>t.id!==threat.id);updateStats()}dot.style.left=((threat.x+(threat.targetX-threat.x)*p/100)/1000*100)+'%';dot.style.top=((threat.y+(threat.targetY-threat.y)*p/100)/500*100)+'%'},50)}
-        function init(){addTimelineEntry('Dashboard initialized','info');updateStats();for(let i=0;i<6;i++)setTimeout(()=>generateThreat(),i*500);setInterval(()=>{if(Math.random()>.5)generateThreat()},5000)}
-        let aiThreatsBlocked=0,aiResponses=0,aiAutoRespond=true;
-        const aiActions=[{action:'Analyzing traffic...',type:'info'},{action:'Scanning anomalies...',type:'info'},{action:'Monitoring firewall...',type:'info'},{action:'Checking IDS...',type:'info'},{action:'Validating SSL...',type:'info'}];
-        const aiThreatResponses=[{action:'Blocked suspicious IP',type:'success',block:true},{action:'Mitigated DDoS',type:'success',block:true},{action:'Quarantined endpoint',type:'warning',block:false},{action:'Blocked SQL injection',type:'success',block:true},{action:'Blocked malware',type:'success',block:true},{action:'Blocked brute force',type:'success',block:true},{action:'Blocked phishing',type:'success',block:true},{action:'Isolated system',type:'warning',block:false}];
-        function getTimeString(){return new Date().toLocaleTimeString('id-ID',{hour12:false})}
-        function addAILogEntry(msg,type='info'){const c=document.getElementById('aiLogContainer');if(!c)return;const e=document.createElement('div');e.className='ai-log-entry '+type;e.innerHTML='<span class="ai-log-time">'+getTimeString()+'</span><span class="ai-log-msg">'+msg+'</span>';c.insertBefore(e,c.firstChild);while(c.children.length>8)c.removeChild(c.lastChild)}
-        function updateAIStats(){const be=document.getElementById('aiThreatsBlocked'),re=document.getElementById('aiResponses');if(be)be.textContent=aiThreatsBlocked;if(re)re.textContent=aiResponses}
-        function updateAIProgress(p){const pb=document.getElementById('aiProgressBar'),pp=document.getElementById('aiProgressPercent');if(pb)pb.style.width=p+'%';if(pp)pp.textContent=Math.round(p)+'%'}
-        function runAISecurityAgent(){const ar=document.getElementById('aiAutoRespond');aiAutoRespond=ar?ar.checked:true;let cp=0;const pi=setInterval(()=>{cp+=10;updateAIProgress(cp);if(cp>=100)clearInterval(pi)},600);const ma=aiActions[Math.floor(Math.random()*aiActions.length)];addAILogEntry(ma.action,ma.type);if(Math.random()>.7){const tr=aiThreatResponses[Math.floor(Math.random()*aiThreatResponses.length)];addAILogEntry(tr.action,tr.type);aiResponses++;if(aiAutoRespond&&tr.block){const ip=Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255);addToBlockedList(ip,'ai-auto','24h');blockedCount++;aiThreatsBlocked++;updateStats();addAIResolvedItem({action:tr.action,ip:ip,type:'blocked',severity:'success'})}else if(!tr.block){addAIResolvedItem({action:tr.action,ip:'System',type:'mitigated',severity:'warning'})}showToast('🤖 AI: '+tr.action,tr.type);addTimelineEntry('AI: '+tr.action,tr.type==='success'?'info':'warning')}updateAIStats()}
-        let aiResolvedHistory=[],aiBlockedCount=0,aiMitigatedCount=0,aiQuarantinedCount=0;
-        function addAIResolvedItem(data){const lc=document.getElementById('aiResolvedList');if(!lc)return;const es=lc.querySelector('.ai-resolved-empty');if(es)es.remove();const item=document.createElement('div');item.className='ai-resolved-item '+data.severity;const icon=data.type==='blocked'?'🛡️':data.type==='quarantined'?'🔒':'⚠️';item.innerHTML='<span class="ai-resolved-icon-small">'+icon+'</span><div class="ai-resolved-details"><div class="ai-resolved-action">'+data.action+'</div><div class="ai-resolved-meta">IP: '+data.ip+'</div></div><span class="ai-resolved-time">'+getTimeString()+'</span>';lc.insertBefore(item,lc.firstChild);while(lc.children.length>8)lc.removeChild(lc.lastChild);if(data.type==='blocked'){aiBlockedCount++;document.getElementById('aiBlockedCount').textContent=aiBlockedCount;}else if(data.type==='mitigated'){aiMitigatedCount++;document.getElementById('aiMitigatedCount').textContent=aiMitigatedCount;}document.getElementById('aiResolvedCount').textContent=aiBlockedCount+aiMitigatedCount+aiQuarantinedCount;aiResolvedHistory.unshift({...data,timestamp:new Date().toISOString()})}
-        function refreshAIReport(){const lc=document.getElementById('aiResolvedList');if(!lc)return;lc.innerHTML='';if(aiResolvedHistory.length===0){lc.innerHTML='<div class="ai-resolved-empty"><span>🤖</span><span>Waiting AI...</span></div>'}else{aiResolvedHistory.slice(0,8).forEach(item=>{const d=document.createElement('div');d.className='ai-resolved-item '+item.severity;const icon=item.type==='blocked'?'🛡️':item.type==='quarantined'?'🔒':'⚠️';d.innerHTML='<span class="ai-resolved-icon-small">'+icon+'</span><div class="ai-resolved-details"><div class="ai-resolved-action">'+item.action+'</div><div class="ai-resolved-meta">IP: '+item.ip+'</div></div><span class="ai-resolved-time">'+new Date(item.timestamp).toLocaleTimeString('id-ID',{hour12:false})+'</span>';lc.appendChild(d)})}showToast('🔄 AI Report refreshed','info')}
-        function initAIAgent(){addAILogEntry('🤖 AI Agent started','success');addAILogEntry('Loading intelligence...','info');addAILogEntry('Initializing ML...','info');updateAIProgress(100);setInterval(runAISecurityAgent,6000);setTimeout(runAISecurityAgent,1000)}
-        init();initAIAgent();addTimelineEntry('AI Security Agent active','info');
+        // Update Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Simulate Real-time Data Updates
+        function updateThreatCount() {
+            const threatEl = document.getElementById('threatCount');
+            const attackEl = document.getElementById('attackCount');
+            const blockedEl = document.getElementById('blockedCount');
+
+            let threats = parseInt(threatEl.textContent);
+            let attacks = parseInt(attackEl.textContent);
+            let blocked = parseInt(blockedEl.textContent.replace(',', ''));
+
+            // Random updates
+            threats += Math.floor(Math.random() * 3);
+            attacks = Math.max(10, Math.min(50, attacks + Math.floor(Math.random() * 5) - 2));
+            blocked += Math.floor(Math.random() * 20);
+
+            threatEl.textContent = threats;
+            attackEl.textContent = attacks;
+            blockedEl.textContent = blocked.toLocaleString();
+        }
+
+        setInterval(updateThreatCount, 5000);
+
+        // Add new attack entry periodically
+        const attackTypes = ['DDoS Attack', 'SQL Injection', 'Brute Force', 'Port Scan', 'XSS Attack', 'Malware', 'Phishing', 'Ransomware'];
+        const severities = ['high', 'medium', 'low'];
+        const ips = [
+            '203.45.167.89', '182.75.234.12', '91.234.56.78', '115.85.92.34', '58.185.124.56',
+            '124.217.45.78', '98.142.67.34', '175.139.82.91', '36.74.125.67', '139.195.34.89'
+        ];
+
+        function addNewAttack() {
+            const attackList = document.getElementById('attackList');
+            const attack = attackTypes[Math.floor(Math.random() * attackTypes.length)];
+            const severity = severities[Math.floor(Math.random() * severities.length)];
+            const ip = ips[Math.floor(Math.random() * ips.length)];
+
+            const newItem = document.createElement('div');
+            newItem.className = 'attack-item';
+            newItem.innerHTML = `
+                <div class="attack-info">
+                    <span class="attack-severity ${severity}">${severity.toUpperCase()}</span>
+                    <div>
+                        <div class="attack-type">${attack}</div>
+                        <div class="attack-meta">Source: ${ip}</div>
+                    </div>
+                </div>
+                <span class="attack-time">Baru saja</span>
+            `;
+
+            attackList.insertBefore(newItem, attackList.firstChild);
+
+            // Update old entries
+            const items = attackList.querySelectorAll('.attack-item');
+            items.forEach((item, index) => {
+                const timeEl = item.querySelector('.attack-time');
+                if (index === 0) return;
+                const minutes = index * 3;
+                timeEl.textContent = `${minutes} menit lalu`;
+            });
+
+            // Remove old entries
+            while (attackList.children.length > 5) {
+                attackList.removeChild(attackList.lastChild);
+            }
+        }
+
+        setInterval(addNewAttack, 15000);
+
+        // Animate traffic bars
+        function animateTraffic() {
+            const bars = document.querySelectorAll('.traffic-bar');
+            bars.forEach(bar => {
+                const newHeight = Math.floor(Math.random() * 60) + 30;
+                bar.style.height = newHeight + '%';
+                bar.setAttribute('data-value', newHeight + '%');
+            });
+        }
+
+        setInterval(animateTraffic, 8000);
+
+        // Show alert function
+        function showAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: linear-gradient(135deg, rgba(0, 212, 255, 0.9), rgba(168, 85, 247, 0.9));
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            alertBox.textContent = message;
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => alertBox.remove(), 300);
+            }, 2000);
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Tooltip for threat dots
+        document.querySelectorAll('.threat-dot').forEach(dot => {
+            dot.addEventListener('mouseenter', function() {
+                const title = this.getAttribute('title');
+                if (title) {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'threat-tooltip';
+                    tooltip.textContent = title;
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        bottom: 100%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: rgba(0, 0, 0, 0.9);
+                        color: white;
+                        padding: 8px 12px;
+                        border-radius: 6px;
+                        font-size: 11px;
+                        white-space: nowrap;
+                        z-index: 100;
+                        margin-bottom: 10px;
+                    `;
+                    this.appendChild(tooltip);
+                }
+            });
+
+            dot.addEventListener('mouseleave', function() {
+                const tooltip = this.querySelector('.threat-tooltip');
+                if (tooltip) tooltip.remove();
+            });
+        });
     </script>
 </body>
 </html>
