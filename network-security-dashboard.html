@@ -1499,6 +1499,263 @@
             background: var(--accent-cyan);
             border-radius: 3px;
         }
+
+        /* Card Action Buttons */
+        .card-action-btn {
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            color: var(--accent-cyan);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .card-action-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .card-action-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .card-action-btn.red {
+            background: rgba(255, 51, 102, 0.1);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .card-action-btn.red:hover {
+            background: var(--accent-red);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .card-action-btn.green {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .card-action-btn.green:hover {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .card-action-btn.purple {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .card-action-btn.purple:hover {
+            background: var(--accent-purple);
+            color: white;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .stat-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-action-btn {
+            flex: 1;
+            padding: 10px 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--accent-cyan);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-action-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border-color: var(--accent-cyan);
+        }
+
+        .stat-action-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .stat-action-btn.red {
+            background: rgba(255, 51, 102, 0.1);
+            border-color: rgba(255, 51, 102, 0.3);
+            color: var(--accent-red);
+        }
+
+        .stat-action-btn.red:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .stat-action-btn.green {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--accent-green);
+        }
+
+        .stat-action-btn.green:hover {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .stat-action-btn.yellow {
+            background: rgba(255, 204, 0, 0.1);
+            border-color: rgba(255, 204, 0, 0.3);
+            color: var(--accent-yellow);
+        }
+
+        .stat-action-btn.yellow:hover {
+            background: var(--accent-yellow);
+            color: var(--bg-primary);
+        }
+
+        /* Attack Lines on Map */
+        .attack-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .attack-line {
+            stroke: var(--accent-red);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 10, 5;
+            animation: dash 1s linear infinite;
+            opacity: 0.7;
+        }
+
+        .attack-line.medium {
+            stroke: var(--accent-yellow);
+            opacity: 0.5;
+        }
+
+        .attack-line.low {
+            stroke: var(--accent-cyan);
+            opacity: 0.4;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -15;
+            }
+        }
+
+        .attack-line-glow {
+            stroke: var(--accent-red);
+            stroke-width: 4;
+            fill: none;
+            filter: blur(4px);
+            opacity: 0.3;
+        }
+
+        .attack-line-glow.medium {
+            stroke: var(--accent-yellow);
+        }
+
+        .attack-line-glow.low {
+            stroke: var(--accent-cyan);
+        }
+
+        /* Map center point */
+        .map-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            z-index: 5;
+        }
+
+        .map-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            animation: ping 2s infinite;
+        }
+
+        .map-center::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        @keyframes ping {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Animated data points */
+        .data-point {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            animation: dataPulse 3s infinite;
+        }
+
+        @keyframes dataPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1549,6 +1806,16 @@
                         <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
                         +12% dari kemarin
                     </div>
+                    <div class="stat-card-actions">
+                        <button class="stat-action-btn red" onclick="showAlert('Melihat detail ancaman...')">
+                            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                            Detail
+                        </button>
+                        <button class="stat-action-btn" onclick="showAlert('Export laporan ancaman...')">
+                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Export
+                        </button>
+                    </div>
                 </div>
 
                 <div class="stat-card">
@@ -1560,6 +1827,16 @@
                     <div class="stat-trend down">
                         <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                         -8% dari kemarin
+                    </div>
+                    <div class="stat-card-actions">
+                        <button class="stat-action-btn yellow" onclick="showAlert('Memblokir serangan aktif...')">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
+                            Block
+                        </button>
+                        <button class="stat-action-btn" onclick="showAlert('Analisis serangan...')">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                            Analyze
+                        </button>
                     </div>
                 </div>
 
@@ -1573,6 +1850,16 @@
                         <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
                         +24% dari kemarin
                     </div>
+                    <div class="stat-card-actions">
+                        <button class="stat-action-btn green" onclick="showAlert('Lihat log pemblokiran...')">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Logs
+                        </button>
+                        <button class="stat-action-btn" onclick="showAlert('Export statistik...')">
+                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Report
+                        </button>
+                    </div>
                 </div>
 
                 <div class="stat-card">
@@ -1584,6 +1871,16 @@
                     <div class="stat-trend up">
                         <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
                         Stabil
+                    </div>
+                    <div class="stat-card-actions">
+                        <button class="stat-action-btn" onclick="showAlert('Melihat uptime history...')">
+                            <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                            History
+                        </button>
+                        <button class="stat-action-btn" onclick="showAlert('Mengatur notifikasi...')">
+                            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                            Alert
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1598,16 +1895,76 @@
                 </div>
                 <div class="world-map">
                     <div class="map-grid"></div>
-                    <div class="threat-dot high" style="left: 20%; top: 30%;" title="DDoS Attack - Russia"></div>
-                    <div class="threat-dot high" style="left: 55%; top: 35%;" title="Brute Force - China"></div>
-                    <div class="threat-dot medium" style="left: 25%; top: 50%;" title="Port Scan - Brazil"></div>
-                    <div class="threat-dot high" style="left: 48%; top: 25%;" title="Malware - North Korea"></div>
-                    <div class="threat-dot low" style="left: 75%; top: 45%;" title="Suspicious - Germany"></div>
-                    <div class="threat-dot medium" style="left: 15%; top: 40%;" title="SQL Injection - USA"></div>
-                    <div class="threat-dot low" style="left: 85%; top: 55%;" title="Phishing - Japan"></div>
-                    <div class="threat-dot high" style="left: 60%; top: 55%;" title="Ransomware - India"></div>
-                    <div class="threat-dot medium" style="left: 35%; top: 60%;" title="XSS Attack - Indonesia"></div>
-                    <div class="threat-dot low" style="left: 70%; top: 30%;" title="Probe - France"></div>
+                    <!-- Center point (target) -->
+                    <div class="map-center"></div>
+                    
+                    <!-- Attack Lines SVG -->
+                    <svg class="attack-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <!-- High risk attack lines (red) -->
+                        <line class="attack-line-glow" x1="20" y1="30" x2="50" y2="50" />
+                        <line class="attack-line" x1="20" y1="30" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow" x1="55" y1="35" x2="50" y2="50" />
+                        <line class="attack-line" x1="55" y1="35" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow" x1="48" y1="25" x2="50" y2="50" />
+                        <line class="attack-line" x1="48" y1="25" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow" x1="60" y1="55" x2="50" y2="50" />
+                        <line class="attack-line" x1="60" y1="55" x2="50" y2="50" />
+                        
+                        <!-- Medium risk attack lines (yellow) -->
+                        <line class="attack-line-glow medium" x1="25" y1="50" x2="50" y2="50" />
+                        <line class="attack-line medium" x1="25" y1="50" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow medium" x1="15" y1="40" x2="50" y2="50" />
+                        <line class="attack-line medium" x1="15" y1="40" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow medium" x1="35" y1="60" x2="50" y2="50" />
+                        <line class="attack-line medium" x1="35" y1="60" x2="50" y2="50" />
+                        
+                        <!-- Low risk attack lines (cyan) -->
+                        <line class="attack-line-glow low" x1="75" y1="45" x2="50" y2="50" />
+                        <line class="attack-line low" x1="75" y1="45" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow low" x1="85" y1="55" x2="50" y2="50" />
+                        <line class="attack-line low" x1="85" y1="55" x2="50" y2="50" />
+                        
+                        <line class="attack-line-glow low" x1="70" y1="30" x2="50" y2="50" />
+                        <line class="attack-line low" x1="70" y1="30" x2="50" y2="50" />
+                    </svg>
+                    
+                    <!-- Threat dots -->
+                    <div class="threat-dot high" style="left: 20%; top: 30%;" title="DDoS Attack - Russia">
+                        <div class="data-point" style="animation-delay: 0s;"></div>
+                    </div>
+                    <div class="threat-dot high" style="left: 55%; top: 35%;" title="Brute Force - China">
+                        <div class="data-point" style="animation-delay: 0.3s;"></div>
+                    </div>
+                    <div class="threat-dot medium" style="left: 25%; top: 50%;" title="Port Scan - Brazil">
+                        <div class="data-point" style="animation-delay: 0.6s;"></div>
+                    </div>
+                    <div class="threat-dot high" style="left: 48%; top: 25%;" title="Malware - North Korea">
+                        <div class="data-point" style="animation-delay: 0.9s;"></div>
+                    </div>
+                    <div class="threat-dot low" style="left: 75%; top: 45%;" title="Suspicious - Germany">
+                        <div class="data-point" style="animation-delay: 1.2s;"></div>
+                    </div>
+                    <div class="threat-dot medium" style="left: 15%; top: 40%;" title="SQL Injection - USA">
+                        <div class="data-point" style="animation-delay: 1.5s;"></div>
+                    </div>
+                    <div class="threat-dot low" style="left: 85%; top: 55%;" title="Phishing - Japan">
+                        <div class="data-point" style="animation-delay: 1.8s;"></div>
+                    </div>
+                    <div class="threat-dot high" style="left: 60%; top: 55%;" title="Ransomware - India">
+                        <div class="data-point" style="animation-delay: 2.1s;"></div>
+                    </div>
+                    <div class="threat-dot medium" style="left: 35%; top: 60%;" title="XSS Attack - Indonesia">
+                        <div class="data-point" style="animation-delay: 2.4s;"></div>
+                    </div>
+                    <div class="threat-dot low" style="left: 70%; top: 30%;" title="Probe - France">
+                        <div class="data-point" style="animation-delay: 2.7s;"></div>
+                    </div>
                 </div>
                 <div class="map-legend">
                     <div class="legend-item">
@@ -1685,6 +2042,10 @@
                         <span class="status-badge online">Online</span>
                     </div>
                 </div>
+                <button class="card-action-btn green" onclick="showAlert('Refresh status sistem...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                    Refresh Status
+                </button>
             </div>
 
             <!-- Traffic Chart -->
@@ -1751,6 +2112,16 @@
                             <span class="traffic-stat-label">Outbound</span>
                         </div>
                     </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="card-action-btn" onclick="showAlert('Export traffic report...')">
+                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Export Report
+                    </button>
+                    <button class="card-action-btn purple" onclick="showAlert('Filter traffic...')">
+                        <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                        Filter
+                    </button>
                 </div>
             </div>
 
@@ -1850,6 +2221,10 @@
                         <span class="attack-time">15 menit lalu</span>
                     </div>
                 </div>
+                <button class="card-action-btn red" onclick="showAlert('Lihat semua serangan...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    View All Attacks
+                </button>
             </div>
 
             <!-- Activity Timeline -->
@@ -1897,6 +2272,10 @@
                         </div>
                     </div>
                 </div>
+                <button class="card-action-btn" onclick="showAlert('Lihat semua aktivitas...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                    <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    View All Activity
+                </button>
             </div>
 
             <!-- Device Inventory -->
@@ -2028,6 +2407,16 @@
                         <div class="device-name">Backup FW</div>
                         <div class="device-ip">192.168.1.3</div>
                     </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="card-action-btn purple" onclick="showAlert('Tambah perangkat baru...')">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Add Device
+                    </button>
+                    <button class="card-action-btn" onclick="showAlert('Export device list...')">
+                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Export List
+                    </button>
                 </div>
             </div>
 
