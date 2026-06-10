@@ -22,7 +22,7 @@
         </header>
 
 <!-- Network Topology & Detection Section -->
-        <div class="card fade-in" style="margin-top: 25px;">
+        <div class="card fade-in" style="margin-top: 16px;">
             <div class="card-header">
                 <div class="card-title">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
@@ -45,32 +45,31 @@
             </div>
             
             <!-- Network Info Bar -->
-            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Subnet</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.0/24</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 16px; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="color: var(--text-muted); font-size: 11px;">Subnet:</span>
+                    <span style="color: var(--accent-primary); font-size: 12px; font-weight: 600;">192.168.1.0/24</span>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Gateway</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.1</div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="color: var(--text-muted); font-size: 11px;">Gateway:</span>
+                    <span style="color: var(--accent-primary); font-size: 12px; font-weight: 600;">192.168.1.1</span>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">DHCP Range</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.50-254</div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="color: var(--text-muted); font-size: 11px;">DHCP:</span>
+                    <span style="color: var(--accent-primary); font-size: 12px; font-weight: 600;">50-254</span>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">DNS Server</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">8.8.8.8</div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="color: var(--text-muted); font-size: 11px;">DNS:</span>
+                    <span style="color: var(--accent-primary); font-size: 12px; font-weight: 600;">8.8.8.8</span>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Security Level</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-success);">🛡️ Protected</div>
+                <div style="display: flex; align-items: center; gap: 6px; color: var(--accent-success);">
+                    <span style="font-size: 14px;">🛡️</span>
+                    <span style="font-size: 12px; font-weight: 600;">Protected</span>
                 </div>
             </div>
 
             <!-- Network Topology Visualization -->
-            <div style="display: flex; justify-content: center; margin-bottom: 20px; padding: 24px 32px; background: rgba(0,0,0,0.15); border-radius: 10px; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); opacity: 0.3;"></div>
+            <div style="display: flex; justify-content: center; margin-bottom: 16px; padding: 16px; background: rgba(0,0,0,0.15); border-radius: 8px; position: relative; gap: 24px;">
                 
                 <!-- Internet -->
                 <div style="text-align: center; margin-right: 40px;">
@@ -107,7 +106,7 @@
             </div>
 
             <!-- Device List with Detailed Info -->
-            <div class="device-list" id="deviceListContainer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+            <div class="device-list" id="deviceListContainer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
                 <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
                     <div class="device-icon" style="background: rgba(0,212,255,0.2);">
                         <svg viewBox="0 0 24 24" style="fill: var(--accent-primary);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
@@ -279,34 +278,19 @@
             </div>
 
             <!-- Security Status Bar -->
-            <div style="margin-top: 20px; padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 20px;">🛡️</span>
-                        <div>
-                            <div style="font-weight: 600; color: var(--accent-success);">Network Security: Protected</div>
-                            <div style="font-size: 11px; color: var(--text-secondary);">All critical services monitored and secured</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 20px; font-size: 12px;">
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-success); font-weight: 600;">6</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Secure</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-yellow); font-weight: 600;">2</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Warning</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-danger); font-weight: 600;">0</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Critical</div>
-                        </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; margin-top: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 18px;">🛡️</span>
+                    <div>
+                        <div style="font-weight: 600; color: var(--accent-success); font-size: 13px;">Network Security: Protected</div>
+                        <div style="font-size: 10px; color: var(--text-muted);">All critical services monitored</div>
                     </div>
                 </div>
-            </div>
-            
-            <div style="margin-top: 10px; font-size: 10px; color: var(--text-secondary); text-align: center;">
-                💡 Klik perangkat untuk melihat detail lengkap (MAC, Vendor, Port, Security Status)
+                <div style="display: flex; gap: 16px; font-size: 11px;">
+                    <div style="text-align: center;"><span style="color: var(--accent-success); font-weight: 600;">6</span><br><span style="color: var(--text-muted); font-size: 9px;">Secure</span></div>
+                    <div style="text-align: center;"><span style="color: var(--accent-yellow); font-weight: 600;">2</span><br><span style="color: var(--text-muted); font-size: 9px;">Warning</span></div>
+                    <div style="text-align: center;"><span style="color: var(--accent-danger); font-weight: 600;">0</span><br><span style="color: var(--text-muted); font-size: 9px;">Critical</span></div>
+                </div>
             </div>
         </div>
 
@@ -361,302 +345,11 @@
             </div>
         </div>
 
-        <!-- Network Topology & Detection Section -->
-        <div class="card fade-in" style="margin-top: 25px;">
-            <div class="card-header">
-                <div class="card-title">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    🔬 Deteksi & Topologi Jaringan
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <select id="scanMode" style="padding: 6px 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--accent-primary); border-radius: 6px; color: var(--text-primary); font-size: 12px;">
-                        <option value="quick">Quick Scan</option>
-                        <option value="deep">Deep Scan (Port Analysis)</option>
-                        <option value="full">Full Security Audit</option>
-                    </select>
-                    <button class="btn-primary" style="padding: 6px 14px; font-size: 12px;" onclick="startNetworkScan()">
-                        <span style="display: flex; align-items: center; gap: 6px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                            Start Scan
-                        </span>
-                    </button>
-                    <span class="card-badge" id="deviceCountBadge">8 DEVICE</span>
-                </div>
-            </div>
-            
-            <!-- Network Info Bar -->
-            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Subnet</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.0/24</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Gateway</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.1</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">DHCP Range</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">192.168.1.50-254</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">DNS Server</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-primary); font-family: 'JetBrains Mono';">8.8.8.8</div>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: var(--text-secondary);">Security Level</div>
-                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-success);">🛡️ Protected</div>
-                </div>
-            </div>
-
-            <!-- Network Topology Visualization -->
-            <div style="display: flex; justify-content: center; margin-bottom: 20px; padding: 24px 32px; background: rgba(0,0,0,0.15); border-radius: 10px; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); opacity: 0.3;"></div>
-                
-                <!-- Internet -->
-                <div style="text-align: center; margin-right: 40px;">
-                    <div style="width: 60px; height: 60px; background: rgba(239,68,68,0.2); border: 2px solid var(--accent-danger); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
-                        <span style="font-size: 24px;">🌐</span>
-                    </div>
-                    <div style="font-size: 11px; color: var(--accent-danger); font-weight: 600;">INTERNET</div>
-                    <div style="font-size: 9px; color: var(--text-secondary);">External</div>
-                </div>
-                
-                <!-- Connection Lines -->
-                <div style="position: absolute; top: 50%; left: 130px; width: 170px; height: 2px; background: var(--accent-danger);"></div>
-                <div style="position: absolute; top: 50%; left: 350px; width: calc(100% - 500px); height: 2px; background: var(--accent-primary);"></div>
-                
-                <!-- Firewall -->
-                <div style="text-align: center; margin-right: 40px; margin-top: -20px;">
-                    <div style="width: 70px; height: 70px; background: rgba(0,212,255,0.15); border: 2px solid var(--accent-primary); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,212,255,0.3);">
-                        <span style="font-size: 24px;">🛡️</span>
-                        <div style="font-size: 9px; color: var(--accent-primary); font-weight: 600;">FIREWALL</div>
-                    </div>
-                    <div style="font-size: 10px; color: var(--accent-success); margin-top: 5px;">192.168.1.2</div>
-                    <div style="font-size: 9px; color: var(--text-secondary);">Protected</div>
-                </div>
-                
-                <!-- Core Router/Switch -->
-                <div style="text-align: center; margin-top: -20px;">
-                    <div style="width: 80px; height: 80px; background: rgba(139,92,246,0.15); border: 2px solid var(--accent-purple); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(139,92,246,0.3);">
-                        <span style="font-size: 28px;">🔷</span>
-                        <div style="font-size: 9px; color: var(--accent-purple); font-weight: 600;">CORE SWITCH</div>
-                    </div>
-                    <div style="font-size: 10px; color: var(--accent-success); margin-top: 5px;">192.168.1.3</div>
-                    <div style="font-size: 9px; color: var(--text-secondary);">Layer 3</div>
-                </div>
-            </div>
-
-            <!-- Device List with Detailed Info -->
-            <div class="device-list" id="deviceListContainer" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(0,212,255,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-primary);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(0,212,255,0.2); color: var(--accent-primary);">GATEWAY</span>
-                            Core Router
-                        </div>
-                        <div class="device-ip">192.168.1.1</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:01</span></div>
-                            <div class="device-vendor">Vendor: <span>Cisco Systems</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Ports: 53(DNS), 80(HTTP), 443(HTTPS)</div>
-                                <div style="font-size: 9px; color: var(--accent-yellow);">⚠️ Last Firmware: 2.3.1 (update available)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(239,68,68,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-danger);"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(239,68,68,0.2); color: var(--accent-danger);">FIREWALL</span>
-                            FortiGate 60F
-                        </div>
-                        <div class="device-ip">192.168.1.2</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:02</span></div>
-                            <div class="device-vendor">Vendor: <span>Fortinet Inc.</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Ports: 22(SSH), 443(HTTPS), 10443</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ IPS Enabled, Threat Feed Active</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(139,92,246,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-purple);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(139,92,246,0.2); color: var(--accent-purple);">SWITCH</span>
-                            Cisco SG350-28
-                        </div>
-                        <div class="device-ip">192.168.1.3</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:03</span></div>
-                            <div class="device-vendor">Vendor: <span>Cisco Systems</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Ports: 24x GigE, 4x SFP</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ VLAN 1(Default), VLAN 10(Data)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(16,185,129,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-success);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(16,185,129,0.2); color: var(--accent-success);">VPN</span>
-                            OpenVPN Server
-                        </div>
-                        <div class="device-ip">192.168.1.4</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:04</span></div>
-                            <div class="device-vendor">Vendor: <span>Linux/OpenVPN</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Ports: 1194(UDP), 443(HTTPS)</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ AES-256-GCM, TLS 1.3</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(59,130,246,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: #3b82f6;"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(59,130,246,0.2); color: #3b82f6;">WEB</span>
-                            Apache/Nginx
-                        </div>
-                        <div class="device-ip">192.168.1.10</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:0A</span></div>
-                            <div class="device-vendor">Vendor: <span>Dell Inc. (PowerEdge)</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-yellow);">⚠️ Ports: 22(SSH), 80, 443, 3306</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ SSL/TLS Valid (exp: 2025)</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(168,85,247,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: #a855f7;"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(168,85,247,0.2); color: #a855f7;">DB</span>
-                            MySQL/PostgreSQL
-                        </div>
-                        <div class="device-ip">192.168.1.11</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>00:1A:2B:3C:4D:0B</span></div>
-                            <div class="device-vendor">Vendor: <span>HP Enterprise (DL360)</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-danger);">🔴 Ports: 22, 3306, 5432 - Internal Only</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ SSL Required, Backup Active</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(245,158,11,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-warning);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(245,158,11,0.2); color: var(--accent-yellow);">AP</span>
-                            UniFi AP AC Pro
-                        </div>
-                        <div class="device-ip">192.168.2.10</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>DC:9F:DB:4E:8A:01</span></div>
-                            <div class="device-vendor">Vendor: <span>Ubiquiti Networks</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-yellow);">⚠️ Signal: -72dBm (Weak)</div>
-                                <div style="font-size: 9px; color: var(--accent-yellow);">⚠️ Clients: 12 | Firmware: 4.3.28</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status warning"></div>
-                </div>
-                <div class="device-item expanded" onclick="toggleDeviceDetails(this)">
-                    <div class="device-icon" style="background: rgba(245,158,11,0.2);">
-                        <svg viewBox="0 0 24 24" style="fill: var(--accent-warning);"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
-                    </div>
-                    <div class="device-info">
-                        <div class="device-name">
-                            <span class="device-type-badge" style="background: rgba(245,158,11,0.2); color: var(--accent-yellow);">AP</span>
-                            UniFi AP AC Pro
-                        </div>
-                        <div class="device-ip">192.168.2.11</div>
-                        <div class="device-details" style="display: block;">
-                            <div class="device-mac">MAC: <span>DC:9F:DB:4E:8A:02</span></div>
-                            <div class="device-vendor">Vendor: <span>Ubiquiti Networks</span></div>
-                            <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Signal: -45dBm (Excellent)</div>
-                                <div style="font-size: 9px; color: var(--accent-success);">✅ Clients: 18 | Firmware: 4.3.28</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="device-status online"></div>
-                </div>
-            </div>
-
-            <!-- Security Status Bar -->
-            <div style="margin-top: 20px; padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 20px;">🛡️</span>
-                        <div>
-                            <div style="font-weight: 600; color: var(--accent-success);">Network Security: Protected</div>
-                            <div style="font-size: 11px; color: var(--text-secondary);">All critical services monitored and secured</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 20px; font-size: 12px;">
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-success); font-weight: 600;">6</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Secure</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-yellow); font-weight: 600;">2</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Warning</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="color: var(--accent-danger); font-weight: 600;">0</div>
-                            <div style="color: var(--text-secondary); font-size: 10px;">Critical</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="margin-top: 10px; font-size: 10px; color: var(--text-secondary); text-align: center;">
-                💡 Klik perangkat untuk melihat detail lengkap (MAC, Vendor, Port, Security Status)
-            </div>
-        </div>
-
-        
-
 <!-- Main Grid -->
         <div class="main-grid">
             <div class="left-column">
                 <!-- Threat Map -->
-                <div class="card fade-in" style="margin-bottom: 25px;">
+                <div class="card fade-in" style="margin-bottom: 16px;">
                     <div class="card-header">
                         <div class="card-title">
                             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -753,7 +446,7 @@
                                 <div class="attack-type">DDoS Attack - UDP Flood</div>
                                 <div class="attack-source">185.234.72.45</div>
                             </div>
-                            <div class="attack-time">2 menit lalu</div>
+                            <div class="attack-time">2m</div>
                         </div>
                         <div class="attack-item">
                             <div class="attack-severity high">HIGH</div>
@@ -761,39 +454,31 @@
                                 <div class="attack-type">SQL Injection Attempt</div>
                                 <div class="attack-source">203.45.167.89</div>
                             </div>
-                            <div class="attack-time">5 menit lalu</div>
+                            <div class="attack-time">5m</div>
                         </div>
                         <div class="attack-item">
                             <div class="attack-severity medium">MED</div>
                             <div class="attack-info">
-                                <div class="attack-type">Brute Force SSH Login</div>
+                                <div class="attack-type">Brute Force SSH</div>
                                 <div class="attack-source">91.234.56.123</div>
                             </div>
-                            <div class="attack-time">12 menit lalu</div>
+                            <div class="attack-time">12m</div>
                         </div>
                         <div class="attack-item">
                             <div class="attack-severity medium">MED</div>
                             <div class="attack-info">
-                                <div class="attack-type">XSS Attack Attempt</div>
+                                <div class="attack-type">XSS Attack</div>
                                 <div class="attack-source">178.156.78.34</div>
                             </div>
-                            <div class="attack-time">18 menit lalu</div>
+                            <div class="attack-time">18m</div>
                         </div>
                         <div class="attack-item">
                             <div class="attack-severity low">LOW</div>
                             <div class="attack-info">
-                                <div class="attack-type">Port Scanning Detected</div>
+                                <div class="attack-type">Port Scan Detected</div>
                                 <div class="attack-source">45.67.89.156</div>
                             </div>
-                            <div class="attack-time">25 menit lalu</div>
-                        </div>
-                        <div class="attack-item">
-                            <div class="attack-severity low">LOW</div>
-                            <div class="attack-info">
-                                <div class="attack-type">Malware Signature Detected</div>
-                                <div class="attack-source">112.234.56.78</div>
-                            </div>
-                            <div class="attack-time">32 menit lalu</div>
+                            <div class="attack-time">25m</div>
                         </div>
                     </div>
                 </div>
@@ -1021,24 +706,20 @@
                     </div>
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-time">14:32:15</div>
-                            <div class="timeline-content"><strong>Firewall</strong> memblokir koneksi dari 185.234.72.45 (DDoS)</div>
+                            <div class="timeline-time">14:32</div>
+                            <div class="timeline-content"><strong>Firewall</strong> blokir 185.234.72.45 (DDoS)</div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-time">14:28:42</div>
-                            <div class="timeline-content"><strong>IDS</strong> mendeteksi percobaan SQL Injection</div>
+                            <div class="timeline-time">14:28</div>
+                            <div class="timeline-content"><strong>IDS</strong> deteksi SQL Injection</div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-time">14:25:08</div>
-                            <div class="timeline-content"><strong>Backup</strong> otomatis selesai - 2.4 GB</div>
+                            <div class="timeline-time">14:25</div>
+                            <div class="timeline-content"><strong>Backup</strong> selesai - 2.4 GB</div>
                         </div>
                         <div class="timeline-item">
-                            <div class="timeline-time">14:18:33</div>
-                            <div class="timeline-content"><strong>User</strong> admin@company.com login berhasil</div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">14:12:55</div>
-                            <div class="timeline-content"><strong>VPN</strong> koneksi baru dari 192.168.1.45</div>
+                            <div class="timeline-time">14:18</div>
+                            <div class="timeline-content"><strong>User</strong> admin@company.com login</div>
                         </div>
                     </div>
                 </div>
@@ -1048,7 +729,7 @@
         
 
 <!-- Traffic Overview -->
-        <div class="card fade-in" style="margin-top: 25px;">
+        <div class="card fade-in" style="margin-top: 16px;">
             <div class="card-header">
                 <div class="card-title">
                     <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
