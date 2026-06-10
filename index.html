@@ -2009,6 +2009,110 @@
 
     <!-- Modal Styles -->
     <style>
+        /* ==================== CSS VARIABLES (THEME) ==================== */
+        :root {
+            /* Primary Colors - Modern Blue/Cyan Theme */
+            --accent-primary: #06b6d4;
+            --accent-primary-rgb: 6, 182, 212;
+            --accent-secondary: #8b5cf6;
+            --accent-secondary-rgb: 139, 92, 246;
+            
+            /* Semantic Colors */
+            --accent-success: #10b981;
+            --accent-success-rgb: 16, 185, 129;
+            --accent-danger: #ef4444;
+            --accent-danger-rgb: 239, 68, 68;
+            --accent-warning: #f59e0b;
+            --accent-warning-rgb: 245, 158, 11;
+            --accent-purple: #a855f7;
+            --accent-purple-rgb: 168, 85, 247;
+            
+            /* Background Colors */
+            --bg-base: #0a0f1a;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --bg-elevated: rgba(20, 30, 50, 0.95);
+            --bg-hover: rgba(30, 45, 70, 0.6);
+            
+            /* Text Colors */
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            /* Border Colors */
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.12);
+            
+            /* Spacing & Radius */
+            --radius-xs: 4px;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 20px;
+            --radius-2xl: 28px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px rgba(6, 182, 212, 0.15);
+            --shadow-glow-strong: 0 0 30px rgba(6, 182, 212, 0.25);
+        }
+
+        /* Global Resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-base);
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-base) 0%, #0d1324 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(6, 182, 212, 0.3);
+            color: var(--text-primary);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(6, 182, 212, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.5);
+        }
+
+        /* Focus styles */
+        :focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
         .modal {
             display: none;
             position: fixed;
