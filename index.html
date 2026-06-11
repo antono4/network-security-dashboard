@@ -4924,6 +4924,55 @@
 
         // Start AI monitoring
         setInterval(simulateThreatDetection, 5000);
+        
+        // Active Block Attack - runs every 2 seconds
+        function activeBlockAttack() {
+            if (!aiDefenseState.autoBlockEnabled) return;
+            
+            const attackTypes = [
+                { name: 'DDoS Attack', severity: 'high' },
+                { name: 'SQL Injection', severity: 'medium' },
+                { name: 'Brute Force', severity: 'medium' },
+                { name: 'Port Scan', severity: 'low' },
+                { name: 'XSS Attack', severity: 'low' }
+            ];
+            
+            const suspiciousIPs = [
+                '103.45.167.89', '142.75.234.12', '81.234.56.78', '195.85.92.34',
+                '48.185.124.56', '214.217.45.78', '88.142.67.34', '165.139.82.91',
+                '78.234.156.12', '156.78.234.45', '67.123.45.89', '189.45.67.123'
+            ];
+            
+            // Random chance to detect and block
+            if (Math.random() > 0.6) {
+                const attack = attackTypes[Math.floor(Math.random() * attackTypes.length)];
+                const ip = suspiciousIPs[Math.floor(Math.random() * suspiciousIPs.length)];
+                
+                // Only block high severity attacks automatically
+                if (attack.severity === 'high' && !aiDefenseState.blockedIPs.includes(ip)) {
+                    aiDefenseState.blockedIPs.push(ip);
+                    addBlockedIPToList(ip, attack.name + ' - Auto-blocked');
+                    
+                    // Update stats
+                    const ipsBlocked = document.getElementById('ipsBlocked');
+                    if (ipsBlocked) {
+                        ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+                    }
+                    
+                    // Add to timeline
+                    addToResponseTimeline('blocked', `⚡ Auto-blocked ${attack.name}`, `IP: ${ip} • Threat: ${attack.severity.toUpperCase()}`, 'Just now');
+                    
+                    // Show notification
+                    showAlert(`⚡ Blocked: ${ip} - ${attack.name}`);
+                    
+                    // Update anomaly
+                    updateAnomalyList(attack, ip);
+                }
+            }
+        }
+        
+        // Run active block every 2 seconds
+        setInterval(activeBlockAttack, 2000);
 
         // Close modals on outside click
         document.getElementById('aiSettingsModal')?.addEventListener('click', function(e) {
