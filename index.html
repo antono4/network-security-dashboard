@@ -2344,6 +2344,843 @@
             background: var(--accent-cyan);
             border-radius: 2px;
         }
+
+        /* AI Defense Panel Styles */
+        .ai-defense-panel {
+            grid-column: span 12;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .defense-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .defense-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-red));
+        }
+
+        .defense-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .defense-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .defense-title svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent-cyan);
+        }
+
+        .defense-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .defense-status.active {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .defense-status.inactive {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--accent-red);
+        }
+
+        .defense-status.warning {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .defense-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .defense-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .defense-stat {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .defense-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .defense-stat-value.blocked {
+            color: var(--accent-green);
+        }
+
+        .defense-stat-value.detected {
+            color: var(--accent-red);
+        }
+
+        .defense-stat-value.analyzed {
+            color: var(--accent-purple);
+        }
+
+        .defense-stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .defense-progress {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .defense-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .defense-progress-bar.danger {
+            background: linear-gradient(90deg, var(--accent-yellow), var(--accent-red));
+        }
+
+        .defense-progress-bar.warning {
+            background: linear-gradient(90deg, var(--accent-yellow), var(--accent-purple));
+        }
+
+        .defense-accuracy {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .defense-accuracy span {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* Blocked IPs List */
+        .blocked-ips-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .blocked-ip-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blocked-ip-item:last-child {
+            border-bottom: none;
+        }
+
+        .blocked-ip-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .blocked-ip-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 51, 102, 0.15);
+        }
+
+        .blocked-ip-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent-red);
+        }
+
+        .blocked-ip-details h5 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .blocked-ip-details span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .blocked-ip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .unblock-btn {
+            padding: 6px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 6px;
+            color: var(--accent-green);
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .unblock-btn:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        /* AI Firewall Rules Generator */
+        .firewall-rules-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .firewall-rule {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .firewall-rule:last-child {
+            border-bottom: none;
+        }
+
+        .rule-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rule-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rule-icon.block {
+            background: rgba(255, 51, 102, 0.15);
+        }
+
+        .rule-icon.block svg {
+            fill: var(--accent-red);
+        }
+
+        .rule-icon.allow {
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .rule-icon.allow svg {
+            fill: var(--accent-green);
+        }
+
+        .rule-icon.alert {
+            background: rgba(255, 204, 0, 0.15);
+        }
+
+        .rule-icon.alert svg {
+            fill: var(--accent-yellow);
+        }
+
+        .rule-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .rule-details h5 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .rule-details span {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .rule-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .rule-badge.block {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--accent-red);
+        }
+
+        .rule-badge.allow {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .rule-badge.monitor {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        /* Attack Response Timeline */
+        .response-timeline {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 30px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: var(--border-color);
+        }
+
+        .timeline-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-icon.blocked {
+            background: var(--accent-green);
+        }
+
+        .timeline-icon.detected {
+            background: var(--accent-cyan);
+        }
+
+        .timeline-icon.analyzed {
+            background: var(--accent-purple);
+        }
+
+        .timeline-icon.alert {
+            background: var(--accent-red);
+        }
+
+        .timeline-icon svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content h5 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline-content span {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .timeline-time {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* AI Settings Panel */
+        .ai-settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-settings-modal.active {
+            display: flex;
+        }
+
+        .ai-settings-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+
+        .ai-settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(168, 85, 247, 0.1));
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-settings-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ai-settings-title svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-cyan);
+        }
+
+        .close-settings {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background: rgba(255, 51, 102, 0.15);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-settings:hover {
+            background: rgba(255, 51, 102, 0.3);
+        }
+
+        .close-settings svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent-red);
+        }
+
+        .ai-settings-body {
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .settings-section {
+            margin-bottom: 25px;
+        }
+
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-section h4 svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent-cyan);
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h5 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .setting-info span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-secondary);
+            border-radius: 26px;
+            transition: 0.3s;
+        }
+
+        .toggle-slider::before {
+            position: absolute;
+            content: '';
+            width: 20px;
+            height: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--accent-cyan);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(24px);
+            background: white;
+        }
+
+        .sensitivity-slider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sensitivity-slider input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .sensitivity-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .sensitivity-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            min-width: 30px;
+        }
+
+        .ai-settings-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .settings-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn.cancel {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .settings-btn.cancel:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .settings-btn.save {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            color: white;
+        }
+
+        .settings-btn.save:hover {
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* AI Mode Indicator */
+        .ai-mode-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-mode-indicator:hover {
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .ai-mode-indicator svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--accent-purple);
+        }
+
+        .ai-mode-indicator span {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-purple);
+        }
+
+        .ai-mode-indicator.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .ai-mode-indicator.active svg {
+            fill: var(--accent-green);
+        }
+
+        .ai-mode-indicator.active span {
+            color: var(--accent-green);
+        }
+
+        /* Anomaly Detection */
+        .anomaly-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .anomaly-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .anomaly-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .anomaly-title svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent-yellow);
+        }
+
+        .anomaly-alert {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--accent-red);
+            animation: pulse 1s infinite;
+        }
+
+        .anomaly-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .anomaly-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .anomaly-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .anomaly-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .anomaly-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .anomaly-icon.critical {
+            background: rgba(255, 51, 102, 0.15);
+        }
+
+        .anomaly-icon.critical svg {
+            fill: var(--accent-red);
+        }
+
+        .anomaly-icon.warning {
+            background: rgba(255, 204, 0, 0.15);
+        }
+
+        .anomaly-icon.warning svg {
+            fill: var(--accent-yellow);
+        }
+
+        .anomaly-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .anomaly-details h5 {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .anomaly-details span {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .anomaly-severity {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .anomaly-severity.critical {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--accent-red);
+        }
+
+        .anomaly-severity.warning {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        /* Scrollbar for new elements */
+        .blocked-ips-list::-webkit-scrollbar,
+        .firewall-rules-list::-webkit-scrollbar,
+        .response-timeline::-webkit-scrollbar,
+        .anomaly-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .blocked-ips-list::-webkit-scrollbar-track,
+        .firewall-rules-list::-webkit-scrollbar-track,
+        .response-timeline::-webkit-scrollbar-track,
+        .anomaly-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .blocked-ips-list::-webkit-scrollbar-thumb,
+        .firewall-rules-list::-webkit-scrollbar-thumb,
+        .response-timeline::-webkit-scrollbar-thumb,
+        .anomaly-list::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body>
@@ -2722,13 +3559,13 @@
                     </div>
                 </div>
                 <div class="action-grid">
-                    <button class="action-btn" onclick="showAlert('Memblokir IP...')">
+                    <button class="action-btn" onclick="blockIPPrompt()">
                         <div class="action-icon block">
                             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
                         </div>
                         <span class="action-label">Block IP</span>
                     </button>
-                    <button class="action-btn" onclick="showAlert('Memulai scan virus...')">
+                    <button class="action-btn" onclick="openScanner()">
                         <div class="action-icon scan">
                             <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
                         </div>
@@ -2740,13 +3577,283 @@
                         </div>
                         <span class="action-label">Backup</span>
                     </button>
-                    <button class="action-btn" onclick="showAlert('Membuka pengaturan...')">
+                    <button class="action-btn" onclick="openAISettings()">
                         <div class="action-icon settings">
                             <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
                         </div>
-                        <span class="action-label">Settings</span>
+                        <span class="action-label">AI Settings</span>
                     </button>
                 </div>
+            </div>
+
+            <!-- AI Defense Panel -->
+            <div class="ai-defense-panel">
+                <!-- AI Threat Detector -->
+                <div class="defense-card">
+                    <div class="defense-header">
+                        <span class="defense-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                            AI Threat Detector
+                        </span>
+                        <span class="defense-status active" id="aiDetectorStatus">Active</span>
+                    </div>
+                    <div class="defense-stats">
+                        <div class="defense-stat">
+                            <div class="defense-stat-value detected" id="threatsDetected">156</div>
+                            <div class="defense-stat-label">Threats Detected</div>
+                        </div>
+                        <div class="defense-stat">
+                            <div class="defense-stat-value blocked" id="threatsBlocked">142</div>
+                            <div class="defense-stat-label">Blocked</div>
+                        </div>
+                    </div>
+                    <div class="defense-progress">
+                        <div class="defense-progress-bar" id="detectionProgress" style="width: 91%;"></div>
+                    </div>
+                    <div class="defense-accuracy">
+                        <span>Detection Accuracy</span>
+                        <span id="detectionAccuracy">91%</span>
+                    </div>
+                </div>
+
+                <!-- Auto IP Blocker -->
+                <div class="defense-card">
+                    <div class="defense-header">
+                        <span class="defense-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
+                            Auto IP Blocker
+                        </span>
+                        <span class="defense-status active" id="autoBlockStatus">Active</span>
+                    </div>
+                    <div class="defense-stats">
+                        <div class="defense-stat">
+                            <div class="defense-stat-value blocked" id="ipsBlocked">89</div>
+                            <div class="defense-stat-label">IPs Blocked</div>
+                        </div>
+                        <div class="defense-stat">
+                            <div class="defense-stat-value" id="blockRate">94%</div>
+                            <div class="defense-stat-label">Block Rate</div>
+                        </div>
+                    </div>
+                    <div class="blocked-ips-list" id="blockedIPsList">
+                        <div class="blocked-ip-item">
+                            <div class="blocked-ip-info">
+                                <div class="blocked-ip-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                                </div>
+                                <div class="blocked-ip-details">
+                                    <h5>203.45.167.89</h5>
+                                    <span>DDoS Attack - 5 min ago</span>
+                                </div>
+                            </div>
+                            <div class="blocked-ip-actions">
+                                <button class="unblock-btn" onclick="unblockIP('203.45.167.89')">Unblock</button>
+                            </div>
+                        </div>
+                        <div class="blocked-ip-item">
+                            <div class="blocked-ip-info">
+                                <div class="blocked-ip-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                                </div>
+                                <div class="blocked-ip-details">
+                                    <h5>182.75.234.12</h5>
+                                    <span>SQL Injection - 12 min ago</span>
+                                </div>
+                            </div>
+                            <div class="blocked-ip-actions">
+                                <button class="unblock-btn" onclick="unblockIP('182.75.234.12')">Unblock</button>
+                            </div>
+                        </div>
+                        <div class="blocked-ip-item">
+                            <div class="blocked-ip-info">
+                                <div class="blocked-ip-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                                </div>
+                                <div class="blocked-ip-details">
+                                    <h5>91.234.56.78</h5>
+                                    <span>Brute Force - 25 min ago</span>
+                                </div>
+                            </div>
+                            <div class="blocked-ip-actions">
+                                <button class="unblock-btn" onclick="unblockIP('91.234.56.78')">Unblock</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Firewall Rules -->
+                <div class="defense-card">
+                    <div class="defense-header">
+                        <span class="defense-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm7 10h-8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1zm-6-5h4v2h-4V6zm0 3h4v2h-4V9z"/></svg>
+                            AI Firewall Rules
+                        </span>
+                        <span class="defense-status active">Generating</span>
+                    </div>
+                    <div class="defense-stats">
+                        <div class="defense-stat">
+                            <div class="defense-stat-value analyzed" id="rulesGenerated">24</div>
+                            <div class="defense-stat-label">Rules Generated</div>
+                        </div>
+                        <div class="defense-stat">
+                            <div class="defense-stat-value" id="activeRules">18</div>
+                            <div class="defense-stat-label">Active</div>
+                        </div>
+                    </div>
+                    <div class="firewall-rules-list" id="firewallRulesList">
+                        <div class="firewall-rule">
+                            <div class="rule-info">
+                                <div class="rule-icon block">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                                </div>
+                                <div class="rule-details">
+                                    <h5>Block DDoS Source IPs</h5>
+                                    <span>Auto-generated • 3 IPs blocked</span>
+                                </div>
+                            </div>
+                            <span class="rule-badge block">BLOCK</span>
+                        </div>
+                        <div class="firewall-rule">
+                            <div class="rule-info">
+                                <div class="rule-icon alert">
+                                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                                </div>
+                                <div class="rule-details">
+                                    <h5>Monitor SQL Injection</h5>
+                                    <span>Pattern-based detection</span>
+                                </div>
+                            </div>
+                            <span class="rule-badge monitor">MONITOR</span>
+                        </div>
+                        <div class="firewall-rule">
+                            <div class="rule-info">
+                                <div class="rule-icon block">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                                </div>
+                                <div class="rule-details">
+                                    <h5>Block Brute Force</h5>
+                                    <span>After 5 failed attempts</span>
+                                </div>
+                            </div>
+                            <span class="rule-badge block">BLOCK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anomaly Detection Panel -->
+            <div class="anomaly-card">
+                <div class="anomaly-header">
+                    <span class="anomaly-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        AI Anomaly Detection
+                    </span>
+                    <span class="anomaly-alert" id="anomalyAlert">3 Anomalies Detected</span>
+                </div>
+                <div class="anomaly-list" id="anomalyList">
+                    <div class="anomaly-item">
+                        <div class="anomaly-info">
+                            <div class="anomaly-icon critical">
+                                <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                            </div>
+                            <div class="anomaly-details">
+                                <h5>Unusual Traffic Spike</h5>
+                                <span>203.45.167.89 - 500% above normal</span>
+                            </div>
+                        </div>
+                        <span class="anomaly-severity critical">CRITICAL</span>
+                    </div>
+                    <div class="anomaly-item">
+                        <div class="anomaly-info">
+                            <div class="anomaly-icon warning">
+                                <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="anomaly-details">
+                                <h5>Failed Login Pattern</h5>
+                                <span>182.75.234.12 - Brute force detected</span>
+                            </div>
+                        </div>
+                        <span class="anomaly-severity warning">WARNING</span>
+                    </div>
+                    <div class="anomaly-item">
+                        <div class="anomaly-info">
+                            <div class="anomaly-icon warning">
+                                <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="anomaly-details">
+                                <h5>Port Scan Activity</h5>
+                                <span>91.234.56.78 - Scanning ports 22, 80, 443</span>
+                            </div>
+                        </div>
+                        <span class="anomaly-severity warning">WARNING</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attack Response Timeline -->
+            <div class="card activity-section">
+                <div class="card-header">
+                    <span class="card-title">AI Attack Response Timeline</span>
+                    <div class="card-icon purple">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    </div>
+                </div>
+                <div class="response-timeline" id="responseTimeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon blocked">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>Auto-blocked DDoS attack from 203.45.167.89</h5>
+                            <span>IP blocked for 24 hours • Threat level: HIGH</span>
+                        </div>
+                        <span class="timeline-time">2 min ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon detected">
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>SQL Injection pattern detected from 182.75.234.12</h5>
+                            <span>Request blocked • Firewall rule auto-generated</span>
+                        </div>
+                        <span class="timeline-time">5 min ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon analyzed">
+                            <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>Generated firewall rule: Block Port Scanning</h5>
+                            <span>Pattern: Multiple ports in short time window</span>
+                        </div>
+                        <span class="timeline-time">8 min ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon alert">
+                            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>Brute force attack detected from 91.234.56.78</h5>
+                            <span>Auto-blocked after 5 failed attempts</span>
+                        </div>
+                        <span class="timeline-time">12 min ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon blocked">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>XSS Attack blocked from 58.185.124.56</h5>
+                            <span>Malicious script detected • Request sanitized</span>
+                        </div>
+                        <span class="timeline-time">15 min ago</span>
+                    </div>
+                </div>
+                <button class="card-action-btn purple" onclick="showAlert('Viewing complete response log...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                    <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    View Full Response Log
+                </button>
             </div>
 
             <!-- Recent Attacks -->
@@ -3591,6 +4698,497 @@
                 sendAIMessage();
             }
         });
+
+        // ============================================
+        // AI Defense System Functions
+        // ============================================
+
+        // AI Defense State
+        let aiDefenseState = {
+            threatDetectionEnabled: true,
+            autoBlockEnabled: true,
+            firewallRulesEnabled: true,
+            sensitivity: 7,
+            blockThreshold: 5,
+            blockedIPs: ['203.45.167.89', '182.75.234.12', '91.234.56.78'],
+            firewallRules: [
+                { name: 'Block DDoS Source IPs', type: 'block', active: true },
+                { name: 'Monitor SQL Injection', type: 'monitor', active: true },
+                { name: 'Block Brute Force', type: 'block', active: true }
+            ],
+            responseTimeline: [
+                { type: 'blocked', message: 'Auto-blocked DDoS attack from 203.45.167.89', time: '2 min ago', detail: 'IP blocked for 24 hours • Threat level: HIGH' },
+                { type: 'detected', message: 'SQL Injection pattern detected from 182.75.234.12', time: '5 min ago', detail: 'Request blocked • Firewall rule auto-generated' },
+                { type: 'analyzed', message: 'Generated firewall rule: Block Port Scanning', time: '8 min ago', detail: 'Pattern: Multiple ports in short time window' },
+                { type: 'alert', message: 'Brute force attack detected from 91.234.56.78', time: '12 min ago', detail: 'Auto-blocked after 5 failed attempts' },
+                { type: 'blocked', message: 'XSS Attack blocked from 58.185.124.56', time: '15 min ago', detail: 'Malicious script detected • Request sanitized' }
+            ],
+            anomalies: [
+                { type: 'critical', title: 'Unusual Traffic Spike', detail: '203.45.167.89 - 500% above normal' },
+                { type: 'warning', title: 'Failed Login Pattern', detail: '182.75.234.12 - Brute force detected' },
+                { type: 'warning', title: 'Port Scan Activity', detail: '91.234.56.78 - Scanning ports 22, 80, 443' }
+            ]
+        };
+
+        // AI Settings Functions
+        function openAISettings() {
+            document.getElementById('aiSettingsModal').classList.add('active');
+            // Load current settings
+            document.getElementById('aiThreatDetection').checked = aiDefenseState.threatDetectionEnabled;
+            document.getElementById('autoBlockIPs').checked = aiDefenseState.autoBlockEnabled;
+            document.getElementById('generateFirewallRules').checked = aiDefenseState.firewallRulesEnabled;
+            document.getElementById('sensitivitySlider').value = aiDefenseState.sensitivity;
+            document.getElementById('sensitivityValue').textContent = aiDefenseState.sensitivity;
+            document.getElementById('blockThreshold').value = aiDefenseState.blockThreshold;
+            document.getElementById('blockThresholdValue').textContent = aiDefenseState.blockThreshold;
+        }
+
+        function closeAISettings() {
+            document.getElementById('aiSettingsModal').classList.remove('active');
+        }
+
+        function saveAISettings() {
+            aiDefenseState.threatDetectionEnabled = document.getElementById('aiThreatDetection').checked;
+            aiDefenseState.autoBlockEnabled = document.getElementById('autoBlockIPs').checked;
+            aiDefenseState.firewallRulesEnabled = document.getElementById('generateFirewallRules').checked;
+            aiDefenseState.sensitivity = parseInt(document.getElementById('sensitivitySlider').value);
+            aiDefenseState.blockThreshold = parseInt(document.getElementById('blockThreshold').value);
+
+            // Update UI indicators
+            updateAIStatusIndicators();
+            
+            showAlert('AI Defense settings saved successfully!');
+            closeAISettings();
+        }
+
+        function updateAIStatusIndicators() {
+            const detectorStatus = document.getElementById('aiDetectorStatus');
+            const autoBlockStatus = document.getElementById('autoBlockStatus');
+            
+            if (detectorStatus) {
+                detectorStatus.textContent = aiDefenseState.threatDetectionEnabled ? 'Active' : 'Inactive';
+                detectorStatus.className = 'defense-status ' + (aiDefenseState.threatDetectionEnabled ? 'active' : 'inactive');
+            }
+            
+            if (autoBlockStatus) {
+                autoBlockStatus.textContent = aiDefenseState.autoBlockEnabled ? 'Active' : 'Inactive';
+                autoBlockStatus.className = 'defense-status ' + (aiDefenseState.autoBlockEnabled ? 'active' : 'inactive');
+            }
+        }
+
+        // Sensitivity slider update
+        document.getElementById('sensitivitySlider')?.addEventListener('input', function(e) {
+            document.getElementById('sensitivityValue').textContent = e.target.value;
+        });
+
+        document.getElementById('blockThreshold')?.addEventListener('input', function(e) {
+            document.getElementById('blockThresholdValue').textContent = e.target.value;
+        });
+
+        // Block IP Functions
+        function blockIPPrompt() {
+            document.getElementById('blockIPModal').classList.add('active');
+            document.getElementById('blockIPInput').value = '';
+            document.getElementById('blockReason').value = '';
+        }
+
+        function closeBlockIPModal() {
+            document.getElementById('blockIPModal').classList.remove('active');
+        }
+
+        function confirmBlockIP() {
+            const ip = document.getElementById('blockIPInput').value.trim();
+            const duration = document.getElementById('blockDuration').value;
+            const reason = document.getElementById('blockReason').value || 'Manual block by admin';
+            
+            if (!ip) {
+                showAlert('Please enter an IP address!');
+                return;
+            }
+
+            if (!isValidIP(ip)) {
+                showAlert('Invalid IP address format!');
+                return;
+            }
+
+            // Add to blocked IPs
+            if (!aiDefenseState.blockedIPs.includes(ip)) {
+                aiDefenseState.blockedIPs.push(ip);
+                addBlockedIPToList(ip, reason);
+                
+                // Update counter
+                const ipsBlocked = document.getElementById('ipsBlocked');
+                if (ipsBlocked) {
+                    ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+                }
+            }
+
+            // Add to response timeline
+            addToResponseTimeline('blocked', `Manual block: ${ip}`, reason, 'Manual action');
+
+            showAlert(`IP ${ip} has been blocked for ${duration}!`);
+            closeBlockIPModal();
+        }
+
+        function unblockIP(ip) {
+            const index = aiDefenseState.blockedIPs.indexOf(ip);
+            if (index > -1) {
+                aiDefenseState.blockedIPs.splice(index, 1);
+                
+                // Remove from UI
+                const blockedList = document.getElementById('blockedIPsList');
+                if (blockedList) {
+                    const items = blockedList.querySelectorAll('.blocked-ip-item');
+                    items.forEach(item => {
+                        if (item.querySelector('h5').textContent === ip) {
+                            item.remove();
+                        }
+                    });
+                }
+                
+                // Update counter
+                const ipsBlocked = document.getElementById('ipsBlocked');
+                if (ipsBlocked) {
+                    ipsBlocked.textContent = Math.max(0, parseInt(ipsBlocked.textContent) - 1);
+                }
+
+                showAlert(`IP ${ip} has been unblocked!`);
+            }
+        }
+
+        function addBlockedIPToList(ip, reason) {
+            const blockedList = document.getElementById('blockedIPsList');
+            if (!blockedList) return;
+
+            const newItem = document.createElement('div');
+            newItem.className = 'blocked-ip-item';
+            newItem.innerHTML = `
+                <div class="blocked-ip-info">
+                    <div class="blocked-ip-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    </div>
+                    <div class="blocked-ip-details">
+                        <h5>${ip}</h5>
+                        <span>${reason} - Just now</span>
+                    </div>
+                </div>
+                <div class="blocked-ip-actions">
+                    <button class="unblock-btn" onclick="unblockIP('${ip}')">Unblock</button>
+                </div>
+            `;
+            
+            blockedList.insertBefore(newItem, blockedList.firstChild);
+        }
+
+        function addToResponseTimeline(type, message, detail, time) {
+            const timeline = document.getElementById('responseTimeline');
+            if (!timeline) return;
+
+            const icons = {
+                blocked: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>',
+                detected: '<svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>',
+                analyzed: '<svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>',
+                alert: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>'
+            };
+
+            const newItem = document.createElement('div');
+            newItem.className = 'timeline-item';
+            newItem.innerHTML = `
+                <div class="timeline-icon ${type}">
+                    ${icons[type]}
+                </div>
+                <div class="timeline-content">
+                    <h5>${message}</h5>
+                    <span>${detail}</span>
+                </div>
+                <span class="timeline-time">${time}</span>
+            `;
+            
+            timeline.insertBefore(newItem, timeline.firstChild);
+        }
+
+        // IP Validation
+        function isValidIP(ip) {
+            const pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!pattern.test(ip)) return false;
+            
+            const parts = ip.split('.');
+            return parts.every(part => {
+                const num = parseInt(part, 10);
+                return num >= 0 && num <= 255;
+            });
+        }
+
+        // Simulate AI Threat Detection
+        function simulateThreatDetection() {
+            if (!aiDefenseState.threatDetectionEnabled) return;
+
+            const threatTypes = [
+                { name: 'DDoS Attack', severity: 'high' },
+                { name: 'SQL Injection', severity: 'medium' },
+                { name: 'Brute Force', severity: 'medium' },
+                { name: 'Port Scan', severity: 'low' },
+                { name: 'XSS Attack', severity: 'low' },
+                { name: 'Malware', severity: 'high' }
+            ];
+
+            const ips = [
+                '103.45.167.89', '142.75.234.12', '81.234.56.78', '195.85.92.34', 
+                '48.185.124.56', '214.217.45.78', '88.142.67.34', '165.139.82.91'
+            ];
+
+            // Random chance of detecting a threat
+            if (Math.random() > 0.7) {
+                const threat = threatTypes[Math.floor(Math.random() * threatTypes.length)];
+                const ip = ips[Math.floor(Math.random() * ips.length)];
+
+                // Update detection stats
+                const threatsDetected = document.getElementById('threatsDetected');
+                if (threatsDetected) {
+                    threatsDetected.textContent = parseInt(threatsDetected.textContent) + 1;
+                }
+
+                // Auto-block if enabled
+                if (aiDefenseState.autoBlockEnabled && threat.severity === 'high') {
+                    if (!aiDefenseState.blockedIPs.includes(ip)) {
+                        aiDefenseState.blockedIPs.push(ip);
+                        addBlockedIPToList(ip, threat.name);
+                        
+                        const ipsBlocked = document.getElementById('ipsBlocked');
+                        if (ipsBlocked) {
+                            ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+                        }
+
+                        addToResponseTimeline('blocked', `Auto-blocked ${threat.name} from ${ip}`, 'IP blocked for 24 hours • Threat level: HIGH', 'Just now');
+                        
+                        const blockNotifications = document.getElementById('blockNotifications');
+                        if (blockNotifications && blockNotifications.checked) {
+                            showAlert(`🚨 Auto-blocked ${ip} - ${threat.name} detected!`);
+                        }
+                    }
+                }
+
+                // Update anomaly list
+                if (threat.severity === 'high' || threat.severity === 'medium') {
+                    updateAnomalyList(threat, ip);
+                }
+            }
+
+            // Update detection accuracy (simulated)
+            const accuracy = 85 + Math.floor(Math.random() * 15);
+            const detectionAccuracy = document.getElementById('detectionAccuracy');
+            const detectionProgress = document.getElementById('detectionProgress');
+            if (detectionAccuracy) detectionAccuracy.textContent = accuracy + '%';
+            if (detectionProgress) detectionProgress.style.width = accuracy + '%';
+
+            // Update block rate
+            const threatsBlocked = document.getElementById('threatsBlocked');
+            const threatsDetected = document.getElementById('threatsDetected');
+            if (threatsBlocked && threatsDetected) {
+                const rate = Math.floor((parseInt(threatsBlocked.textContent) / parseInt(threatsDetected.textContent)) * 100);
+                const blockRate = document.getElementById('blockRate');
+                if (blockRate) blockRate.textContent = rate + '%';
+            }
+        }
+
+        function updateAnomalyList(threat, ip) {
+            const anomalyList = document.getElementById('anomalyList');
+            if (!anomalyList) return;
+
+            // Add new anomaly
+            const severity = threat.severity === 'high' ? 'critical' : 'warning';
+            const newItem = document.createElement('div');
+            newItem.className = 'anomaly-item';
+            newItem.innerHTML = `
+                <div class="anomaly-info">
+                    <div class="anomaly-icon ${severity}">
+                        <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    </div>
+                    <div class="anomaly-details">
+                        <h5>${threat.name}</h5>
+                        <span>${ip} - Pattern detected</span>
+                    </div>
+                </div>
+                <span class="anomaly-severity ${severity}">${threat.severity.toUpperCase()}</span>
+            `;
+
+            anomalyList.insertBefore(newItem, anomalyList.firstChild);
+
+            // Keep only 5 anomalies
+            while (anomalyList.children.length > 5) {
+                anomalyList.removeChild(anomalyList.lastChild);
+            }
+
+            // Update anomaly alert count
+            const anomalyAlert = document.getElementById('anomalyAlert');
+            if (anomalyAlert) {
+                anomalyAlert.textContent = anomalyList.children.length + ' Anomalies Detected';
+            }
+        }
+
+        // AI Firewall Rules Generator
+        function generateFirewallRule(threatType, pattern) {
+            if (!aiDefenseState.firewallRulesEnabled) return;
+
+            const rulesGenerated = document.getElementById('rulesGenerated');
+            const activeRules = document.getElementById('activeRules');
+            
+            if (rulesGenerated) {
+                rulesGenerated.textContent = parseInt(rulesGenerated.textContent) + 1;
+            }
+            if (activeRules) {
+                activeRules.textContent = parseInt(activeRules.textContent) + 1;
+            }
+
+            // Add rule to UI
+            const rulesList = document.getElementById('firewallRulesList');
+            if (!rulesList) return;
+
+            const newRule = document.createElement('div');
+            newRule.className = 'firewall-rule';
+            newRule.innerHTML = `
+                <div class="rule-info">
+                    <div class="rule-icon block">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                    </div>
+                    <div class="rule-details">
+                        <h5>Block ${threatType}</h5>
+                        <span>Auto-generated • ${pattern}</span>
+                    </div>
+                </div>
+                <span class="rule-badge block">BLOCK</span>
+            `;
+
+            rulesList.insertBefore(newRule, rulesList.firstChild);
+            
+            addToResponseTimeline('analyzed', `Generated firewall rule: Block ${threatType}`, pattern, 'Just now');
+        }
+
+        // Start AI monitoring
+        setInterval(simulateThreatDetection, 10000);
+
+        // Close modals on outside click
+        document.getElementById('aiSettingsModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAISettings();
+            }
+        });
+
+        document.getElementById('blockIPModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBlockIPModal();
+            }
+        });
+
+        // Enhanced AI responses for security queries
+        const enhancedAIResponses = [
+            {
+                keywords: ['block', 'blocking', 'block ip'],
+                response: `<strong>🛡️ IP Blocking Status</strong>
+                    <p>AI Defense System has blocked <strong style="color: var(--accent-green);">${aiDefenseState.blockedIPs.length} IPs</strong> automatically.</p>
+                    <ul>
+                        <li>High-risk threats: Auto-blocked</li>
+                        <li>Medium-risk: Monitoring active</li>
+                        <li>Low-risk: Logged only</li>
+                    </ul>
+                    <p>To manually block an IP, click the "Block IP" button in Quick Actions.</p>`
+            },
+            {
+                keywords: ['threat', 'attack', 'security'],
+                response: `<strong>🔍 Security Analysis</strong>
+                    <p>Current threat landscape:</p>
+                    <ul>
+                        <li>DDoS attempts: <strong style="color: var(--accent-red);">23</strong> (blocked)</li>
+                        <li>SQL Injection: <strong style="color: var(--accent-yellow);">156</strong> (blocked)</li>
+                        <li>Brute Force: <strong style="color: var(--accent-red);">45</strong> (blocked)</li>
+                        <li>Port Scanning: <strong style="color: var(--accent-yellow);">89</strong> (monitored)</li>
+                    </ul>
+                    <p><strong>AI Detection Rate: 91%</strong></p>`
+            },
+            {
+                keywords: ['firewall', 'rule', 'rules'],
+                response: `<strong>🔥 Firewall Rules</strong>
+                    <p>AI has generated <strong style="color: var(--accent-cyan);">${aiDefenseState.firewallRules.length} active rules</strong> based on detected threats.</p>
+                    <ul>
+                        <li>DDoS protection: Active</li>
+                        <li>SQL injection filter: Active</li>
+                        <li>XSS prevention: Active</li>
+                        <li>Brute force throttle: Active</li>
+                    </ul>
+                    <p>Rules are automatically updated based on new threat patterns.</p>`
+            },
+            {
+                keywords: ['anomaly', 'unusual', 'strange'],
+                response: `<strong>⚠️ Anomaly Detection</strong>
+                    <p>AI has detected <strong style="color: var(--accent-yellow);">${aiDefenseState.anomalies.length} anomalies</strong> requiring attention:</p>
+                    <ul>
+                        <li>Traffic spikes from suspicious IPs</li>
+                        <li>Unusual login patterns</li>
+                        <li>Port scanning activities</li>
+                    </ul>
+                    <p>All anomalies are being analyzed and appropriate actions taken.</p>`
+            },
+            {
+                keywords: ['auto', 'automatic', 'automatically'],
+                response: `<strong>🤖 AI Automation Status</strong>
+                    <p>AI Defense System automation is <strong style="color: var(--accent-green);">ACTIVE</strong></p>
+                    <ul>
+                        <li>✓ Auto-blocking: ${aiDefenseState.autoBlockEnabled ? 'Enabled' : 'Disabled'}</li>
+                        <li>✓ Threat detection: ${aiDefenseState.threatDetectionEnabled ? 'Enabled' : 'Disabled'}</li>
+                        <li>✓ Firewall rules: ${aiDefenseState.firewallRulesEnabled ? 'Enabled' : 'Disabled'}</li>
+                    </ul>
+                    <p>Sensitivity level: ${aiDefenseState.sensitivity}/10</p>`
+            }
+        ];
+
+        // Override sendAIMessage to include enhanced responses
+        const originalSendAIMessage = sendAIMessage;
+        sendAIMessage = function() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim().toLowerCase();
+            if (!message) return;
+            
+            addAIMessage(message, 'user');
+            input.value = '';
+            
+            // Check for security-related keywords
+            let responseFound = false;
+            for (const item of enhancedAIResponses) {
+                if (item.keywords.some(keyword => message.includes(keyword))) {
+                    setTimeout(() => {
+                        addAIMessage(item.response, 'bot');
+                    }, 800);
+                    responseFound = true;
+                    break;
+                }
+            }
+            
+            // If no specific response, use original responses
+            if (!responseFound) {
+                setTimeout(() => {
+                    const responses = [
+                        {
+                            type: 'bot',
+                            content: `<strong>🛡️ Security Analysis</strong>Based on data terakhir, sistem Anda dalam kondisi aman. Tidak ada ancaman kritis yang terdeteksi.`
+                        },
+                        {
+                            type: 'bot',
+                            content: `<strong>📊 Network Status</strong>Traffic saat ini normal. Saya mendeteksi:<ul><li>12 koneksi aktif</li><li>Bandwidth: 2.4 GB/s inbound, 1.8 GB/s outbound</li><li>Firewall: Fully operational</li></ul>`
+                        },
+                        {
+                            type: 'bot',
+                            content: `<strong>⚠️ Threat Detection</strong>Saya menemukan beberapa aktivitas mencurigakan:<ul><li>3 percobaan brute force dari IP 203.45.167.89</li><li>2 port scan terdeteksi</li><li>Disarankan: Perketat firewall rules</li></ul>`
+                        },
+                        {
+                            type: 'bot',
+                            content: `<strong>🔧 Recommendation</strong>Untuk meningkatkan keamanan:<ul><li>Aktifkan two-factor authentication</li><li>Update firewall rules secara berkala</li><li>Monitor traffic secara real-time</li><li>Lakukan penetration testing bulanan</li></ul>`
+                        }
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addAIMessage(randomResponse.content, 'bot');
+                }, 1000);
+            }
+        };
     </script>
 
     <!-- AI Toggle Button -->
@@ -3768,6 +5366,216 @@
                     <button class="ai-action-btn secondary" onclick="closeAIAnalysis()">
                         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                         Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Settings Modal -->
+    <div class="ai-settings-modal" id="aiSettingsModal">
+        <div class="ai-settings-container">
+            <div class="ai-settings-header">
+                <span class="ai-settings-title">
+                    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                    AI Defense Settings
+                </span>
+                <button class="close-settings" onclick="closeAISettings()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div class="ai-settings-body">
+                <div class="settings-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        AI Defense Mode
+                    </h4>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Enable AI Threat Detection</h5>
+                            <span>Automatically detect and analyze threats using AI</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="aiThreatDetection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Auto-Block Suspicious IPs</h5>
+                            <span>Automatically block IPs that match threat patterns</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoBlockIPs" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Generate Firewall Rules</h5>
+                            <span>AI will auto-generate rules based on attack patterns</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="generateFirewallRules" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        Detection Sensitivity
+                    </h4>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Threat Detection Sensitivity</h5>
+                            <span>Adjust how sensitive the AI is to potential threats</span>
+                        </div>
+                        <div class="sensitivity-slider">
+                            <input type="range" id="sensitivitySlider" min="1" max="10" value="7">
+                            <span class="sensitivity-value" id="sensitivityValue">7</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Auto-Block Threshold</h5>
+                            <span>Number of suspicious activities before auto-block</span>
+                        </div>
+                        <div class="sensitivity-slider">
+                            <input type="range" id="blockThreshold" min="1" max="10" value="5">
+                            <span class="sensitivity-value" id="blockThresholdValue">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Threat Types to Monitor
+                    </h4>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>DDoS Attacks</h5>
+                            <span>Detect and block distributed denial of service attacks</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ddosProtection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>SQL Injection</h5>
+                            <span>Detect SQL injection attempts in requests</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sqlInjectionProtection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>XSS Attacks</h5>
+                            <span>Detect cross-site scripting attempts</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="xssProtection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Brute Force Attacks</h5>
+                            <span>Detect and block brute force login attempts</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="bruteForceProtection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Port Scanning</h5>
+                            <span>Detect network port scanning activities</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="portScanProtection" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>
+                        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                        Notifications
+                    </h4>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Alert on Threat Detection</h5>
+                            <span>Show notifications when threats are detected</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="threatNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h5>Alert on Auto-Block</h5>
+                            <span>Show notifications when IPs are auto-blocked</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="blockNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-settings-footer">
+                <button class="settings-btn cancel" onclick="closeAISettings()">Cancel</button>
+                <button class="settings-btn save" onclick="saveAISettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block IP Modal -->
+    <div class="ai-analysis-modal" id="blockIPModal">
+        <div class="ai-analysis-container" style="max-width: 500px;">
+            <div class="ai-analysis-header">
+                <div class="ai-analysis-icon" style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(255, 51, 102, 0.1));">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                </div>
+                Block IP Address
+                <button class="close-scanner" onclick="closeBlockIPModal()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div class="ai-analysis-body">
+                <div style="padding: 20px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">IP Address to Block</label>
+                        <input type="text" id="blockIPInput" placeholder="e.g., 192.168.1.100" style="width: 100%; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-size: 14px; outline: none;">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Block Duration</label>
+                        <select id="blockDuration" style="width: 100%; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-size: 14px; outline: none;">
+                            <option value="1h">1 Hour</option>
+                            <option value="6h">6 Hours</option>
+                            <option value="24h" selected>24 Hours</option>
+                            <option value="7d">7 Days</option>
+                            <option value="30d">30 Days</option>
+                            <option value="permanent">Permanent</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Reason (Optional)</label>
+                        <input type="text" id="blockReason" placeholder="e.g., Suspicious activity detected" style="width: 100%; padding: 12px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-size: 14px; outline: none;">
+                    </div>
+                    <button class="ai-action-btn primary" onclick="confirmBlockIP()" style="width: 100%; justify-content: center;">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                        Block IP Address
                     </button>
                 </div>
             </div>
