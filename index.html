@@ -15,7 +15,7 @@
         :root {
             --bg-primary: #0a0e17;
             --bg-secondary: #0d1424;
-            --bg-card: rgba(13, 20, 36, 0.8);
+            --bg-card: rgba(13, 20, 36, 0.85);
             --accent-cyan: #00d4ff;
             --accent-cyan-dim: rgba(0, 212, 255, 0.3);
             --accent-green: #00ff88;
@@ -25,6 +25,9 @@
             --text-primary: #ffffff;
             --text-secondary: #8892a0;
             --border-color: rgba(0, 212, 255, 0.15);
+            --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.15);
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.3s ease;
         }
 
         body {
@@ -219,6 +222,32 @@
         }
 
         .user-profile svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent-cyan);
+        }
+
+        /* Help Button */
+        .help-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-medium);
+        }
+
+        .help-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--accent-cyan);
+            transform: scale(1.05);
+        }
+
+        .help-btn svg {
             width: 20px;
             height: 20px;
             fill: var(--accent-cyan);
@@ -654,6 +683,100 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.2s ease;
+        }
+
+        /* Professional Button Tooltips */
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(10, 14, 23, 0.98), rgba(13, 20, 36, 0.98));
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text-primary);
+            white-space: normal;
+            width: 220px;
+            text-align: left;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-fast);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 212, 255, 0.1);
+            pointer-events: none;
+            line-height: 1.5;
+        }
+
+        [data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--accent-cyan);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-fast);
+        }
+
+        [data-tooltip]:hover::after,
+        [data-tooltip]:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        [data-tooltip-bottom]::after {
+            bottom: auto;
+            top: calc(100% + 10px);
+        }
+
+        [data-tooltip-bottom]::before {
+            bottom: auto;
+            top: -6px;
+            border-top: none;
+            border-bottom: 6px solid var(--accent-cyan);
+        }
+
+        [data-tooltip-left]::after {
+            left: auto;
+            right: calc(100% + 10px);
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+
+        [data-tooltip-left]::before {
+            left: auto;
+            right: -6px;
+            bottom: 50%;
+            transform: translateY(50%);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid var(--accent-cyan);
+        }
+
+        [data-tooltip-right]::after {
+            left: calc(100% + 10px);
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+
+        [data-tooltip-right]::before {
+            left: -6px;
+            bottom: 50%;
+            transform: translateY(50%);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid var(--accent-cyan);
         }
 
         .threat-dot:hover .threat-tooltip {
@@ -3431,24 +3554,27 @@
         </div>
 
         <div class="header-center">
-            <a href="#" class="nav-item active">Dashboard</a>
-            <a href="#" class="nav-item">Ancaman</a>
-            <a href="#" class="nav-item">Jaringan</a>
-            <a href="#" class="nav-item">Perangkat</a>
-            <a href="#" class="nav-item">Laporan</a>
-            <a href="#" class="nav-item">Pengaturan</a>
+            <a href="#" class="nav-item" data-tooltip="Lihat overview keamanan jaringan secara real-time">Dashboard</a>
+            <a href="#" class="nav-item" data-tooltip="Monitor dan analisis semua ancaman keamanan yang terdeteksi">Ancaman</a>
+            <a href="#" class="nav-item" data-tooltip="Monitor traffic jaringan, bandwidth, dan koneksi aktif">Jaringan</a>
+            <a href="#" class="nav-item" data-tooltip="Kelola perangkat yang terhubung ke jaringan">Perangkat</a>
+            <a href="#" class="nav-item" data-tooltip="Generate dan export laporan keamanan lengkap">Laporan</a>
+            <a href="#" class="nav-item" data-tooltip="Konfigurasi pengaturan sistem dan keamanan">Pengaturan</a>
         </div>
 
         <div class="header-right">
-            <div class="protection-level" id="protectionLevelBadge">
+            <button class="help-btn" id="helpBtn" data-tooltip="Buka panduan lengkap penggunaan dashboard CyberShield" onclick="openHelpModal()">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+            </button>
+            <div class="protection-level" id="protectionLevelBadge" data-tooltip="Level perlindungan sistem saat ini - NORMAL berarti tidak ada ancaman kritis">
                 <span class="protection-badge normal" id="protectionLevel">NORMAL</span>
             </div>
-            <div class="live-indicator">
+            <div class="live-indicator" data-tooltip="Dashboard sedang menerima data real-time dari sensor keamanan">
                 <div class="live-dot"></div>
                 <span class="live-text">LIVE</span>
             </div>
-            <div class="clock" id="clock">00:00:00</div>
-            <div class="user-profile">
+            <div class="clock" id="clock" data-tooltip="Waktu server saat ini untuk sinkronisasi log">00:00:00</div>
+            <div class="user-profile" data-tooltip="Profil administrator - klik untuk melihat detail akun dan logout">
                 <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             </div>
         </div>
@@ -3470,11 +3596,11 @@
                         +12% dari kemarin
                     </div>
                     <div class="stat-card-actions">
-                        <button class="stat-action-btn red" onclick="showAlert('Melihat detail ancaman...')">
+                        <button class="stat-action-btn red" data-tooltip="Lihat detail dan analisis lengkap semua ancaman yang terdeteksi dalam sistem keamanan jaringan Anda" onclick="showAlert('Melihat detail ancaman...')">
                             <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                             Detail
                         </button>
-                        <button class="stat-action-btn" onclick="showAlert('Export laporan ancaman...')">
+                        <button class="stat-action-btn" data-tooltip="Export semua data ancaman dalam format CSV atau PDF untuk laporan dan audit keamanan" onclick="showAlert('Export laporan ancaman...')">
                             <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                             Export
                         </button>
@@ -3492,11 +3618,11 @@
                         -8% dari kemarin
                     </div>
                     <div class="stat-card-actions">
-                        <button class="stat-action-btn yellow" onclick="showAlert('Memblokir serangan aktif...')">
+                        <button class="stat-action-btn yellow" data-tooltip="Tampilkan dan blokir semua serangan aktif yang sedang terjadi pada jaringan Anda secara real-time" onclick="showAlert('Memblokir serangan aktif...')">
                             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
                             Block
                         </button>
-                        <button class="stat-action-btn" onclick="showAlert('Analisis serangan...')">
+                        <button class="stat-action-btn" data-tooltip="Analisis mendalam pola serangan, sumber serangan, dan buat strategi pertahanan yang lebih kuat" onclick="showAlert('Analisis serangan...')">
                             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
                             Analyze
                         </button>
@@ -3514,11 +3640,11 @@
                         +24% dari kemarin
                     </div>
                     <div class="stat-card-actions">
-                        <button class="stat-action-btn green" onclick="showAlert('Lihat log pemblokiran...')">
+                        <button class="stat-action-btn green" data-tooltip="Lihat log lengkap semua aktivitas pemblokiran, termasuk timestamp, IP address, dan jenis ancaman yang terblokir" onclick="showAlert('Lihat log pemblokiran...')">
                             <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
                             Logs
                         </button>
-                        <button class="stat-action-btn" onclick="showAlert('Export statistik...')">
+                        <button class="stat-action-btn" data-tooltip="Export statistik pemblokiran dalam format laporan lengkap untuk dokumentasi dan audit keamanan" onclick="showAlert('Export statistik...')">
                             <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                             Report
                         </button>
@@ -3536,11 +3662,11 @@
                         Stabil
                     </div>
                     <div class="stat-card-actions">
-                        <button class="stat-action-btn" onclick="showAlert('Melihat uptime history...')">
+                        <button class="stat-action-btn" data-tooltip="Lihat riwayat uptime sistem dalam 7/30/90 hari terakhir dengan grafik dan analisis tren" onclick="showAlert('Melihat uptime history...')">
                             <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
                             History
                         </button>
-                        <button class="stat-action-btn" onclick="showAlert('Mengatur notifikasi...')">
+                        <button class="stat-action-btn" data-tooltip="Konfigurasi notifikasi untuk alert uptime, downtime, dan maintenance schedule" onclick="showAlert('Mengatur notifikasi...')">
                             <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
                             Alert
                         </button>
@@ -3758,7 +3884,7 @@
                         <span class="status-badge online">Online</span>
                     </div>
                 </div>
-                <button class="card-action-btn green" onclick="showAlert('Refresh status sistem...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                <button class="card-action-btn green" data-tooltip="Refresh semua status komponen jaringan dan perbarui data real-time di dashboard" onclick="showAlert('Refresh status sistem...')" style="width: 100%; margin-top: 15px; justify-content: center;">
                     <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
                     Refresh Status
                 </button>
@@ -3850,25 +3976,25 @@
                     </div>
                 </div>
                 <div class="action-grid">
-                    <button class="action-btn" onclick="blockIPPrompt()">
+                    <button class="action-btn" data-tooltip="Blokir alamat IP tertentu secara manual. Anda dapat menentukan durasi pemblokiran dari 1 jam hingga permanen" onclick="blockIPPrompt()">
                         <div class="action-icon block">
                             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/></svg>
                         </div>
                         <span class="action-label">Block IP</span>
                     </button>
-                    <button class="action-btn" onclick="openScanner()">
+                    <button class="action-btn" data-tooltip="Scan jaringan untuk mendeteksi host aktif, port terbuka, dan potensi kerentanan keamanan" onclick="openScanner()">
                         <div class="action-icon scan">
                             <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
                         </div>
                         <span class="action-label">Scan Virus</span>
                     </button>
-                    <button class="action-btn" onclick="showAlert('Memulai backup sistem...')">
+                    <button class="action-btn" data-tooltip="Backup konfigurasi sistem, log keamanan, dan database untuk recovery jika terjadi insiden" onclick="showAlert('Memulai backup sistem...')">
                         <div class="action-icon backup">
                             <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                         </div>
                         <span class="action-label">Backup</span>
                     </button>
-                    <button class="action-btn" onclick="openAISettings()">
+                    <button class="action-btn" data-tooltip="Konfigurasi pengaturan AI security, threshold deteksi, dan preferensi notifikasi otomatis" onclick="openAISettings()">
                         <div class="action-icon settings">
                             <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
                         </div>
@@ -4207,7 +4333,7 @@
                         <span class="attack-time">15 menit lalu</span>
                     </div>
                 </div>
-                <button class="card-action-btn red" onclick="showAlert('Lihat semua serangan...')" style="width: 100%; margin-top: 15px; justify-content: center;">
+                <button class="card-action-btn red" data-tooltip="Lihat daftar lengkap semua serangan yang terdeteksi dengan filter dan analisis mendalam" onclick="showAlert('Lihat semua serangan...')" style="width: 100%; margin-top: 15px; justify-content: center;">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
                     View All Attacks
                 </button>
@@ -4296,22 +4422,22 @@
                             <div class="config-group full-width">
                                 <label class="config-label">Port Presets</label>
                                 <div class="port-presets">
-                                    <button class="port-preset active" onclick="setPorts('common')">Common Ports</button>
-                                    <button class="port-preset" onclick="setPorts('web')">Web Server</button>
-                                    <button class="port-preset" onclick="setPorts('database')">Database</button>
-                                    <button class="port-preset" onclick="setPorts('full')">Full Scan</button>
-                                    <button class="port-preset" onclick="setPorts('quick')">Quick Scan</button>
+                                    <button class="port-preset active" data-tooltip="Scan port yang paling umum digunakan: 21, 22, 23, 25, 53, 80, 110, 143, 443, 3306, 3389" onclick="setPorts('common')">Common Ports</button>
+                                    <button class="port-preset" data-tooltip="Scan port untuk server web: 80, 443, 8080, 8443, 3000, 5000" onclick="setPorts('web')">Web Server</button>
+                                    <button class="port-preset" data-tooltip="Scan port database: 3306, 5432, 27017, 6379, 1433, 1521" onclick="setPorts('database')">Database</button>
+                                    <button class="port-preset" data-tooltip="Scan semua 65535 port - proses lebih lama tapi sangat komprehensif" onclick="setPorts('full')">Full Scan</button>
+                                    <button class="port-preset" data-tooltip="Scan cepat port kritis: 22, 80, 443, 3306 untuk deteksi awal" onclick="setPorts('quick')">Quick Scan</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Actions -->
                         <div class="scanner-actions">
-                            <button class="scan-btn primary" id="startScanBtn" onclick="startScan()">
+                            <button class="scan-btn primary" id="startScanBtn" data-tooltip="Mulai scan jaringan untuk mendeteksi host aktif, port terbuka, dan kerentanan keamanan" onclick="startScan()">
                                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.11 0 2.59-.59 3.73-1.27l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                                 Mulai Scan
                             </button>
-                            <button class="scan-btn secondary" onclick="stopScan()">
+                            <button class="scan-btn secondary" data-tooltip="Hentikan proses scan yang sedang berjalan - hasil scan sebelum dihentikan akan tetap disimpan" onclick="stopScan()">
                                 <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
                                 Stop
                             </button>
@@ -4781,19 +4907,27 @@
                 const responses = [
                     {
                         type: 'bot',
-                        content: `<strong>🛡️ Security Analysis</strong>Berdasarkan data terakhir, sistem Anda dalam kondisi aman. Tidak ada ancaman kritis yang terdeteksi.`
+                        content: `<strong>🛡️ Security Analysis Report</strong><br><br>Berdasarkan data real-time terakhir, sistem Anda dalam kondisi <span style="color: var(--accent-green);">AMAN</span> dengan skor keamanan 87/100.<br><br><strong>Status Komponen:</strong><ul><li>✅ Firewall: Fully operational</li><li>✅ Threat Detection: Active</li><li>✅ Traffic Monitoring: Normal</li><li>⚠️ Beberapa rule perlu diupdate</li></ul><br><strong>Rekomendasi:</strong> Update firewall rules secara berkala untuk melindungi dari ancaman terbaru.`
                     },
                     {
                         type: 'bot',
-                        content: `<strong>📊 Network Status</strong>Traffic saat ini normal. Saya mendeteksi:<ul><li>12 koneksi aktif</li><li>Bandwidth: 2.4 GB/s inbound, 1.8 GB/s outbound</li><li>Firewall: Fully operational</li></ul>`
+                        content: `<strong>📊 Network Status Dashboard</strong><br><br>Traffic saat ini normal dengan detail:<ul><li>🔵 <strong>12 koneksi aktif</strong></li><li>📥 <strong>Inbound:</strong> 2.4 GB/s</li><li>📤 <strong>Outbound:</strong> 1.8 GB/s</li><li>🛡️ <strong>Firewall:</strong> Fully operational</li><li>⚡ <strong>Uptime:</strong> 99.7%</li></ul><br><strong>Analisis AI:</strong> Tidak ada aktivitas mencurigakan yang terdeteksi dalam 24 jam terakhir.`
                     },
                     {
                         type: 'bot',
-                        content: `<strong>⚠️ Threat Detection</strong>Saya menemukan beberapa aktivitas mencurigakan:<ul><li>3 percobaan brute force dari IP 203.45.167.89</li><li>2 port scan terdeteksi</li><li>Disarankan: Perketat firewall rules</li></ul>`
+                        content: `<strong>⚠️ Threat Detection Alert</strong><br><br>Saya mendeteksi beberapa aktivitas mencurigakan yang memerlukan perhatian:<br><br><ul><li>🚨 <strong>3 brute force attempts</strong> dari IP 203.45.167.89</li><li>🔍 <strong>2 port scan</strong> terdeteksi dari IP berbeda</li><li>💀 <strong>1 potential malware</strong> signature terdeteksi</li></ul><br><strong>Tindakan yang disarankan:</strong><ul><li>1. Perketat firewall rules untuk brute force</li><li>2. Block IP suspect sementara</li><li>3. Review log akses terbaru</li></ul>`
                     },
                     {
                         type: 'bot',
-                        content: `<strong>🔧 Recommendation</strong>Untuk meningkatkan keamanan:<ul><li>Aktifkan two-factor authentication</li><li>Update firewall rules secara berkala</li><li>Monitor traffic secara real-time</li><li>Lakukan penetration testing bulanan</li></ul>`
+                        content: `<strong>🔧 Security Recommendations</strong><br><br>Berdasarkan analisis pola ancaman terkini, berikut rekomendasi untuk meningkatkan keamanan:<br><br><strong>Prioritas Tinggi:</strong><ul><li>🔐 Aktifkan two-factor authentication (2FA)</li><li>🔄 Update firewall rules setiap minggu</li><li>📊 Monitor traffic secara real-time</li></ul><strong>Prioritas Sedang:</strong><ul><li>🧪 Lakukan penetration testing bulanan</li><li>💾 Backup konfigurasi secara berkala</li><li>📝 Audit log keamanan mingguan</li></ul><strong>Best Practices:</strong><ul><li>Gunakan strong passwords (min. 12 karakter)</li><li>Limit login attempts untuk mencegah brute force</li><li>Segmentasi jaringan untuk membatasi damage</li></ul>`
+                    },
+                    {
+                        type: 'bot',
+                        content: `<strong>📈 AI Security Metrics</strong><br><br>Berikut ringkasan metrik keamanan sistem Anda:<br><br><strong>24 Hour Statistics:</strong><ul><li>🛡️ <strong>847 ancaman</strong> terdeteksi dan diblokir</li><li>🔴 <strong>23 serangan high severity</strong> - berhasil diblokir</li><li>🟡 <strong>156 serangan medium</strong> - netralisir</li><li>🔵 <strong>668 probe rendah</strong> - diabaikan</li></ul><br><strong>Efektivitas Defense:</strong><ul><li>Success Rate: <span style="color: var(--accent-green);">99.8%</span></li><li>False Positive Rate: 0.2%</li><li>Response Time: &lt;100ms</li></ul>`
+                    },
+                    {
+                        type: 'bot',
+                        content: `<strong>🔒 Incident Response Guide</strong><br><br>Jika terjadi insiden keamanan, ikuti langkah-langkah berikut:<br><br><strong>Step 1 - Identifikasi:</strong><ul><li>Check log untuk sumber serangan</li><li>Identifikasi tipe serangan</li><li>Tentukan severity level</li></ul><strong>Step 2 - containment:</strong><ul><li>Block IP attacker jika perlu</li><li>Isolate affected systems</li><li>Stop layanan yang compromised</li></ul><strong>Step 3 - Eradication:</strong><ul><li>Remove malware/threat</li><li>Patch vulnerability</li><li>Update security rules</li></ul><strong>Step 4 - Recovery:</strong><ul><li>Restore dari backup</li><li>Verify system integrity</li><li>Monitor untuk recurrence</li></ul>`
                     }
                 ];
                 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
@@ -4896,6 +5030,27 @@
             document.getElementById('aiSettingsModal').classList.remove('active');
         }
 
+        // Help Modal Functions
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+
+        // Close help modal on outside click
+        document.addEventListener('click', function(e) {
+            const helpModal = document.getElementById('helpModal');
+            const helpBtn = document.getElementById('helpBtn');
+            if (helpModal && helpModal.classList.contains('active') && 
+                !helpModal.querySelector('.ai-analysis-container').contains(e.target) && 
+                !helpBtn.contains(e.target)) {
+                closeHelpModal();
+            }
+        });
+
+        // Save AI Settings
         function saveAISettings() {
             aiDefenseState.threatDetectionEnabled = document.getElementById('aiThreatDetection').checked;
             aiDefenseState.autoBlockEnabled = document.getElementById('autoBlockIPs').checked;
@@ -5022,7 +5177,7 @@
                     </div>
                 </div>
                 <div class="blocked-ip-actions">
-                    <button class="unblock-btn" onclick="unblockIP('${ip}')">Unblock</button>
+                    <button class="unblock-btn" data-tooltip="Buka kembali akses IP ini dari daftar blokir sistem keamanan" onclick="unblockIP('${ip}')">Unblock</button>
                 </div>
             `;
             
@@ -5902,7 +6057,7 @@
     </script>
 
     <!-- AI Toggle Button -->
-    <button class="ai-toggle-btn" id="aiToggleBtn" onclick="toggleAI()">
+    <button class="ai-toggle-btn" id="aiToggleBtn" data-tooltip="Buka asisten AI CyberShield untuk analisis keamanan, chat, dan rekomendasi real-time" onclick="toggleAI()">
         <svg viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.88-.1-2.73 2.71-2.73 7.08 0 9.79s7.15 2.71 9.88 0C18.32 15.65 19 14.08 19 12.1h2c0 1.98-.88 4.55-2.64 6.29-3.51 3.48-9.21 3.48-12.72 0-3.5-3.47-3.53-9.11-.02-12.58s9.14-3.47 12.65 0L21 3v7.12zM12.5 8v4.25l3.5 2.08-.72 1.21L11 13V8h1.5z"/></svg>
         <span class="ai-badge">AI</span>
     </button>
@@ -5930,26 +6085,28 @@
                 </div>
                 <div class="ai-message-content">
                     <strong>🛡️ CyberShield AI Assistant</strong>
-                    Halo! Saya adalah asisten AI keamanan jaringan Anda. Saya bisa membantu:<br><br>
+                    Halo! Saya adalah asisten AI keamanan jaringan Anda yang siap membantu Anda 24/7.<br><br>
+                    <strong>Kemampuan saya:</strong>
                     <ul>
-                        <li>Analisis ancaman dan rekomendasi keamanan</li>
-                        <li>Monitoring status jaringan secara real-time</li>
-                        <li>Insights tentang traffic dan serangan</li>
-                        <li>Saran untuk meningkatkan keamanan sistem</li>
+                        <li>🔍 Analisis ancaman dan pola serangan</li>
+                        <li>📊 Monitoring status jaringan real-time</li>
+                        <li>🛡️ Rekomendasi keamanan personalized</li>
+                        <li>📈 Laporan dan insight mendalam</li>
+                        <li>⚡ Respons cepat untuk incident response</li>
                     </ul>
-                    <br>Ada yang bisa saya bantu?
+                    <br><strong>Tips:</strong> Gunakan quick actions di bawah untuk akses cepat ke fitur-fitur utama!
                 </div>
             </div>
         </div>
         <div class="ai-quick-actions">
-            <button class="ai-quick-btn" onclick="sendQuickMessage('Analisis ancaman terakhir')">🔍 Analisis Ancaman</button>
-            <button class="ai-quick-btn" onclick="sendQuickMessage('Status jaringan saat ini')">📊 Status Jaringan</button>
-            <button class="ai-quick-btn" onclick="sendQuickMessage('Rekomendasi keamanan')">🛡️ Rekomendasi</button>
-            <button class="ai-quick-btn" onclick="openAIAnalysis()">📈 AI Analysis</button>
+            <button class="ai-quick-btn" data-tooltip="Dapatkan analisis mendalam tentang ancaman terbaru yang terdeteksi, termasuk tipe serangan, sumber, dan rekomendasi penanganan" onclick="sendQuickMessage('Analisis ancaman terakhir')">🔍 Analisis Ancaman</button>
+            <button class="ai-quick-btn" data-tooltip="Lihat status real-time seluruh jaringan Anda termasuk bandwidth usage, koneksi aktif, dan kesehatan server" onclick="sendQuickMessage('Status jaringan saat ini')">📊 Status Jaringan</button>
+            <button class="ai-quick-btn" data-tooltip="Terima rekomendasi personalized untuk meningkatkan keamanan sistem berdasarkan pola ancaman saat ini" onclick="sendQuickMessage('Rekomendasi keamanan')">🛡️ Rekomendasi</button>
+            <button class="ai-quick-btn" data-tooltip="Generate laporan keamanan komprehensif yang mencakup semua metrik dan analisis AI dalam 24 jam terakhir" onclick="openAIAnalysis()">📈 AI Analysis</button>
         </div>
         <div class="ai-input-container">
             <input type="text" class="ai-input" id="aiInput" placeholder="Tanyakan sesuatu tentang keamanan...">
-            <button class="ai-send-btn" onclick="sendAIMessage()">
+            <button class="ai-send-btn" data-tooltip="Kirim pesan untuk ditanyakan ke CyberShield AI Assistant" onclick="sendAIMessage()">
                 <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 11 2 13l10 9-10 9 1.01-2z"/></svg>
             </button>
         </div>
@@ -6069,11 +6226,11 @@
                 </div>
 
                 <div class="ai-analysis-actions">
-                    <button class="ai-action-btn primary" onclick="showAlert('Generating detailed report...')">
+                    <button class="ai-action-btn primary" data-tooltip="Generate laporan keamanan lengkap dalam format PDF/CSV yang mencakup semua analisis dan rekomendasi dari AI" onclick="showAlert('Generating detailed report...')">
                         <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                         Generate Full Report
                     </button>
-                    <button class="ai-action-btn secondary" onclick="closeAIAnalysis()">
+                    <button class="ai-action-btn secondary" data-tooltip="Tutup panel analisis AI dan kembali ke dashboard utama" onclick="closeAIAnalysis()">
                         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                         Close
                     </button>
@@ -6244,8 +6401,105 @@
                 </div>
             </div>
             <div class="ai-settings-footer">
-                <button class="settings-btn cancel" onclick="closeAISettings()">Cancel</button>
-                <button class="settings-btn save" onclick="saveAISettings()">Save Settings</button>
+                <button class="settings-btn cancel" data-tooltip="Batalkan perubahan dan tutup panel pengaturan AI" onclick="closeAISettings()">Cancel</button>
+                <button class="settings-btn save" data-tooltip="Simpan semua pengaturan AI defense yang telah dikonfigurasi" onclick="saveAISettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="ai-analysis-modal" id="helpModal">
+        <div class="ai-analysis-container" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+            <div class="ai-analysis-header">
+                <div class="ai-analysis-title">
+                    <div class="ai-analysis-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                    </div>
+                    Panduan CyberShield Dashboard
+                </div>
+                <button class="close-scanner" onclick="closeHelpModal()">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div class="ai-analysis-body" style="padding: 25px;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div class="ai-analysis-card">
+                        <h4>
+                            <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                            Dashboard Utama
+                        </h4>
+                        <ul style="font-size: 13px; line-height: 1.8;">
+                            <li><strong>Statistik Real-time:</strong> Menampilkan jumlah ancaman, serangan aktif, yang terblokir, dan uptime sistem</li>
+                            <li><strong>Peta Ancaman:</strong> Visualisasi geografis sumber serangan dari seluruh dunia</li>
+                            <li><strong>Status Sistem:</strong> Monitor kesehatan semua komponen jaringan</li>
+                        </ul>
+                    </div>
+                    <div class="ai-analysis-card">
+                        <h4>
+                            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.11 0 2.59-.59 3.73-1.27l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            Network Scanner
+                        </h4>
+                        <ul style="font-size: 13px; line-height: 1.8;">
+                            <li><strong>Scan Host:</strong> Deteksi perangkat aktif di jaringan</li>
+                            <li><strong>Port Scanning:</strong> Identifikasi port terbuka pada target</li>
+                            <li><strong>Presets:</strong> Pilihan preset untuk scan cepat hingga komprehensif</li>
+                        </ul>
+                    </div>
+                    <div class="ai-analysis-card">
+                        <h4>
+                            <svg viewBox="0 0 24 24"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.88-.1-2.73 2.71-2.73 7.08 0 9.79s7.15 2.71 9.88 0C18.32 15.65 19 14.08 19 12.1h2c0 1.98-.88 4.55-2.64 6.29-3.51 3.48-9.21 3.48-12.72 0-3.5-3.47-3.53-9.11-.02-12.58s9.14-3.47 12.65 0L21 3v7.12z"/></svg>
+                            AI Assistant
+                        </h4>
+                        <ul style="font-size: 13px; line-height: 1.8;">
+                            <li><strong>Analisis:</strong> Dapatkan insight mendalam tentang keamanan sistem</li>
+                            <li><strong>Rekomendasi:</strong> Saran actionable untuk meningkatkan defense</li>
+                            <li><strong>Quick Actions:</strong> Akses cepat ke analisis umum</li>
+                        </ul>
+                    </div>
+                    <div class="ai-analysis-card">
+                        <h4>
+                            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                            AI Defense Mode
+                        </h4>
+                        <ul style="font-size: 13px; line-height: 1.8;">
+                            <li><strong>Auto-Block:</strong> Blokir otomatis IP mencurigakan</li>
+                            <li><strong>Firewall Rules:</strong> Generate rules berdasarkan pola serangan</li>
+                            <li><strong>Sensitivity:</strong> Atur sensitivitas deteksi AI</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="ai-analysis-card" style="margin-top: 20px;">
+                    <h4>
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Tips Keamanan
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px;">
+                        <div style="padding: 12px; background: rgba(0,212,255,0.05); border-radius: 8px; border-left: 3px solid var(--accent-cyan);">
+                            <strong style="color: var(--accent-cyan);">🔐 two-Factor Authentication</strong>
+                            <p style="font-size: 12px; margin-top: 5px; color: var(--text-secondary);">Aktifkan 2FA untuk semua akun administratif</p>
+                        </div>
+                        <div style="padding: 12px; background: rgba(0,255,136,0.05); border-radius: 8px; border-left: 3px solid var(--accent-green);">
+                            <strong style="color: var(--accent-green);">🔄 Update Berkala</strong>
+                            <p style="font-size: 12px; margin-top: 5px; color: var(--text-secondary);">Update firewall rules setiap minggu</p>
+                        </div>
+                        <div style="padding: 12px; background: rgba(255,204,0,0.05); border-radius: 8px; border-left: 3px solid var(--accent-yellow);">
+                            <strong style="color: var(--accent-yellow);">📊 Monitoring</strong>
+                            <p style="font-size: 12px; margin-top: 5px; color: var(--text-secondary);">Review log keamanan setiap hari</p>
+                        </div>
+                        <div style="padding: 12px; background: rgba(255,51,102,0.05); border-radius: 8px; border-left: 3px solid var(--accent-red);">
+                            <strong style="color: var(--accent-red);">💾 Backup</strong>
+                            <p style="font-size: 12px; margin-top: 5px; color: var(--text-secondary);">Backup konfigurasi secara berkala</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-analysis-actions" style="margin-top: 20px;">
+                    <button class="ai-action-btn secondary" onclick="closeHelpModal()">
+                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                        Tutup
+                    </button>
+                </div>
             </div>
         </div>
     </div>
