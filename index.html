@@ -4642,6 +4642,22 @@
                 from { transform: translateX(0); opacity: 1; }
                 to { transform: translateX(100%); opacity: 0; }
             }
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.9); }
+            }
+            @keyframes pulseGlow {
+                0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+                50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
+            }
         `;
         document.head.appendChild(style);
 
@@ -5704,6 +5720,265 @@
         // Run active block every 2 seconds
         setInterval(activeBlockAttack, 2000);
 
+        // ============================================
+        // Enhanced Auto-Block System (Complete Rewrite)
+        // ============================================
+        
+        // Auto-Block Configuration
+        const autoBlockConfig = {
+            enabled: true,
+            minSeverity: 'medium',
+            blockDuration: '24h',
+            maxBlocksPerHour: 50,
+            whitelistEnabled: true,
+            whitelistIPs: ['192.168.1.1', '192.168.1.254', '127.0.0.1'],
+            blockHistory: [],
+            attackCounts: {}
+        };
+        
+        // Severity Levels with Colors
+        const severityLevels = {
+            low: { score: 1, color: '#00d4ff', label: 'LOW' },
+            medium: { score: 2, color: '#ffcc00', label: 'MEDIUM' },
+            high: { score: 3, color: '#ff9500', label: 'HIGH' },
+            critical: { score: 4, color: '#ff3366', label: 'CRITICAL' }
+        };
+        
+        // Attack Types Configuration
+        const attackTypesConfig = {
+            'Port Scan': { severity: 'low', desc: 'Network reconnaissance' },
+            'Ping Sweep': { severity: 'low', desc: 'Host discovery' },
+            'Phishing': { severity: 'medium', desc: 'Social engineering' },
+            'XSS Attack': { severity: 'medium', desc: 'Cross-site scripting' },
+            'SQL Injection': { severity: 'high', desc: 'Database injection' },
+            'Brute Force': { severity: 'high', desc: 'Repeated login attempts' },
+            'Malware': { severity: 'high', desc: 'Malicious software' },
+            'DDoS Attack': { severity: 'critical', desc: 'Denial of service' },
+            'Ransomware': { severity: 'critical', desc: 'File encryption attack' },
+            'Zero-Day': { severity: 'critical', desc: 'Unknown exploit' }
+        };
+        
+        // Enhanced Detect and Auto-Block Function
+        function detectAndAutoBlock(sourceIP, attackType, severity) {
+            if (!aiDefenseState.autoBlockEnabled) return null;
+            
+            // Check whitelist
+            if (autoBlockConfig.whitelistEnabled && 
+                autoBlockConfig.whitelistIPs.some(wip => sourceIP.startsWith(wip))) {
+                return null;
+            }
+            
+            // Check if already blocked
+            if (aiDefenseState.blockedIPs.includes(sourceIP)) {
+                // Increment attack count for already blocked IP
+                if (autoBlockConfig.attackCounts[sourceIP]) {
+                    autoBlockConfig.attackCounts[sourceIP].count++;
+                }
+                return null;
+            }
+            
+            // Get attack config
+            const attackConfig = attackTypesConfig[attackType] || { severity: 'medium', desc: 'Unknown threat' };
+            const threatSeverity = severity || attackConfig.severity;
+            
+            // Check severity threshold
+            const severityScore = severityLevels[threatSeverity]?.score || 2;
+            const minSeverityScore = severityLevels[autoBlockConfig.minSeverity]?.score || 1;
+            
+            if (severityScore < minSeverityScore) {
+                return null;
+            }
+            
+            // Track attack
+            if (!autoBlockConfig.attackCounts[sourceIP]) {
+                autoBlockConfig.attackCounts[sourceIP] = { count: 1, type: attackType, firstSeen: new Date() };
+            } else {
+                autoBlockConfig.attackCounts[sourceIP].count++;
+            }
+            
+            // Perform block
+            return performAutoBlock(sourceIP, attackType, threatSeverity, attackConfig.desc);
+        }
+        
+        // Perform Auto-Block with full UI update
+        function performAutoBlock(sourceIP, attackType, severity, description) {
+            const timestamp = new Date();
+            const blockDuration = calculateBlockDuration(severity);
+            
+            // Add to blocked IPs
+            aiDefenseState.blockedIPs.push(sourceIP);
+            
+            // Create block record
+            const blockRecord = {
+                ip: sourceIP,
+                attackType: attackType,
+                severity: severity,
+                reason: description || attackType,
+                blockedAt: timestamp,
+                duration: blockDuration,
+                autoBlocked: true
+            };
+            
+            // Add to history
+            autoBlockConfig.blockHistory.unshift(blockRecord);
+            if (autoBlockConfig.blockHistory.length > 100) {
+                autoBlockConfig.blockHistory.pop();
+            }
+            
+            // Update UI - add to blocked list
+            addBlockedIPToList(sourceIP, `${attackType} - Auto-blocked (${severity.toUpperCase()})`);
+            
+            // Update stats
+            const ipsBlocked = document.getElementById('ipsBlocked');
+            if (ipsBlocked) {
+                ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+            }
+            
+            // Add to timeline
+            addToResponseTimeline('blocked', 
+                `⚡ Auto-blocked: ${sourceIP}`, 
+                `${attackType} • ${severity.toUpperCase()} • Duration: ${blockDuration}`, 
+                'Baru saja'
+            );
+            
+            // Show notification
+            showAutoBlockNotification(sourceIP, attackType, severity, blockDuration);
+            
+            // Visual alert
+            if (severity === 'critical' || severity === 'high') {
+                visualState.alertLevel = severity === 'critical' ? 'danger' : 'warning';
+                flashDashboardAlert(visualState.alertLevel);
+            }
+            
+            // Update protection level
+            updateProtectionLevel();
+            
+            // Schedule auto-unblock
+            scheduleAutoUnblock(sourceIP, blockDuration);
+            
+            return blockRecord;
+        }
+        
+        // Calculate Block Duration
+        function calculateBlockDuration(severity) {
+            const durations = { low: '1h', medium: '6h', high: '24h', critical: '7d' };
+            return durations[severity] || '24h';
+        }
+        
+        // Show Auto-Block Notification
+        function showAutoBlockNotification(ip, attackType, severity, duration) {
+            const colors = {
+                low: '#00d4ff',
+                medium: '#ffcc00',
+                high: '#ff9500',
+                critical: '#ff3366'
+            };
+            const icons = { low: '🔵', medium: '🟡', high: '🟠', critical: '🚨' };
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 90px; right: 30px;
+                background: linear-gradient(135deg, ${colors[severity]}, rgba(0,0,0,0.9));
+                color: white; padding: 16px 24px; border-radius: 12px;
+                font-size: 14px; z-index: 2000; animation: slideInRight 0.3s ease;
+                max-width: 320px; border-left: 4px solid ${colors[severity]};
+                box-shadow: 0 10px 40px ${colors[severity]}40;
+            `;
+            notification.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                    <span style="font-size:24px;">${icons[severity]}</span>
+                    <strong style="font-size:16px;">Auto-Block Triggered!</strong>
+                </div>
+                <div style="margin-bottom:6px;"><strong>IP:</strong> ${ip}</div>
+                <div style="margin-bottom:6px;"><strong>Attack:</strong> ${attackType}</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <span style="background:rgba(255,255,255,0.2);padding:3px 8px;border-radius:4px;font-size:11px;">
+                        ${severity.toUpperCase()}
+                    </span>
+                    <span style="background:rgba(255,255,255,0.2);padding:3px 8px;border-radius:4px;font-size:11px;">
+                        ${duration}
+                    </span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        // Schedule Auto-Unblock
+        function scheduleAutoUnblock(ip, duration) {
+            const ms = {
+                '1h': 3600000, '6h': 21600000, '24h': 86400000, 
+                '7d': 604800000, '30d': 2592000000
+            }[duration] || 86400000;
+            
+            setTimeout(() => {
+                if (aiDefenseState.blockedIPs.includes(ip)) {
+                    const attackData = autoBlockConfig.attackCounts[ip];
+                    if (!attackData || attackData.count < 3) {
+                        unblockIP(ip);
+                        addToResponseTimeline('detected', `⏰ Auto-unblock: ${ip}`, 
+                            `Duration expired (${duration})`, 'Just now');
+                    }
+                }
+            }, ms);
+        }
+        
+        // Update Protection Level based on threats
+        function updateProtectionLevel() {
+            const highThreats = Object.values(autoBlockConfig.attackCounts)
+                .filter(a => a.count >= 3).length;
+            
+            const badge = document.getElementById('protectionLevel');
+            if (badge) {
+                if (highThreats >= 5) {
+                    badge.textContent = 'MAX';
+                    badge.className = 'protection-badge max';
+                } else if (highThreats >= 2) {
+                    badge.textContent = 'ELEVATED';
+                    badge.className = 'protection-badge elevated';
+                } else {
+                    badge.textContent = 'NORMAL';
+                    badge.className = 'protection-badge normal';
+                }
+            }
+        }
+        
+        // Enhanced Active Block Detection
+        function enhancedActiveBlock() {
+            if (!aiDefenseState.autoBlockEnabled) return;
+            
+            const attacks = [
+                { name: 'DDoS Attack', severity: 'critical', desc: 'DoS attack detected' },
+                { name: 'SQL Injection', severity: 'high', desc: 'SQL injection attempt' },
+                { name: 'Brute Force', severity: 'high', desc: 'Brute force attack' },
+                { name: 'Port Scan', severity: 'medium', desc: 'Port scanning activity' },
+                { name: 'XSS Attack', severity: 'medium', desc: 'XSS attack attempt' },
+                { name: 'Malware', severity: 'high', desc: 'Malware detected' },
+                { name: 'Ransomware', severity: 'critical', desc: 'Ransomware attack' },
+                { name: 'Phishing', severity: 'low', desc: 'Phishing attempt' }
+            ];
+            
+            const ips = [
+                '103.45.167.89', '142.75.234.12', '81.234.56.78', '195.85.92.34',
+                '48.185.124.56', '214.217.45.78', '88.142.67.34', '165.139.82.91',
+                '78.234.156.12', '156.78.234.45', '67.123.45.89', '189.45.67.123'
+            ];
+            
+            // 40% chance every 3 seconds
+            if (Math.random() > 0.6) {
+                const attack = attacks[Math.floor(Math.random() * attacks.length)];
+                const ip = ips[Math.floor(Math.random() * ips.length)];
+                detectAndAutoBlock(ip, attack.name, attack.severity);
+            }
+        }
+        
+        // Run enhanced detection every 3 seconds
+        setInterval(enhancedActiveBlock, 3000);
+        
         // ============================================
         // AI Autonomous Actions System
         // ============================================
