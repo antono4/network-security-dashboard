@@ -5308,7 +5308,8 @@
             // Update threat count on map
             const totalThreats = document.getElementById('totalThreats');
             if (totalThreats) {
-                animateCounter('totalThreats', parseInt(totalThreats.textContent) + 1, 'var(--accent-red)');
+                const newTotal = (parseInt(totalThreats.textContent) || 0) + 1;
+                animateCounter('totalThreats', newTotal, 'var(--accent-red)');
             }
         }
 
@@ -5424,12 +5425,14 @@
                 // Update stats with animation
                 const threatCount = document.getElementById('threatCount');
                 if (threatCount) {
-                    animateCounter('threatCount', parseInt(threatCount.textContent.replace(/,/g, '')) + 1, 'var(--accent-red)');
+                    const currentThreat = (parseInt(threatCount.textContent.replace(/,/g, '')) || 0;
+                    animateCounter('threatCount', currentThreat + 1, 'var(--accent-red)');
                 }
                 
                 const threatsDetected = document.getElementById('threatsDetected');
                 if (threatsDetected) {
-                    animateCounter('threatsDetected', parseInt(threatsDetected.textContent) + 1);
+                    const newDetected = (parseInt(threatsDetected.textContent) || 0) + 1;
+                    animateCounter('threatsDetected', newDetected);
                 }
                 
                 // Add to real-time feed
