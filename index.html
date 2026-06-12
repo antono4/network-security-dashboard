@@ -5947,37 +5947,479 @@
             }
         }
         
-        // Enhanced Active Block Detection
-        function enhancedActiveBlock() {
-            if (!aiDefenseState.autoBlockEnabled) return;
+        // ============================================
+        // AI REAL-TIME AUTO IP BLOCKER SYSTEM
+        // ============================================
+        
+        // Real-time Attack Database
+        const realTimeAttackDB = {
+            // Attack patterns with signatures
+            signatures: {
+                'ddos': { severity: 'critical', ports: [80, 443, 8080], pattern: /flood|syn|udp|tcp/i },
+                'sql_injection': { severity: 'high', ports: [3306, 5432, 1433], pattern: /union|select|drop|insert|delete|exec|script/i },
+                'xss': { severity: 'medium', ports: [80, 443], pattern: /<script|javascript:|onerror|onload/i },
+                'brute_force': { severity: 'high', ports: [22, 3389, 21], pattern: /failed|login|auth|passwd|admin/i },
+                'port_scan': { severity: 'low', ports: [1, 1024], pattern: /scan|probe|nmap|syn/i },
+                'malware': { severity: 'high', ports: [4444, 6666], pattern: /malware|virus|trojan|backdoor/i },
+                'ransomware': { severity: 'critical', ports: [445, 3389], pattern: /encrypt|ransom|locked|bitcoin/i },
+                'phishing': { severity: 'medium', ports: [80, 443], pattern: /fake|login|verify|account|update/i },
+                'zero_day': { severity: 'critical', ports: [80, 443, 22], pattern: /exploit|poc|cve|unknown/i }
+            },
             
+            // Attack sources with countries
+            sources: [
+                { ip: '185.234.xx.xx', country: 'Russia', city: 'Moscow', coords: [55.75, 37.61] },
+                { ip: '112.234.xx.xx', country: 'China', city: 'Beijing', coords: [39.91, 116.39] },
+                { ip: '187.156.xx.xx', country: 'Brazil', city: 'São Paulo', coords: [-23.55, -46.63] },
+                { ip: '175.45.xx.xx', country: 'North Korea', city: 'Pyongyang', coords: [39.02, 125.75] },
+                { ip: '104.28.xx.xx', country: 'USA', city: 'New York', coords: [40.71, -74.01] },
+                { ip: '103.112.xx.xx', country: 'Japan', city: 'Tokyo', coords: [35.68, 139.69] },
+                { ip: '117.197.xx.xx', country: 'India', city: 'Mumbai', coords: [19.08, 72.88] },
+                { ip: '139.195.xx.xx', country: 'Indonesia', city: 'Jakarta', coords: [-6.21, 106.85] },
+                { ip: '95.216.xx.xx', country: 'Germany', city: 'Berlin', coords: [52.52, 13.40] },
+                { ip: '91.134.xx.xx', country: 'France', city: 'Paris', coords: [48.86, 2.35] },
+                { ip: '45.32.xx.xx', country: 'Singapore', city: 'Singapore', coords: [1.35, 103.82] },
+                { ip: '201.78.xx.xx', country: 'Mexico', city: 'Mexico City', coords: [19.43, -99.13] },
+                { ip: '78.156.xx.xx', country: 'UK', city: 'London', coords: [51.51, -0.13] },
+                { ip: '145.67.xx.xx', country: 'Australia', city: 'Sydney', coords: [-33.87, 151.21] },
+                { ip: '167.89.xx.xx', country: 'Canada', city: 'Toronto', coords: [43.65, -79.38] }
+            ]
+        };
+        
+        // Real-time Monitoring State
+        let realTimeState = {
+            isActive: true,
+            detectionInterval: 1000, // 1 second
+            blockThreshold: 3, // Block after 3 attacks
+            autoBlockEnabled: true,
+            attackLog: [],
+            blockedNow: [],
+            activeThreats: [],
+            stats: {
+                totalDetected: 0,
+                totalBlocked: 0,
+                totalAllowed: 0,
+                last24h: []
+            }
+        };
+        
+        // Real-time Attack Detector
+        function realTimeAttackDetector() {
+            if (!realTimeState.autoBlockEnabled || !realTimeState.isActive) return;
+            
+            const now = Date.now();
+            
+            // Generate realistic attack
+            const attack = generateRealisticAttack();
+            const source = realTimeAttackDB.sources[Math.floor(Math.random() * realTimeAttackDB.sources.length)];
+            
+            // Create attack record
+            const attackRecord = {
+                id: 'atk_' + now + '_' + Math.random().toString(36).substr(2, 9),
+                timestamp: now,
+                source: source,
+                attack: attack,
+                requestData: generateAttackPayload(attack),
+                threatLevel: calculateThreatLevel(attack),
+                autoAction: null
+            };
+            
+            // Log the attack
+            realTimeState.attackLog.unshift(attackRecord);
+            if (realTimeState.attackLog.length > 100) realTimeState.attackLog.pop();
+            
+            // Update stats
+            realTimeState.stats.totalDetected++;
+            realTimeState.stats.last24h.push(now);
+            cleanOldStats();
+            
+            // Perform AI Analysis
+            const aiDecision = analyzeAndDecide(attackRecord);
+            
+            // Execute AI Decision
+            if (aiDecision.action === 'block') {
+                executeBlock(attackRecord, aiDecision);
+            } else if (aiDecision.action === 'alert') {
+                executeAlert(attackRecord, aiDecision);
+            } else {
+                executeMonitor(attackRecord, aiDecision);
+            }
+            
+            // Update Visual Elements
+            updateRealTimeStats();
+            updateThreatMap(attackRecord);
+            addToRealTimeFeedEnhanced(attackRecord);
+        }
+        
+        // Generate Realistic Attack
+        function generateRealisticAttack() {
             const attacks = [
-                { name: 'DDoS Attack', severity: 'critical', desc: 'DoS attack detected' },
-                { name: 'SQL Injection', severity: 'high', desc: 'SQL injection attempt' },
-                { name: 'Brute Force', severity: 'high', desc: 'Brute force attack' },
-                { name: 'Port Scan', severity: 'medium', desc: 'Port scanning activity' },
-                { name: 'XSS Attack', severity: 'medium', desc: 'XSS attack attempt' },
-                { name: 'Malware', severity: 'high', desc: 'Malware detected' },
-                { name: 'Ransomware', severity: 'critical', desc: 'Ransomware attack' },
-                { name: 'Phishing', severity: 'low', desc: 'Phishing attempt' }
+                { type: 'DDoS Attack', severity: 'critical', method: 'UDP Flood', traffic: '850 Mbps', pps: '150K' },
+                { type: 'SQL Injection', severity: 'high', method: 'UNION SELECT', traffic: '2.3 MB', pps: '45' },
+                { type: 'Brute Force', severity: 'high', method: 'Dictionary Attack', traffic: '120 KB', pps: '200' },
+                { type: 'Port Scan', severity: 'low', method: 'TCP SYN Scan', traffic: '500 KB', pps: '1.2K' },
+                { type: 'XSS Attack', severity: 'medium', method: 'Stored XSS', traffic: '5 KB', pps: '10' },
+                { type: 'Malware', severity: 'high', method: 'Trojan Downloader', traffic: '45 MB', pps: '5' },
+                { type: 'Ransomware', severity: 'critical', method: 'WannaCry Variant', traffic: '120 MB', pps: '8' },
+                { type: 'Phishing', severity: 'medium', method: 'Fake Login Page', traffic: '8 KB', pps: '25' },
+                { type: 'Zero-Day', severity: 'critical', method: 'Unknown Exploit', traffic: 'Unknown', pps: 'Unknown' },
+                { type: 'SSH Brute Force', severity: 'high', method: 'SSH Dictionary', traffic: '85 KB', pps: '150' },
+                { type: 'DNS Amplification', severity: 'critical', method: 'DNS Query Flood', traffic: '1.2 Gbps', pps: '500K' },
+                { type: 'HTTP Flood', severity: 'high', method: 'GET Flood', traffic: '450 Mbps', pps: '80K' }
             ];
+            return attacks[Math.floor(Math.random() * attacks.length)];
+        }
+        
+        // Generate Attack Payload
+        function generateAttackPayload(attack) {
+            const payloads = {
+                'SQL Injection': "' OR '1'='1' --",
+                'XSS Attack': "<script>alert('XSS')</script>",
+                'Brute Force': "admin/weakpass123",
+                'Port Scan': "SYN scan on ports 1-1000",
+                'DDoS Attack': "UDP packet flood",
+                'Malware': "base64 encoded payload",
+                'Ransomware': "encrypted file header",
+                'Phishing': "fake_google_login.html",
+                'Zero-Day': "memory corruption exploit",
+                'SSH Brute Force': "root/admin/password123",
+                'DNS Amplification': "DNS query for large zone",
+                'HTTP Flood': "GET /index.php HTTP/1.1"
+            };
+            return payloads[attack.type] || attack.method;
+        }
+        
+        // Calculate Threat Level
+        function calculateThreatLevel(attack) {
+            const severityScores = { low: 1, medium: 2, high: 3, critical: 4 };
+            return severityScores[attack.severity] || 2;
+        }
+        
+        // AI Analysis and Decision
+        function analyzeAndDecide(attackRecord) {
+            const { attack, source } = attackRecord;
+            const now = Date.now();
             
-            const ips = [
-                '103.45.167.89', '142.75.234.12', '81.234.56.78', '195.85.92.34',
-                '48.185.124.56', '214.217.45.78', '88.142.67.34', '165.139.82.91',
-                '78.234.156.12', '156.78.234.45', '67.123.45.89', '189.45.67.123'
-            ];
+            // Get recent attacks from same IP
+            const recentAttacks = realTimeState.attackLog.filter(a => 
+                a.source.ip === source.ip && 
+                (now - a.timestamp) < 60000 // Last 60 seconds
+            );
             
-            // 40% chance every 3 seconds
-            if (Math.random() > 0.6) {
-                const attack = attacks[Math.floor(Math.random() * attacks.length)];
-                const ip = ips[Math.floor(Math.random() * ips.length)];
-                detectAndAutoBlock(ip, attack.name, attack.severity);
+            // Get total attacks from country
+            const countryAttacks = realTimeState.attackLog.filter(a => 
+                a.source.country === source.country && 
+                (now - a.timestamp) < 300000 // Last 5 minutes
+            );
+            
+            // AI Decision Logic
+            let action = 'monitor';
+            let confidence = 0;
+            let reasons = [];
+            let blockDuration = '24h';
+            
+            // Check attack severity
+            if (attack.severity === 'critical') {
+                action = 'block';
+                confidence += 40;
+                reasons.push('Critical severity attack');
+                blockDuration = '7d';
+            } else if (attack.severity === 'high') {
+                if (recentAttacks.length >= 2) {
+                    action = 'block';
+                    confidence += 35;
+                    reasons.push('Repeated high-severity attacks');
+                    blockDuration = '24h';
+                } else {
+                    action = 'alert';
+                    confidence += 25;
+                    reasons.push('Single high-severity attack');
+                }
+            } else if (attack.severity === 'medium') {
+                if (recentAttacks.length >= 3) {
+                    action = 'block';
+                    confidence += 30;
+                    reasons.push('Pattern of medium attacks');
+                    blockDuration = '6h';
+                } else {
+                    action = 'alert';
+                    confidence += 15;
+                    reasons.push('Suspicious medium attack');
+                }
+            } else {
+                if (recentAttacks.length >= 5) {
+                    action = 'alert';
+                    confidence += 20;
+                    reasons.push('Scanning behavior detected');
+                } else {
+                    action = 'monitor';
+                    confidence += 10;
+                    reasons.push('Low-level probe');
+                }
+            }
+            
+            // Country risk factor
+            const highRiskCountries = ['North Korea', 'Russia', 'China'];
+            if (highRiskCountries.includes(source.country)) {
+                confidence += 15;
+                if (action === 'monitor') action = 'alert';
+                reasons.push(`High-risk country: ${source.country}`);
+            }
+            
+            // Rapid fire detection
+            if (recentAttacks.length >= 5) {
+                action = 'block';
+                confidence += 25;
+                blockDuration = '24h';
+                reasons.push('Rapid-fire attack detected');
+            }
+            
+            return {
+                action,
+                confidence: Math.min(confidence, 100),
+                reasons,
+                blockDuration,
+                attackCount: recentAttacks.length + 1,
+                countryCount: countryAttacks.length
+            };
+        }
+        
+        // Execute Block
+        function executeBlock(attackRecord, decision) {
+            const { source, attack } = attackRecord;
+            
+            // Check if already blocked
+            if (aiDefenseState.blockedIPs.includes(source.ip)) {
+                return;
+            }
+            
+            // Add to blocked
+            aiDefenseState.blockedIPs.push(source.ip);
+            realTimeState.blockedNow.push({
+                ip: source.ip,
+                country: source.country,
+                attack: attack.type,
+                blockedAt: Date.now(),
+                duration: decision.blockDuration
+            });
+            
+            // Update stats
+            realTimeState.stats.totalBlocked++;
+            
+            // Update UI
+            addBlockedIPToList(source.ip, `${attack.type} - AI Blocked`);
+            
+            // Update counter
+            const ipsBlocked = document.getElementById('ipsBlocked');
+            if (ipsBlocked) {
+                ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+            }
+            
+            // Add to timeline
+            addToResponseTimeline('blocked', 
+                `🤖 AI BLOCKED: ${source.ip}`, 
+                `${attack.type} • ${source.country} • ${decision.confidence}% confidence`,
+                'Just now'
+            );
+            
+            // Show notification
+            showAIBlockNotification(source, attack, decision);
+            
+            // Visual feedback
+            visualState.alertLevel = attack.severity === 'critical' ? 'danger' : 'warning';
+            flashDashboardAlert(visualState.alertLevel);
+            
+            // Update protection level
+            updateProtectionLevel();
+            
+            // Schedule auto-unblock
+            scheduleAutoUnblock(source.ip, decision.blockDuration);
+            
+            // Store attack record with action
+            attackRecord.autoAction = 'blocked';
+        }
+        
+        // Execute Alert
+        function executeAlert(attackRecord, decision) {
+            const { source, attack } = attackRecord;
+            
+            addToResponseTimeline('alert', 
+                `⚠️ AI ALERT: ${source.ip}`, 
+                `${attack.type} • Monitoring... • ${decision.confidence}% confidence`,
+                'Just now'
+            );
+            
+            showAIAlertNotification(source, attack, decision);
+            
+            attackRecord.autoAction = 'alert';
+        }
+        
+        // Execute Monitor
+        function executeMonitor(attackRecord, decision) {
+            realTimeState.stats.totalAllowed++;
+            
+            // Only log to console in real-time mode
+            attackRecord.autoAction = 'monitored';
+        }
+        
+        // Show AI Block Notification
+        function showAIBlockNotification(source, attack, decision) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 80px; right: 30px;
+                background: linear-gradient(135deg, #ff3366, #ff6b6b);
+                color: white; padding: 20px; border-radius: 16px;
+                font-size: 14px; z-index: 3000; 
+                animation: slideInRight 0.3s ease;
+                max-width: 380px; 
+                border: 2px solid #ff6b6b;
+                box-shadow: 0 10px 50px rgba(255,51,102,0.5);
+            `;
+            notification.innerHTML = `
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                    <div style="font-size:32px;">🤖</div>
+                    <div>
+                        <div style="font-size:18px;font-weight:700;">AI AUTO-BLOCK!</div>
+                        <div style="font-size:12px;opacity:0.9;">Confidence: ${decision.confidence}%</div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;margin-bottom:12px;">
+                    <div style="margin-bottom:6px;"><strong>🌍 ${source.country}</strong> • ${source.city}</div>
+                    <div style="font-family:monospace;font-size:16px;margin-bottom:6px;">${source.ip}</div>
+                    <div style="font-size:13px;">${attack.type}</div>
+                    <div style="font-size:11px;opacity:0.8;">${attack.method}</div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                    <span style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:6px;font-size:11px;">
+                        🚨 ${attack.severity.toUpperCase()}
+                    </span>
+                    <span style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:6px;font-size:11px;">
+                        ⏱️ ${decision.blockDuration}
+                    </span>
+                    <span style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:6px;font-size:11px;">
+                        📊 ${decision.attackCount} attacks
+                    </span>
+                </div>
+                <div style="font-size:11px;opacity:0.8;border-top:1px solid rgba(255,255,255,0.2);padding-top:8px;">
+                    ${decision.reasons.join(' • ')}
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 6000);
+        }
+        
+        // Show AI Alert Notification
+        function showAIAlertNotification(source, attack, decision) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 90px; right: 30px;
+                background: linear-gradient(135deg, #ffcc00, #ff9500);
+                color: #1a1a2e; padding: 16px 20px; border-radius: 12px;
+                font-size: 13px; z-index: 2999; 
+                animation: slideInRight 0.3s ease;
+                max-width: 340px;
+                box-shadow: 0 10px 40px rgba(255,204,0,0.4);
+            `;
+            notification.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <span style="font-size:20px;">🤖</span>
+                    <strong>AI ALERT</strong>
+                    <span style="margin-left:auto;font-size:11px;opacity:0.7;">${decision.confidence}%</span>
+                </div>
+                <div><strong>${source.ip}</strong> • ${source.country}</div>
+                <div>${attack.type} • ${attack.severity.toUpperCase()}</div>
+                <div style="font-size:11px;margin-top:6px;">Monitoring... (${decision.attackCount} attacks detected)</div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+        
+        // Update Real-Time Stats
+        function updateRealTimeStats() {
+            const stats = realTimeState.stats;
+            
+            // Update threat count
+            const threatCount = document.getElementById('threatCount');
+            if (threatCount) {
+                threatCount.textContent = stats.totalDetected.toLocaleString();
+            }
+            
+            // Update threats detected
+            const threatsDetected = document.getElementById('threatsDetected');
+            if (threatsDetected) {
+                threatsDetected.textContent = stats.totalDetected;
             }
         }
         
-        // Run enhanced detection every 3 seconds
-        setInterval(enhancedActiveBlock, 3000);
+        // Update Threat Map
+        function updateThreatMap(attackRecord) {
+            const { source, attack } = attackRecord;
+            
+            // Animate attack on map
+            animateMapAttack(source.ip, source.country, attack.severity);
+        }
+        
+        // Add to Real-Time Feed Enhanced
+        function addToRealTimeFeedEnhanced(attackRecord) {
+            const { source, attack, autoAction } = attackRecord;
+            const feedContainer = document.getElementById('realTimeFeed');
+            if (!feedContainer) return;
+            
+            const icons = { blocked: '🚫', alert: '⚠️', monitored: '👁️' };
+            const colors = { blocked: '#ff3366', alert: '#ffcc00', monitored: '#00d4ff' };
+            const icon = icons[autoAction] || '📊';
+            const color = colors[autoAction] || '#00d4ff';
+            
+            const feedItem = document.createElement('div');
+            feedItem.style.cssText = `
+                display: flex; align-items: center; gap: 12px;
+                padding: 12px 16px; margin-bottom: 8px;
+                background: rgba(0,0,0,0.4); border-radius: 10px;
+                border-left: 3px solid ${color};
+                animation: slideIn 0.3s ease;
+            `;
+            feedItem.innerHTML = `
+                <span style="font-size:18px;">${icon}</span>
+                <div style="flex:1;">
+                    <div style="font-weight:600;font-size:13px;">${attack.type}</div>
+                    <div style="font-size:11px;opacity:0.7;">${source.ip} • ${source.country}</div>
+                </div>
+                <div style="font-size:10px;opacity:0.6;">Just now</div>
+            `;
+            
+            feedContainer.insertBefore(feedItem, feedContainer.firstChild);
+            
+            // Keep only last 20 items
+            while (feedContainer.children.length > 20) {
+                feedContainer.removeChild(feedContainer.lastChild);
+            }
+        }
+        
+        // Clean Old Stats
+        function cleanOldStats() {
+            const cutoff = Date.now() - 86400000; // 24 hours
+            realTimeState.stats.last24h = realTimeState.stats.last24h.filter(t => t > cutoff);
+        }
+        
+        // Start Real-Time Detection
+        setInterval(realTimeAttackDetector, realTimeState.detectionInterval);
+        
+        // Initial burst
+        setTimeout(() => {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(realTimeAttackDetector, i * 500);
+            }
+        }, 2000);
+        
+        // Enhanced Active Block Detection
         
         // ============================================
         // AI Autonomous Actions System
