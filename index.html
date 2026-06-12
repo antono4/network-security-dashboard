@@ -5216,6 +5216,287 @@
         // Start AI monitoring
         setInterval(simulateThreatDetection, 5000);
         
+        // ============================================
+        // Real-Time AI Dashboard Visual Updater
+        // ============================================
+        
+        // Visual update states
+        let visualState = {
+            alertLevel: 'normal', // normal, warning, danger
+            activeAnimations: [],
+            lastUpdate: Date.now()
+        };
+
+        // Animate counter with visual effect
+        function animateCounter(elementId, newValue, color = null) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const currentValue = parseInt(element.textContent.replace(/,/g, '')) || 0;
+            const diff = newValue - currentValue;
+            const steps = 10;
+            const stepValue = diff / steps;
+            let step = 0;
+            
+            const interval = setInterval(() => {
+                step++;
+                const value = Math.round(currentValue + (stepValue * step));
+                element.textContent = value.toLocaleString();
+                
+                // Add pulse animation
+                element.classList.add('counter-pulse');
+                setTimeout(() => element.classList.remove('counter-pulse'), 200);
+                
+                if (step >= steps) {
+                    clearInterval(interval);
+                    element.textContent = newValue.toLocaleString();
+                }
+            }, 50);
+            
+            // Color flash effect
+            if (color) {
+                element.style.color = color;
+                setTimeout(() => {
+                    element.style.color = '';
+                }, 1000);
+            }
+        }
+
+        // Flash dashboard border on threat
+        function flashDashboardAlert(level) {
+            const dashboard = document.querySelector('.dashboard-grid');
+            if (!dashboard) return;
+            
+            const colors = {
+                normal: 'transparent',
+                warning: 'rgba(255, 204, 0, 0.3)',
+                danger: 'rgba(255, 51, 102, 0.3)'
+            };
+            
+            dashboard.style.boxShadow = `0 0 30px ${colors[level] || colors.normal}`;
+            
+            setTimeout(() => {
+                dashboard.style.boxShadow = '';
+            }, 500);
+        }
+
+        // Update threat map with new attack animation
+        function animateMapAttack(sourceIP, targetCountry, severity) {
+            const worldMap = document.getElementById('worldMap');
+            if (!worldMap) return;
+            
+            // Create attack line animation
+            const attackLine = document.createElement('div');
+            attackLine.className = 'map-attack-line ' + severity;
+            attackLine.style.cssText = `
+                position: absolute;
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, var(--accent-${severity === 'high' ? 'red' : severity === 'medium' ? 'yellow' : 'cyan'}), transparent);
+                left: ${Math.random() * 50}%;
+                top: ${Math.random() * 50}%;
+                animation: attackLineMove 1s linear forwards;
+                z-index: 20;
+            `;
+            
+            worldMap.appendChild(attackLine);
+            
+            setTimeout(() => {
+                attackLine.remove();
+            }, 1000);
+            
+            // Update threat count on map
+            const totalThreats = document.getElementById('totalThreats');
+            if (totalThreats) {
+                animateCounter('totalThreats', parseInt(totalThreats.textContent) + 1, 'var(--accent-red)');
+            }
+        }
+
+        // Progress bar animation
+        function animateProgressBar(elementId, percentage, danger = false) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            element.style.width = percentage + '%';
+            if (danger) {
+                element.classList.add('danger');
+            }
+        }
+
+        // Add attack to real-time feed
+        function addToRealTimeFeed(attackType, sourceIP, severity) {
+            const attackList = document.getElementById('attackList');
+            if (!attackList) return;
+            
+            const severityClass = severity === 'high' ? 'high' : severity === 'medium' ? 'medium' : 'low';
+            const severityLabel = severity === 'high' ? 'HIGH' : severity === 'medium' ? 'MED' : 'LOW';
+            
+            const attackItem = document.createElement('div');
+            attackItem.className = 'attack-item';
+            attackItem.innerHTML = `
+                <div class="attack-info">
+                    <span class="attack-severity ${severityClass}">${severityLabel}</span>
+                    <div>
+                        <div class="attack-type">${attackType}</div>
+                        <div class="attack-meta">Source: ${sourceIP}</div>
+                    </div>
+                </div>
+                <span class="attack-time">Baru saja</span>
+            `;
+            
+            // Insert at top with animation
+            attackItem.style.animation = 'slideIn 0.3s ease';
+            attackList.insertBefore(attackItem, attackList.firstChild);
+            
+            // Update old entries time
+            const items = attackList.querySelectorAll('.attack-item');
+            items.forEach((item, index) => {
+                if (index > 0) {
+                    const timeEl = item.querySelector('.attack-time');
+                    const minutes = index * 3;
+                    timeEl.textContent = minutes + ' menit lalu';
+                }
+            });
+            
+            // Keep only 5 items
+            while (attackList.children.length > 5) {
+                attackList.removeChild(attackList.lastChild);
+            }
+        }
+
+        // Visual stats update
+        function updateVisualStats() {
+            // Update traffic chart bars
+            const bars = document.querySelectorAll('.traffic-bar');
+            bars.forEach(bar => {
+                const newHeight = Math.floor(Math.random() * 60) + 30;
+                bar.style.height = newHeight + '%';
+                bar.setAttribute('data-value', newHeight + '%');
+                
+                // Color based on height
+                if (newHeight > 80) {
+                    bar.style.background = 'var(--accent-red)';
+                } else if (newHeight > 60) {
+                    bar.style.background = 'var(--accent-yellow)';
+                } else {
+                    bar.style.background = 'var(--accent-cyan)';
+                }
+            });
+            
+            // Update system status LEDs
+            const statusLeds = document.querySelectorAll('.status-led');
+            statusLeds.forEach(led => {
+                if (Math.random() > 0.95) {
+                    led.classList.toggle('warning');
+                    setTimeout(() => led.classList.toggle('warning'), 2000);
+                }
+            });
+        }
+
+        // AI Real-Time Agent - runs every 1 second for fast response
+        function aiRealTimeAgent() {
+            if (!aiDefenseState.autoBlockEnabled) return;
+            
+            const threats = [
+                { type: 'DDoS Attack', level: 'critical', ip: '185.234.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'Russia' },
+                { type: 'Ransomware', level: 'critical', ip: '112.234.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'China' },
+                { type: 'SQL Injection', level: 'high', ip: '187.156.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'Brazil' },
+                { type: 'Brute Force', level: 'high', ip: '175.45.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'North Korea' },
+                { type: 'Port Scan', level: 'medium', ip: '104.28.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'USA' },
+                { type: 'XSS Attack', level: 'medium', ip: '103.112.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'Indonesia' },
+                { type: 'Malware', level: 'high', ip: '117.197.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'India' },
+                { type: 'Phishing', level: 'low', ip: '139.195.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255), country: 'Japan' }
+            ];
+            
+            // 60% chance to detect threat each second
+            if (Math.random() > 0.4) {
+                const threat = threats[Math.floor(Math.random() * threats.length)];
+                
+                // Update visual state
+                if (threat.level === 'critical') {
+                    visualState.alertLevel = 'danger';
+                    flashDashboardAlert('danger');
+                } else if (threat.level === 'high') {
+                    visualState.alertLevel = 'warning';
+                    flashDashboardAlert('warning');
+                }
+                
+                // Update stats with animation
+                const threatCount = document.getElementById('threatCount');
+                if (threatCount) {
+                    animateCounter('threatCount', parseInt(threatCount.textContent.replace(/,/g, '')) + 1, 'var(--accent-red)');
+                }
+                
+                const threatsDetected = document.getElementById('threatsDetected');
+                if (threatsDetected) {
+                    animateCounter('threatsDetected', parseInt(threatsDetected.textContent) + 1);
+                }
+                
+                // Add to real-time feed
+                addToRealTimeFeed(threat.type, threat.ip, threat.level);
+                
+                // Animate map attack
+                animateMapAttack(threat.ip, threat.country, threat.level);
+                
+                // Make autonomous decision
+                aiAutonomousDecision(threat.level, threat.ip, threat.type);
+                
+                // Update progress bars
+                const detectionProgress = document.getElementById('detectionProgress');
+                if (detectionProgress) {
+                    const currentWidth = parseInt(detectionProgress.style.width) || 91;
+                    const newWidth = Math.min(99, currentWidth + Math.random() * 2);
+                    animateProgressBar('detectionProgress', newWidth.toFixed(0) + '%', newWidth > 95);
+                }
+                
+                // Show alert notification
+                const alertIcons = { critical: '🚨', high: '🔴', medium: '🟡', low: '🔵' };
+                showAlert(`${alertIcons[threat.level]} ${threat.type} from ${threat.ip}`);
+            }
+            
+            // Update visual stats periodically
+            updateVisualStats();
+            
+            // Reset alert level
+            if (Math.random() > 0.9) {
+                visualState.alertLevel = 'normal';
+            }
+        }
+
+        // Run AI Real-Time Agent every 1 second
+        setInterval(aiRealTimeAgent, 1000);
+        
+        // Add CSS for counter pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes counterPulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+            .counter-pulse {
+                animation: counterPulse 0.2s ease;
+            }
+            @keyframes attackLineMove {
+                0% { transform: translateX(0); opacity: 1; }
+                100% { transform: translateX(100px); opacity: 0; }
+            }
+            .map-attack-line {
+                position: absolute;
+                pointer-events: none;
+            }
+            .map-attack-line.high {
+                background: linear-gradient(90deg, var(--accent-red), transparent) !important;
+            }
+            .map-attack-line.medium {
+                background: linear-gradient(90deg, var(--accent-yellow), transparent) !important;
+            }
+            .map-attack-line.low {
+                background: linear-gradient(90deg, var(--accent-cyan), transparent) !important;
+            }
+        `;
+        document.head.appendChild(style);
+
         // Active Block Attack - runs every 2 seconds
         function activeBlockAttack() {
             if (!aiDefenseState.autoBlockEnabled) return;
