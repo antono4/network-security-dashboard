@@ -156,6 +156,46 @@
             color: var(--accent-green);
         }
 
+        .protection-level {
+            display: flex;
+            align-items: center;
+        }
+
+        .protection-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .protection-badge.normal {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .protection-badge.elevated {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            animation: protectPulse 1s infinite;
+        }
+
+        .protection-badge.max {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            animation: protectPulse 0.5s infinite;
+        }
+
+        @keyframes protectPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         .clock {
             font-family: 'Orbitron', sans-serif;
             font-size: 14px;
@@ -3400,6 +3440,9 @@
         </div>
 
         <div class="header-right">
+            <div class="protection-level" id="protectionLevelBadge">
+                <span class="protection-badge normal" id="protectionLevel">NORMAL</span>
+            </div>
             <div class="live-indicator">
                 <div class="live-dot"></div>
                 <span class="live-text">LIVE</span>
@@ -5221,6 +5264,234 @@
         
         // Run active block every 2 seconds
         setInterval(activeBlockAttack, 2000);
+
+        // ============================================
+        // AI Autonomous Actions System
+        // ============================================
+
+        // AI Automation State
+        let aiAutomationState = {
+            autoQuarantine: true,
+            autoScaleProtection: true,
+            autoNotify: true,
+            autoIsolate: true,
+            autoUpdateRules: true,
+            protectionLevel: 'normal', // normal, elevated, max
+            lastAction: null,
+            actionsLog: []
+        };
+
+        // Auto Quarantine System
+        function autoQuarantineDevice(deviceIP, reason) {
+            if (!aiAutomationState.autoQuarantine) return;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const action = {
+                type: 'quarantine',
+                target: deviceIP,
+                reason: reason,
+                time: timestamp,
+                status: 'completed'
+            };
+            
+            aiAutomationState.actionsLog.unshift(action);
+            addToResponseTimeline('alert', `🏠 Auto-quarantine: ${deviceIP}`, reason, timestamp);
+            showAlert(`🏠 Device ${deviceIP} auto-quarantined`);
+            
+            // Update quarantine counter
+            const quarantinedEl = document.getElementById('quarantinedDevices');
+            if (quarantinedEl) {
+                quarantinedEl.textContent = parseInt(quarantinedEl.textContent || 0) + 1;
+            }
+        }
+
+        // Auto Scale Protection
+        function autoScaleProtection(level) {
+            if (!aiAutomationState.autoScaleProtection) return;
+            
+            aiAutomationState.protectionLevel = level;
+            
+            const protectionBadge = document.getElementById('protectionLevel');
+            if (protectionBadge) {
+                protectionBadge.textContent = level.toUpperCase();
+                protectionBadge.className = 'protection-badge ' + level;
+            }
+            
+            addToResponseTimeline('analyzed', `🛡️ Protection ${level.toUpperCase()} mode`, 'Auto-scaled based on threat level', 'Just now');
+            showAlert(`🛡️ Protection scaled to ${level.toUpperCase()}`);
+        }
+
+        // Auto Notify Admin
+        function autoNotifyAdmin(message, severity) {
+            if (!aiAutomationState.autoNotify) return;
+            
+            const icons = {
+                critical: '🚨',
+                high: '🔴',
+                medium: '🟡',
+                low: '🔵'
+            };
+            
+            showAlert(`${icons[severity] || '📢'} ${message}`);
+            
+            // Create notification log entry
+            const notificationLog = document.getElementById('notificationLog');
+            if (notificationLog) {
+                const notifItem = document.createElement('div');
+                notifItem.className = 'notification-item';
+                notifItem.innerHTML = `
+                    <span class="notif-time">${new Date().toLocaleTimeString()}</span>
+                    <span class="notif-severity ${severity}">${severity.toUpperCase()}</span>
+                    <span class="notif-message">${message}</span>
+                `;
+                notificationLog.insertBefore(notifItem, notificationLog.firstChild);
+                
+                // Keep only last 10 notifications
+                while (notificationLog.children.length > 10) {
+                    notificationLog.removeChild(notificationLog.lastChild);
+                }
+            }
+        }
+
+        // Auto Isolate Compromised Device
+        function autoIsolateDevice(deviceIP, reason) {
+            if (!aiAutomationState.autoIsolate) return;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const action = {
+                type: 'isolate',
+                target: deviceIP,
+                reason: reason,
+                time: timestamp,
+                status: 'completed'
+            };
+            
+            aiAutomationState.actionsLog.unshift(action);
+            addToResponseTimeline('blocked', `🔒 Auto-isolate: ${deviceIP}`, reason, timestamp);
+            showAlert(`🔒 Device ${deviceIP} isolated from network`);
+        }
+
+        // Auto Update Firewall Rules
+        function autoUpdateFirewallRules(attackType) {
+            if (!aiAutomationState.autoUpdateRules) return;
+            
+            const rulesGenerated = document.getElementById('rulesGenerated');
+            const activeRules = document.getElementById('activeRules');
+            
+            if (rulesGenerated) {
+                rulesGenerated.textContent = parseInt(rulesGenerated.textContent) + 1;
+            }
+            if (activeRules) {
+                activeRules.textContent = parseInt(activeRules.textContent) + 1;
+            }
+            
+            // Add to firewall rules list
+            const rulesList = document.getElementById('firewallRulesList');
+            if (rulesList) {
+                const newRule = document.createElement('div');
+                newRule.className = 'firewall-rule';
+                newRule.innerHTML = `
+                    <div class="rule-info">
+                        <div class="rule-icon block">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12z"/></svg>
+                        </div>
+                        <div class="rule-details">
+                            <h5>Auto-${attackType} Rule</h5>
+                            <span>AI Generated • Active</span>
+                        </div>
+                    </div>
+                    <span class="rule-badge block">AUTO</span>
+                `;
+                rulesList.insertBefore(newRule, rulesList.firstChild);
+            }
+            
+            addToResponseTimeline('analyzed', `🔥 Auto-rule: Block ${attackType}`, 'Generated by AI based on pattern', 'Just now');
+        }
+
+        // AI Autonomous Decision Maker
+        function aiAutonomousDecision(threatLevel, sourceIP, attackType) {
+            // Level-based autonomous actions
+            switch(threatLevel) {
+                case 'critical':
+                    // Immediate block and isolate
+                    if (!aiDefenseState.blockedIPs.includes(sourceIP)) {
+                        aiDefenseState.blockedIPs.push(sourceIP);
+                        addBlockedIPToList(sourceIP, attackType + ' - CRITICAL');
+                        autoQuarantineDevice(sourceIP, attackType + ' critical threat');
+                        autoIsolateDevice(sourceIP, 'Critical attack detected');
+                        autoUpdateFirewallRules(attackType);
+                        autoNotifyAdmin(`CRITICAL: ${attackType} from ${sourceIP}`, 'critical');
+                        autoScaleProtection('max');
+                    }
+                    break;
+                    
+                case 'high':
+                    // Block and generate rule
+                    if (!aiDefenseState.blockedIPs.includes(sourceIP)) {
+                        aiDefenseState.blockedIPs.push(sourceIP);
+                        addBlockedIPToList(sourceIP, attackType + ' - HIGH');
+                        autoUpdateFirewallRules(attackType);
+                        autoNotifyAdmin(`HIGH: ${attackType} blocked from ${sourceIP}`, 'high');
+                        autoScaleProtection('elevated');
+                    }
+                    break;
+                    
+                case 'medium':
+                    // Monitor and log
+                    autoNotifyAdmin(`MEDIUM: ${attackType} detected from ${sourceIP}`, 'medium');
+                    autoUpdateFirewallRules(attackType);
+                    break;
+                    
+                case 'low':
+                    // Just log and monitor
+                    autoNotifyAdmin(`LOW: ${attackType} probe from ${sourceIP}`, 'low');
+                    break;
+            }
+        }
+
+        // Enhanced Active Block with Autonomous Decisions
+        function enhancedActiveBlock() {
+            if (!aiDefenseState.autoBlockEnabled) return;
+            
+            const threats = [
+                { type: 'DDoS', level: 'critical', ip: '185.234.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'Ransomware', level: 'critical', ip: '112.234.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'SQL Injection', level: 'high', ip: '187.156.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'Brute Force', level: 'high', ip: '175.45.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'Port Scan', level: 'medium', ip: '104.28.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'XSS', level: 'medium', ip: '103.112.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'Phishing', level: 'low', ip: '117.197.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) },
+                { type: 'Probe', level: 'low', ip: '139.195.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) }
+            ];
+            
+            // Random detection
+            if (Math.random() > 0.5) {
+                const threat = threats[Math.floor(Math.random() * threats.length)];
+                
+                // Update threat count
+                const threatsDetected = document.getElementById('threatsDetected');
+                if (threatsDetected) {
+                    threatsDetected.textContent = parseInt(threatsDetected.textContent) + 1;
+                }
+                
+                // Make autonomous decision
+                aiAutonomousDecision(threat.level, threat.ip, threat.type);
+                
+                // Update stats
+                const ipsBlocked = document.getElementById('ipsBlocked');
+                if (ipsBlocked && threat.level !== 'low') {
+                    ipsBlocked.textContent = parseInt(ipsBlocked.textContent) + 1;
+                }
+            }
+            
+            // Reset protection level periodically
+            if (Math.random() > 0.95) {
+                autoScaleProtection('normal');
+            }
+        }
+
+        // Run autonomous actions every 3 seconds
+        setInterval(enhancedActiveBlock, 3000);
 
         // Close modals on outside click
         document.getElementById('aiSettingsModal')?.addEventListener('click', function(e) {
