@@ -5425,7 +5425,7 @@
                 // Update stats with animation
                 const threatCount = document.getElementById('threatCount');
                 if (threatCount) {
-                    const currentThreat = (parseInt(threatCount.textContent.replace(/,/g, '')) || 0;
+                    const currentThreat = (parseInt(threatCount.textContent.replace(/,/g, '')) || 0);
                     animateCounter('threatCount', currentThreat + 1, 'var(--accent-red)');
                 }
                 
@@ -5470,8 +5470,8 @@
         setInterval(aiRealTimeAgent, 1000);
         
         // Add CSS for counter pulse animation
-        const style = document.createElement('style');
-        style.textContent = `
+        const styleAnimations = document.createElement('style');
+        styleAnimations.textContent = `
             @keyframes counterPulse {
                 0% { transform: scale(1); }
                 50% { transform: scale(1.1); }
@@ -5498,7 +5498,7 @@
                 background: linear-gradient(90deg, var(--accent-cyan), transparent) !important;
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(styleAnimations);
 
         // Active Block Attack - runs every 2 seconds
         function activeBlockAttack() {
